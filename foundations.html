@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>University Digital Literacy Foundations — Ram Ready Digital Literacy</title>
+<meta name="description" content="Twenty connected episodes from a first-semester file system to a reliable college digital workflow.">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/print.css" media="print">
+</head>
+<body>
+<header data-site-header></header>
+<main id="main-content">
+  <div id="map-view">
+    <h1>University Digital Literacy Foundations</h1>
+    <p>A continuous storyline in four acts, from your first semester through a reliable digital workflow. Guides
+      Roscoe and Bella will join you along the way — original interface characters, not official university
+      speech.</p>
+    <div class="btn-row">
+      <button class="btn btn-outline" id="toggle-list-view">Show accessible list view</button>
+      <a class="btn btn-outline" href="journey.html">View my dashboard</a>
+    </div>
+    <div id="story-map-visual" class="section"></div>
+    <div id="story-map-list" class="section" hidden></div>
+  </div>
+
+  <div id="episode-view" hidden>
+    <a class="btn btn-outline" href="foundations.html">&larr; Back to map</a>
+    <p id="episode-progress" class="badge"></p>
+    <article class="guide-character">
+      <div class="guide-character__avatar" aria-hidden="true"></div>
+      <div>
+        <p id="guide-line">Roscoe: Let's get into it.</p>
+      </div>
+    </article>
+    <h1 id="episode-title"></h1>
+    <p id="episode-subtitle"></p>
+    <section>
+      <h2>What's happening</h2>
+      <p id="episode-narrative"></p>
+      <p id="episode-realworld"></p>
+    </section>
+    <section>
+      <h2>Concept</h2>
+      <dl id="episode-concept"></dl>
+    </section>
+    <section id="special-widget" class="section"></section>
+    <section>
+      <h2 id="scenario-prompt"></h2>
+      <ul class="choice-list" id="choice-list"></ul>
+      <div class="consequence-panel" id="consequence-panel" hidden></div>
+    </section>
+    <section class="knowledge-check" id="knowledge-check-section" hidden>
+      <h2>Knowledge check</h2>
+      <div id="knowledge-check-body"></div>
+    </section>
+    <section id="source-drawer" class="section"></section>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="continue-episode-btn" hidden>Continue</button>
+      <button class="btn btn-outline" id="try-another-path-btn" hidden>Try another path</button>
+    </div>
+  </div>
+</main>
+<footer data-site-footer></footer>
+<script type="module">
+  import { initPage, currentProfile } from "./assets/site.js";
+  import {
+    getActs, getEpisodesForAct, getEpisode, applyChoiceEffect, INITIAL_SIM_STATE,
+    renderEpisodeNarrative, submitChoice, computeStars, completeEpisode, isEpisodeUnlocked
+  } from "./assets/story-engine.js";
+  import { renderSourceDrawer } from "./assets/source-renderer.js";
+  import { celebrate } from "./assets/game-engine.js";
+  import { renderAccessibleListAlternative } from "./assets/accessibility.js";
+  import { loadState } from "./assets/profile-engine.js";
+
+  initPage("foundations.html");
+
+  const params = new URLSearchParams(window.location.search);
+  const epId = params.get("ep");
+  const useGenericStory = params.get("generic") === "1" || currentProfile().genericStory;
+
+  if (epId) {
+    renderEpisode(epId);
+  } else {
+    renderMap();
+  }
+
+  function renderMap() {
+    document.getElementById("map-view").hidden = false;
+    document.getElementById("episode-view").hidden = true;
+    const state = loadState();
+    const completed = state.progress.foundations.completedNodeIds;
+    const visual = document.getElementById("story-map-visual");
+    visual.innerHTML = "";
+    for (const act of getActs()) {
+      const heading = document.createElement("h2");
+      heading.textContent = `Act ${act.number}: ${act.title}`;
+      visual.appendChild(heading);
+      const wrap = document.createElement("div");
+      wrap.className = "story-map";
+      for (const ep of getEpisodesForAct(act.number)) {
+        const unlocked = isEpisodeUnlocked(ep.id, completed);
+        const state2 = completed.includes(ep.id) ? "completed" : unlocked ? "active" : "locked";
+        const node = document.createElement(unlocked ? "a" : "span");
+        node.className = "story-node";
+        node.dataset.state = state2;
+        if (unlocked) node.href = `foundations.html?ep=${ep.id}`;
+        const stars = state.progress.foundations.stars[ep.id] || 0;
+        node.innerHTML = `<span class="story-node__badge">${ep.id.toUpperCase()} · ${state2}${stars ? " · " + "★".repeat(stars) : ""}</span><span>${ep.title}</span>`;
+        wrap.appendChild(node);
+      }
+      visual.appendChild(wrap);
+    }
+
+    document.getElementById("toggle-list-view").addEventListener("click", () => {
+      const listEl = document.getElementById("story-map-list");
+      const visualEl = document.getElementById("story-map-visual");
+      const showingList = !listEl.hidden;
+      listEl.hidden = showingList;
+      visualEl.hidden = !showingList;
+      if (!listEl.hidden) {
+        const all = getActs().flatMap((a) => getEpisodesForAct(a.number));
+        renderAccessibleListAlternative(listEl, all, {
+          getLabel: (ep) => `${ep.id.toUpperCase()}: ${ep.title}`,
+          getState: (ep) => completed.includes(ep.id) ? "Completed" : isEpisodeUnlocked(ep.id, completed) ? "Available" : "Locked"
+        });
+      }
+    });
+  }
+
+  async function renderEpisode(id) {
+    const episode = getEpisode(id);
+    if (!episode) { renderMap(); return; }
+    document.getElementById("map-view").hidden = true;
+    document.getElementById("episode-view").hidden = false;
+    document.getElementById("episode-progress").textContent = `${episode.id.toUpperCase()} of 20 · Act ${episode.act} · ~${episode.estimatedMinutes} min`;
+    document.getElementById("episode-title").textContent = episode.title;
+    document.getElementById("episode-subtitle").textContent = episode.subtitle;
+    document.getElementById("guide-line").textContent = episode.act % 2 === 1
+      ? "Roscoe: Let's take this one step at a time."
+      : "Bella: Let's look at the evidence together.";
+
+    const profile = currentProfile();
+    const narrative = await renderEpisodeNarrative(episode, profile, useGenericStory);
+    document.getElementById("episode-narrative").textContent = narrative;
+    document.getElementById("episode-realworld").textContent = episode.realWorldExample;
+
+    const conceptEl = document.getElementById("episode-concept");
+    conceptEl.innerHTML = "";
+    const c = episode.conceptExplanation || {};
+    const rows = [
+      ["What", c.what], ["Why it exists", c.why], ["How it may help", c.how], ["What it may cost", c.cost],
+      ["Risks or limitations", c.risks], ["Who may benefit", c.whoMayBenefit], ["Who may not benefit", c.whoMayNotBenefit],
+      ["When misunderstood", c.misunderstandingRisk], ["Verify", c.verifyNote]
+    ];
+    for (const [label, value] of rows) {
+      if (!value) continue;
+      const dt = document.createElement("dt"); dt.textContent = label;
+      const dd = document.createElement("dd"); dd.textContent = value;
+      conceptEl.appendChild(dt); conceptEl.appendChild(dd);
+    }
+
+    renderSpecialWidget(episode);
+
+    document.getElementById("scenario-prompt").textContent = episode.scenario?.prompt || "Make a choice";
+    const choiceList = document.getElementById("choice-list");
+    choiceList.innerHTML = "";
+    let simState = INITIAL_SIM_STATE;
+    let scenarioComplete = false;
+    let knowledgeCheckPassed = false;
+
+    for (const choice of episode.choices || []) {
+      const li = document.createElement("li");
+      li.className = "choice-card";
+      li.innerHTML = `
+        <p><strong>${choice.text}</strong></p>
+        <p><em>Why someone might choose this:</em> ${choice.whyChosen}</p>
+        <p><em>Possible benefit:</em> ${choice.possibleBenefit}</p>
+        <p><em>Possible cost:</em> ${choice.possibleCost}</p>
+        <p><em>Possible risk:</em> ${choice.possibleRisk}</p>
+        <button class="btn btn-outline choose-btn" data-choice-id="${choice.id}">Choose this</button>
+      `;
+      choiceList.appendChild(li);
+    }
+
+    choiceList.addEventListener("click", (e) => {
+      const btn = e.target.closest(".choose-btn");
+      if (!btn) return;
+      const choiceId = btn.dataset.choiceId;
+      const choice = episode.choices.find((c2) => c2.id === choiceId);
+      simState = applyChoiceEffect(simState, choice.immediateEffect);
+      submitChoice(episode.id, choiceId);
+      scenarioComplete = true;
+
+      const panel = document.getElementById("consequence-panel");
+      panel.hidden = false;
+      panel.innerHTML = `
+        <p><strong>Right away:</strong> ${episode.immediateConsequences?.[choiceId] || ""}</p>
+        <p><strong>One year later:</strong> ${episode.oneYearConsequences?.[choiceId] || ""}</p>
+        <p><strong>Long term:</strong> ${episode.longTermConsequences?.[choiceId] || ""}</p>
+        <p><strong>What could change this outcome:</strong> ${choice.whatCouldChangeThisOutcome}</p>
+        <p><strong>If this didn't go the way you hoped:</strong> ${episode.recoveryPath}</p>
+      `;
+      document.getElementById("try-another-path-btn").hidden = false;
+      renderKnowledgeCheck();
+    });
+
+    document.getElementById("try-another-path-btn").addEventListener("click", () => {
+      document.getElementById("consequence-panel").hidden = true;
+      document.getElementById("try-another-path-btn").hidden = true;
+    }, { once: false });
+
+    function renderKnowledgeCheck() {
+      const section = document.getElementById("knowledge-check-section");
+      section.hidden = false;
+      const body = document.getElementById("knowledge-check-body");
+      body.innerHTML = "";
+      for (const kc of episode.knowledgeChecks || []) {
+        const wrap = document.createElement("div");
+        wrap.innerHTML = `
+          <p>${kc.question}</p>
+          <div class="option-grid">
+            ${kc.options.map((o) => `<label><input type="radio" name="${kc.id}" value="${o}"> ${o}</label>`).join("")}
+          </div>
+          <button class="btn btn-outline" data-kc="${kc.id}">Check answer</button>
+          <p class="kc-explanation" hidden></p>
+        `;
+        body.appendChild(wrap);
+        wrap.querySelector("button").addEventListener("click", () => {
+          const selected = wrap.querySelector(`input[name="${kc.id}"]:checked`);
+          const explanationEl = wrap.querySelector(".kc-explanation");
+          explanationEl.hidden = false;
+          if (selected && selected.value === kc.correctAnswer) {
+            knowledgeCheckPassed = true;
+            explanationEl.textContent = `Correct. ${kc.explanation}`;
+          } else {
+            explanationEl.textContent = `Not quite — the answer is "${kc.correctAnswer}." ${kc.explanation}`;
+          }
+          document.getElementById("continue-episode-btn").hidden = false;
+        });
+      }
+    }
+
+    renderSourceDrawer(document.getElementById("source-drawer"), episode.sourceIds);
+
+    document.getElementById("continue-episode-btn").addEventListener("click", () => {
+      const stars = computeStars(episode, { scenarioComplete, knowledgeCheckPassed });
+      completeEpisode(episode, { stars });
+      celebrate(document.getElementById("episode-view"), {
+        title: `${episode.achievementId ? "Achievement unlocked!" : "Episode complete!"}`,
+        detail: `You earned ${stars} star${stars === 1 ? "" : "s"} for ${episode.title}.`
+      });
+      window.setTimeout(() => {
+        if (episode.unlocks) {
+          window.location.href = `foundations.html?ep=${episode.unlocks}`;
+        } else {
+          window.location.href = "journey.html";
+        }
+      }, 1400);
+    }, { once: true });
+  }
+
+  function renderSpecialWidget(episode) {
+    const container = document.getElementById("special-widget");
+    container.innerHTML = "";
+    if (episode.compositeVignettes) {
+      container.innerHTML += `<h2>Composite scenarios</h2>` +
+        episode.compositeVignettes.map((v) => `<p><strong>${v.label}:</strong> ${v.description}</p>`).join("");
+    }
+  }
+</script>
+</body>
+</html>

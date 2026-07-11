@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Model — Ram Ready Digital Literacy</title>
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/print.css" media="print">
+</head>
+<body>
+<header data-site-header></header>
+<main id="main-content">
+  <h1>Privacy Model</h1>
+
+  <section class="section">
+    <h2>Guest mode (default)</h2>
+    <p>By default, everything you do is stored only in your browser's local storage under a single namespaced
+      key, <code>ramReadyDigitalLiteracy.v1</code>. Nothing is sent to a server. You can export, import, or
+      permanently delete this data at any time from your <a href="profile.html">profile</a> or
+      <a href="journey.html">journey</a> page.</p>
+  </section>
+
+  <section class="section">
+    <h2>What we never collect</h2>
+    <ul>
+      <li>Passwords, password hints, or MFA codes</li>
+      <li>Student ID numbers or Social Security numbers</li>
+      <li>Bank credentials, account numbers, or routing numbers</li>
+      <li>Transcripts, medical records, scholarship documents, or copies of IDs</li>
+      <li>Exact home addresses, course grades, or instructor private information</li>
+      <li>Actual private prompts or chat histories from other tools</li>
+    </ul>
+    <p>Onboarding only ever asks for broad category selections and fictional simulation ranges — every question
+      can be skipped or answered "Prefer not to answer."</p>
+  </section>
+
+  <section class="section">
+    <h2>Optional account mode</h2>
+    <p>If a site operator configures a separate Supabase project (see <a href="SUPABASE-SETUP.md">Supabase
+      setup</a>), you may optionally create a passwordless account to sync bounded profile tags and progress
+      across devices. Row Level Security ensures you can only ever read or write your own rows. Sync is
+      manual, not automatic background sync.</p>
+  </section>
+
+  <section class="section">
+    <h2>No tracking, no ads</h2>
+    <p>This course sends no personalization data to third-party analytics, uses no ad trackers, and includes
+      no affiliate links. Any optional local-model (WebLLM) personalization runs entirely in your browser and
+      never transmits your profile to a remote server.</p>
+  </section>
+
+  <section class="section">
+    <h2>Display name safety</h2>
+    <p>Your display name and any optional free text are sanitized before display and are never rendered as
+      executable HTML.</p>
+  </section>
+</main>
+<footer data-site-footer></footer>
+<script type="module">
+  import { initPage } from "./assets/site.js";
+  initPage("privacy.html");
+</script>
+</body>
+</html>

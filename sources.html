@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sources — Ram Ready Digital Literacy</title>
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/print.css" media="print">
+</head>
+<body>
+<header data-site-header></header>
+<main id="main-content">
+  <h1>Sources</h1>
+  <p>Every fact in this course traces to an authoritative source below. See
+    <a href="docs/SOURCE_POLICY.md">source policy</a> and
+    <a href="docs/SOURCE_REVIEW_CHECKLIST.md">review checklist</a>. Facts that change over time (AI tool
+    behavior, platform features, citation-style guidance) are labeled illustrative and linked to the current
+    official source.</p>
+  <label for="topic-filter">Filter by topic</label>
+  <select id="topic-filter"><option value="">All topics</option></select>
+  <div id="source-grid" class="section"></div>
+</main>
+<footer data-site-footer></footer>
+<script type="module">
+  import { initPage } from "./assets/site.js";
+  import { SOURCE_REGISTRY } from "./data/source-registry.js";
+
+  initPage("sources.html");
+
+  const topics = [...new Set(SOURCE_REGISTRY.map((s) => s.topic))].sort();
+  const filterEl = document.getElementById("topic-filter");
+  filterEl.innerHTML += topics.map((t) => `<option value="${t}">${t}</option>`).join("");
+
+  function render(filterTopic) {
+    const list = SOURCE_REGISTRY.filter((s) => !filterTopic || s.topic === filterTopic);
+    document.getElementById("source-grid").innerHTML = `
+      <ul class="source-list">
+        ${list.map((s) => `
+          <li class="source-chip">
+            <a href="${s.url}" target="_blank" rel="noopener noreferrer"><strong>${s.title}</strong></a>
+            <span class="source-chip__meta"> — ${s.org} · ${s.classification} · reviewed ${s.reviewed}</span>
+            <p class="source-chip__note">${s.notes || ""}</p>
+          </li>`).join("")}
+      </ul>`;
+  }
+  render("");
+  filterEl.addEventListener("change", () => render(filterEl.value));
+</script>
+</body>
+</html>

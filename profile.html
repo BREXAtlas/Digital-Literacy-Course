@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Profile — Ram Ready Digital Literacy</title>
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/print.css" media="print">
+</head>
+<body>
+<header data-site-header></header>
+<main id="main-content">
+  <h1>Profile</h1>
+
+  <section class="section">
+    <h2>What is stored</h2>
+    <p>All progress is stored locally in your browser under a single namespaced key
+      (<code>ramReadyDigitalLiteracy.v1</code>) unless you connect the optional account below. No real
+      passwords, files, student IDs, transcripts, or private documents are ever collected. See the
+      <a href="privacy.html">full privacy model</a>.</p>
+    <pre id="stored-data-preview" style="white-space:pre-wrap; overflow-x:auto; background:var(--surface); padding:1rem; border-radius:8px; border:1px solid var(--border);"></pre>
+  </section>
+
+  <section class="section">
+    <h2>Edit your character</h2>
+    <a class="btn btn-outline" href="onboarding.html">Edit name and selections</a>
+  </section>
+
+  <section class="section">
+    <h2>Local model personalization</h2>
+    <p>Optional. Only prewritten story fragments and your name/pronouns are ever used — no facts, citations, or
+      quiz answers can be changed by a model. See <a href="docs/OPEN_SOURCE_AI.md">how this works</a>.</p>
+    <label>
+      <input type="checkbox" id="ai-toggle"> Enable local (WebLLM) personalization for transitions
+    </label>
+    <p id="ai-status"></p>
+  </section>
+
+  <section class="section">
+    <h2>Optional account</h2>
+    <p id="account-availability"></p>
+    <form id="magic-link-form" hidden>
+      <label for="email-input">Email for a magic sign-in link</label>
+      <input type="email" id="email-input" required>
+      <button class="btn btn-primary" type="submit">Send magic link</button>
+    </form>
+    <p id="account-message" role="status"></p>
+    <div class="btn-row" id="signed-in-actions" hidden>
+      <button class="btn btn-outline" id="sync-btn">Sync now</button>
+      <button class="btn btn-outline" id="sign-out-btn">Log out</button>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Data controls</h2>
+    <div class="btn-row">
+      <button class="btn btn-outline" id="export-btn">Export profile and progress</button>
+      <button class="btn btn-danger" id="delete-local-btn">Delete local profile</button>
+    </div>
+    <p>To delete cloud account data, sign in above and use "Delete local profile," then contact the site
+      operator to remove your Supabase account rows, or delete your account directly if self-service deletion
+      is enabled on this deployment.</p>
+  </section>
+</main>
+<footer data-site-footer></footer>
+<script type="module">
+  import { initPage } from "./assets/site.js";
+  import { loadState, updateProfile, resetAll, exportProgress } from "./assets/profile-engine.js";
+  import { isAccountModeAvailable, signInWithMagicLink, getSession, signOut } from "./assets/auth-sync.js";
+
+  initPage("profile.html");
+
+  const state = loadState();
+  document.getElementById("stored-data-preview").textContent = JSON.stringify(state, null, 2);
+  document.getElementById("ai-toggle").checked = Boolean(state.profile.aiPersonalizationEnabled);
+  document.getElementById("ai-status").textContent = state.profile.aiPersonalizationEnabled
+    ? "Local personalization is on."
+    : "Local personalization is off (default). The deterministic story works fully without it.";
+
+  document.getElementById("ai-toggle").addEventListener("change", (e) => {
+    updateProfile({ aiPersonalizationEnabled: e.target.checked, aiProvider: e.target.checked ? "webllm" : "template" });
+    document.getElementById("ai-status").textContent = e.target.checked
+      ? "Local personalization is on. A model download prompt will appear when needed, with size and requirements shown first."
+      : "Local personalization is off.";
+  });
+
+  document.getElementById("export-btn").addEventListener("click", () => {
+    const blob = new Blob([exportProgress()], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "ram-ready-digital-literacy-progress.json";
+    a.click();
+  });
+
+  document.getElementById("delete-local-btn").addEventListener("click", () => {
+    if (window.confirm("This permanently deletes your local profile and progress on this device. Continue?")) {
+      resetAll();
+      window.location.reload();
+    }
+  });
+
+  (async () => {
+    const available = await isAccountModeAvailable();
+    const availabilityEl = document.getElementById("account-availability");
+    if (!available) {
+      availabilityEl.textContent = "Optional account sync is not configured on this deployment. Guest mode works fully without it.";
+      return;
+    }
+    availabilityEl.textContent = "Optional account sync is available on this deployment.";
+    const session = await getSession();
+    if (session) {
+      document.getElementById("signed-in-actions").hidden = false;
+      document.getElementById("account-message").textContent = `Signed in as ${session.user.email}.`;
+    } else {
+      document.getElementById("magic-link-form").hidden = false;
+    }
+  })();
+
+  document.getElementById("magic-link-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email-input").value;
+    try {
+      await signInWithMagicLink(email);
+      document.getElementById("account-message").textContent = "Check your email for a sign-in link.";
+    } catch (err) {
+      document.getElementById("account-message").textContent = `Could not send link: ${err.message}`;
+    }
+  });
+
+  document.getElementById("sign-out-btn")?.addEventListener("click", async () => {
+    await signOut();
+    window.location.reload();
+  });
+
+  document.getElementById("sync-btn")?.addEventListener("click", async () => {
+    const { mergeGuestIntoAccount } = await import("./assets/course-cloud-bridge.js");
+    try {
+      await mergeGuestIntoAccount();
+      document.getElementById("account-message").textContent = "Synced.";
+    } catch (err) {
+      document.getElementById("account-message").textContent = `Sync failed: ${err.message}`;
+    }
+  });
+</script>
+</body>
+</html>

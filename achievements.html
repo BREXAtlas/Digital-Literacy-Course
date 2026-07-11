@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Achievements — Ram Ready Digital Literacy</title>
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/print.css" media="print">
+</head>
+<body>
+<header data-site-header></header>
+<main id="main-content">
+  <h1>Achievements</h1>
+  <p>Achievements reward learning, recovery, verification, privacy, and clear communication — never speed or
+    "most AI used." No wagering, loot boxes, or randomized rewards are used anywhere in this course.</p>
+  <section class="section" id="act-celebrations"></section>
+  <section class="section">
+    <h2>All achievements</h2>
+    <div class="card-grid" id="achievement-grid"></div>
+  </section>
+</main>
+<footer data-site-footer></footer>
+<script type="module">
+  import { initPage } from "./assets/site.js";
+  import { getAllAchievements, getEarnedAchievements, getActCelebrations, getTierCelebrations } from "./assets/game-engine.js";
+
+  initPage("achievements.html");
+
+  const earnedIds = new Set(getEarnedAchievements().map((a) => a.id));
+  const grid = document.getElementById("achievement-grid");
+  grid.innerHTML = getAllAchievements().map((a) => `
+    <article class="path-card" style="opacity:${earnedIds.has(a.id) ? "1" : "0.55"}">
+      <span class="badge">${a.path === "foundations" ? "Foundations" : "AI Quest"}</span>
+      <h2>${a.label}</h2>
+      <p>${a.description}</p>
+      <p>${earnedIds.has(a.id) ? "✅ Earned" : "Not yet earned"}</p>
+    </article>
+  `).join("");
+
+  const celebrations = [...getActCelebrations(), ...getTierCelebrations()];
+  document.getElementById("act-celebrations").innerHTML = "<h2>Milestones</h2>" +
+    celebrations.map((c) => `<p class="badge">${c.label}</p>`).join(" ");
+</script>
+</body>
+</html>

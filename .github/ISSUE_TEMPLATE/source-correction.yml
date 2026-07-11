@@ -1,0 +1,26 @@
+name: Source Correction
+description: Report a broken link or outdated source in the source registry
+labels: ["sources"]
+body:
+  - type: input
+    id: source-id
+    attributes:
+      label: Source ID (from data/source-registry.js)
+    validations:
+      required: true
+  - type: input
+    id: current-url
+    attributes:
+      label: Current URL
+    validations:
+      required: true
+  - type: input
+    id: suggested-url
+    attributes:
+      label: Suggested replacement URL (if known)
+  - type: textarea
+    id: details
+    attributes:
+      label: What changed?
+    validations:
+      required: true

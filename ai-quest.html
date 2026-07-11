@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Digital Literacy Quest — Ram Ready Digital Literacy</title>
+<meta name="description" content="Twenty advanced, optional quests examining how generative AI works, from fundamentals through coding assistants and agents.">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/print.css" media="print">
+</head>
+<body>
+<header data-site-header></header>
+<main id="main-content">
+  <div id="map-view">
+    <h1>AI Digital Literacy Quest</h1>
+    <p>Advanced and optional. These four tiers describe increasing AI system capability and risk — not
+      intelligence, human value, or a ranking of learners. Quests unlock based on learning progress.</p>
+    <div class="btn-row">
+      <button class="btn btn-outline" id="toggle-list-view">Show accessible list view</button>
+      <a class="btn btn-outline" href="journey.html">View my dashboard</a>
+    </div>
+    <div id="quest-map-visual" class="section"></div>
+    <div id="quest-map-list" class="section" hidden></div>
+  </div>
+
+  <div id="quest-view" hidden>
+    <a class="btn btn-outline" href="ai-quest.html">&larr; Back to map</a>
+    <p id="quest-progress" class="badge"></p>
+    <article class="guide-character">
+      <div class="guide-character__avatar" aria-hidden="true"></div>
+      <div><p id="guide-line-q">Bella: Let's look at how this actually works.</p></div>
+    </article>
+    <h1 id="quest-title"></h1>
+    <p id="quest-subtitle"></p>
+    <section>
+      <h2>What's happening</h2>
+      <p id="quest-narrative"></p>
+      <p id="quest-realworld"></p>
+    </section>
+    <section>
+      <h2>Concept</h2>
+      <dl id="quest-concept"></dl>
+    </section>
+    <section id="quest-special-widget" class="section"></section>
+    <section>
+      <h2 id="quest-scenario-prompt"></h2>
+      <ul class="choice-list" id="quest-choice-list"></ul>
+      <div class="consequence-panel" id="quest-consequence-panel" hidden></div>
+    </section>
+    <section id="scoring-section" hidden>
+      <h2>Scoring (not just speed or AI usage)</h2>
+      <ul id="scoring-list"></ul>
+      <p id="closing-reflection"></p>
+    </section>
+    <section class="knowledge-check" id="quest-kc-section" hidden>
+      <h2>Knowledge check</h2>
+      <div id="quest-kc-body"></div>
+    </section>
+    <section id="quest-source-drawer" class="section"></section>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="continue-quest-btn" hidden>Continue</button>
+    </div>
+  </div>
+</main>
+<footer data-site-footer></footer>
+<script type="module">
+  import { initPage, currentProfile } from "./assets/site.js";
+  import {
+    getTiers, getQuestsForTier, getQuest, renderQuestNarrative,
+    submitChoice, computeStars, completeQuest, isQuestUnlocked
+  } from "./assets/quest-engine.js";
+  import { renderSourceDrawer } from "./assets/source-renderer.js";
+  import { celebrate } from "./assets/game-engine.js";
+  import { renderAccessibleListAlternative } from "./assets/accessibility.js";
+  import { loadState } from "./assets/profile-engine.js";
+
+  initPage("ai-quest.html");
+
+  const params = new URLSearchParams(window.location.search);
+  const questId = params.get("q");
+  const useGenericStory = params.get("generic") === "1" || currentProfile().genericStory;
+
+  if (questId) renderQuest(questId); else renderMap();
+
+  function renderMap() {
+    document.getElementById("map-view").hidden = false;
+    document.getElementById("quest-view").hidden = true;
+    const state = loadState();
+    const completed = state.progress.aiQuest.completedNodeIds;
+    const visual = document.getElementById("quest-map-visual");
+    visual.innerHTML = "";
+    const tierNames = { 1: "Tier I — Understand the System", 2: "Tier II — Learn and Create Responsibly", 3: "Tier III — Integrity, Media, and Tool Judgment", 4: "Tier IV — Code, Automate, and Build Responsibly" };
+    for (const tier of getTiers()) {
+      const heading = document.createElement("h2");
+      heading.textContent = tierNames[tier.number] || `Tier ${tier.number}`;
+      visual.appendChild(heading);
+      const wrap = document.createElement("div");
+      wrap.className = "story-map";
+      for (const q of getQuestsForTier(tier.number)) {
+        const unlocked = isQuestUnlocked(q.id, completed);
+        const st = completed.includes(q.id) ? "completed" : unlocked ? "active" : "locked";
+        const node = document.createElement(unlocked ? "a" : "span");
+        node.className = "story-node";
+        node.dataset.state = st;
+        if (unlocked) node.href = `ai-quest.html?q=${q.id}`;
+        const stars = state.progress.aiQuest.stars[q.id] || 0;
+        node.innerHTML = `<span class="story-node__badge">${q.id.toUpperCase()} · ${st}${stars ? " · " + "★".repeat(stars) : ""}</span><span>${q.title}</span>`;
+        wrap.appendChild(node);
+      }
+      visual.appendChild(wrap);
+    }
+    document.getElementById("toggle-list-view").addEventListener("click", () => {
+      const listEl = document.getElementById("quest-map-list");
+      const visualEl = document.getElementById("quest-map-visual");
+      const showingList = !listEl.hidden;
+      listEl.hidden = showingList;
+      visualEl.hidden = !showingList;
+      if (!listEl.hidden) {
+        const all = getTiers().flatMap((t) => getQuestsForTier(t.number));
+        renderAccessibleListAlternative(listEl, all, {
+          getLabel: (q) => `${q.id.toUpperCase()}: ${q.title}`,
+          getState: (q) => completed.includes(q.id) ? "Completed" : isQuestUnlocked(q.id, completed) ? "Available" : "Locked"
+        });
+      }
+    });
+  }
+
+  async function renderQuest(id) {
+    const quest = getQuest(id);
+    if (!quest) { renderMap(); return; }
+    document.getElementById("map-view").hidden = true;
+    document.getElementById("quest-view").hidden = false;
+    document.getElementById("quest-progress").textContent = `${quest.id.toUpperCase()} of 20 · Tier ${quest.tier} · ~${quest.estimatedMinutes} min`;
+    document.getElementById("quest-title").textContent = quest.title;
+    document.getElementById("quest-subtitle").textContent = quest.subtitle;
+
+    const profile = currentProfile();
+    document.getElementById("quest-narrative").textContent = await renderQuestNarrative(quest, profile, useGenericStory);
+    document.getElementById("quest-realworld").textContent = quest.realWorldExample;
+
+    const conceptEl = document.getElementById("quest-concept");
+    conceptEl.innerHTML = "";
+    const c = quest.conceptExplanation || {};
+    const rows = [
+      ["What", c.what], ["Why it exists", c.why], ["How it may help", c.how], ["What it may cost", c.cost],
+      ["Risks or limitations", c.risks], ["Who may benefit", c.whoMayBenefit], ["Who may not benefit", c.whoMayNotBenefit],
+      ["When misunderstood", c.misunderstandingRisk], ["Verify", c.verifyNote]
+    ];
+    for (const [label, value] of rows) {
+      if (!value) continue;
+      const dt = document.createElement("dt"); dt.textContent = label;
+      const dd = document.createElement("dd"); dd.textContent = value;
+      conceptEl.appendChild(dt); conceptEl.appendChild(dd);
+    }
+
+    const specialWidget = document.getElementById("quest-special-widget");
+    specialWidget.innerHTML = quest.compositeVignettes
+      ? "<h2>Composite scenarios</h2>" + quest.compositeVignettes.map((v) => `<p><strong>${v.label}:</strong> ${v.description}</p>`).join("")
+      : "";
+
+    document.getElementById("quest-scenario-prompt").textContent = quest.scenario?.prompt || "Make a choice";
+    const choiceList = document.getElementById("quest-choice-list");
+    choiceList.innerHTML = "";
+    let scenarioComplete = false;
+    let knowledgeCheckPassed = false;
+
+    for (const choice of quest.choices || []) {
+      const li = document.createElement("li");
+      li.className = "choice-card";
+      li.innerHTML = `
+        <p><strong>${choice.text}</strong></p>
+        <p><em>Why someone might choose this:</em> ${choice.whyChosen}</p>
+        <p><em>Possible benefit:</em> ${choice.possibleBenefit}</p>
+        <p><em>Possible cost:</em> ${choice.possibleCost}</p>
+        <p><em>Possible risk:</em> ${choice.possibleRisk}</p>
+        <button class="btn btn-outline choose-btn" data-choice-id="${choice.id}">Choose this</button>
+      `;
+      choiceList.appendChild(li);
+    }
+
+    choiceList.addEventListener("click", (e) => {
+      const btn = e.target.closest(".choose-btn");
+      if (!btn) return;
+      const choiceId = btn.dataset.choiceId;
+      const choice = quest.choices.find((c2) => c2.id === choiceId);
+      submitChoice(quest.id, choiceId);
+      scenarioComplete = true;
+      const panel = document.getElementById("quest-consequence-panel");
+      panel.hidden = false;
+      panel.innerHTML = `
+        <p><strong>Right away:</strong> ${quest.immediateConsequences?.[choiceId] || ""}</p>
+        <p><strong>One year later:</strong> ${quest.oneYearConsequences?.[choiceId] || ""}</p>
+        <p><strong>Long term:</strong> ${quest.longTermConsequences?.[choiceId] || ""}</p>
+        <p><strong>What could change this outcome:</strong> ${choice.whatCouldChangeThisOutcome}</p>
+        <p><strong>If this didn't go the way you hoped:</strong> ${quest.recoveryPath}</p>
+      `;
+      if (quest.scoringDimensions) {
+        document.getElementById("scoring-section").hidden = false;
+        document.getElementById("scoring-list").innerHTML = quest.scoringDimensions
+          .map((d) => `<li><strong>${d.label}:</strong> ${d.description}</li>`).join("");
+        document.getElementById("closing-reflection").textContent = quest.closingReflection || "";
+      }
+      renderKnowledgeCheck();
+    });
+
+    function renderKnowledgeCheck() {
+      const section = document.getElementById("quest-kc-section");
+      section.hidden = false;
+      const body = document.getElementById("quest-kc-body");
+      body.innerHTML = "";
+      for (const kc of quest.knowledgeChecks || []) {
+        const wrap = document.createElement("div");
+        wrap.innerHTML = `
+          <p>${kc.question}</p>
+          <div class="option-grid">
+            ${kc.options.map((o) => `<label><input type="radio" name="${kc.id}" value="${o}"> ${o}</label>`).join("")}
+          </div>
+          <button class="btn btn-outline" data-kc="${kc.id}">Check answer</button>
+          <p class="kc-explanation" hidden></p>
+        `;
+        body.appendChild(wrap);
+        wrap.querySelector("button").addEventListener("click", () => {
+          const selected = wrap.querySelector(`input[name="${kc.id}"]:checked`);
+          const explanationEl = wrap.querySelector(".kc-explanation");
+          explanationEl.hidden = false;
+          if (selected && selected.value === kc.correctAnswer) {
+            knowledgeCheckPassed = true;
+            explanationEl.textContent = `Correct. ${kc.explanation}`;
+          } else {
+            explanationEl.textContent = `Not quite — the answer is "${kc.correctAnswer}." ${kc.explanation}`;
+          }
+          document.getElementById("continue-quest-btn").hidden = false;
+        });
+      }
+    }
+
+    renderSourceDrawer(document.getElementById("quest-source-drawer"), quest.sourceIds);
+
+    document.getElementById("continue-quest-btn").addEventListener("click", () => {
+      const stars = computeStars({ scenarioComplete, knowledgeCheckPassed });
+      completeQuest(quest, { stars });
+      celebrate(document.getElementById("quest-view"), {
+        title: "Quest complete!",
+        detail: `You earned ${stars} star${stars === 1 ? "" : "s"} for ${quest.title}.`
+      });
+      window.setTimeout(() => {
+        window.location.href = quest.unlocks ? `ai-quest.html?q=${quest.unlocks}` : "journey.html";
+      }, 1400);
+    }, { once: true });
+  }
+</script>
+</body>
+</html>

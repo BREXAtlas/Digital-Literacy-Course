@@ -1,0 +1,8 @@
+/* Ram Ready Digital Literacy — Print styles for lesson summaries */
+@media print {
+  .site-header__bar, footer[data-site-footer], .nav-toggle, .btn, .celebration { display: none !important; }
+  body { background: #fff; color: #000; }
+  main { max-width: 100%; padding: 0; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 0.8em; }
+  .choice-card, .consequence-panel, .source-chip { break-inside: avoid; border-color: #999; }
+}

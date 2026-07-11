@@ -1,0 +1,26 @@
+name: Accessibility Review
+description: Report an accessibility barrier
+labels: ["accessibility"]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page or URL
+    validations:
+      required: true
+  - type: dropdown
+    id: assistive-tech
+    attributes:
+      label: Assistive technology used (if any)
+      options:
+        - Screen reader
+        - Keyboard only
+        - Screen magnifier
+        - Voice control
+        - Other / none
+  - type: textarea
+    id: barrier
+    attributes:
+      label: What barrier did you encounter?
+    validations:
+      required: true

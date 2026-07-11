@@ -1,0 +1,17 @@
+name: University Feedback
+description: Feedback from an Angelo State University stakeholder or pilot instructor
+labels: ["university-feedback"]
+body:
+  - type: input
+    id: role
+    attributes:
+      label: Your role (e.g. instructor, advisor, student-success staff)
+    validations:
+      required: true
+  - type: textarea
+    id: feedback
+    attributes:
+      label: Feedback
+      description: See the pilot feedback questions in docs/INSTRUCTOR_PILOT_GUIDE.md
+    validations:
+      required: true

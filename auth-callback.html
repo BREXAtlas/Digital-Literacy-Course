@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signing you in — Ram Ready Digital Literacy</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<header data-site-header></header>
+<main id="main-content">
+  <h1>Signing you in&hellip;</h1>
+  <p id="callback-status">Completing sign-in.</p>
+</main>
+<footer data-site-footer></footer>
+<script type="module">
+  import { initPage } from "./assets/site.js";
+  import { getSession } from "./assets/auth-sync.js";
+
+  initPage(null);
+
+  (async () => {
+    const session = await getSession();
+    const status = document.getElementById("callback-status");
+    if (session) {
+      status.textContent = "Signed in. Redirecting to your journey…";
+      const { mergeGuestIntoAccount } = await import("./assets/course-cloud-bridge.js");
+      try { await mergeGuestIntoAccount(); } catch { /* guest data may not exist yet — fine */ }
+      window.setTimeout(() => { window.location.href = "journey.html"; }, 1200);
+    } else {
+      status.textContent = "We couldn't complete sign-in. Please return to your profile page and try again.";
+    }
+  })();
+</script>
+</body>
+</html>

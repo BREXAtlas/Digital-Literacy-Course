@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Journey — Ram Ready Digital Literacy</title>
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/print.css" media="print">
+</head>
+<body>
+<header data-site-header></header>
+<main id="main-content">
+  <h1>My Journey</h1>
+  <p>Your local progress, stored only on this device unless you connect an optional account. See
+    <a href="privacy.html">privacy model</a>.</p>
+
+  <section class="dashboard-grid section" id="dashboard-tiles"></section>
+
+  <section class="section">
+    <h2>University Digital Literacy Foundations</h2>
+    <p id="foundations-status"></p>
+    <div class="btn-row">
+      <a class="btn btn-primary" id="resume-foundations" href="foundations.html">Resume</a>
+      <a class="btn btn-outline" href="foundations.html">View map</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>AI Digital Literacy Quest</h2>
+    <p id="quest-status"></p>
+    <div class="btn-row">
+      <a class="btn btn-primary" id="resume-quest" href="ai-quest.html">Resume</a>
+      <a class="btn btn-outline" href="ai-quest.html">View map</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Manage your data</h2>
+    <div class="btn-row">
+      <a class="btn btn-outline" href="onboarding.html">Edit vision</a>
+      <button class="btn btn-outline" id="export-btn">Export progress (JSON)</button>
+      <button class="btn btn-outline" id="import-btn">Import progress</button>
+      <input type="file" id="import-file" accept="application/json" hidden>
+      <button class="btn btn-danger" id="reset-btn">Reset simulation</button>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Certificates</h2>
+    <div class="btn-row">
+      <button class="btn btn-outline" id="cert-foundations">Foundations certificate</button>
+      <button class="btn btn-outline" id="cert-quest">AI Quest certificate</button>
+      <button class="btn btn-outline" id="cert-full">Full completion certificate</button>
+    </div>
+  </section>
+
+  <section class="section" id="next-course-section" hidden>
+    <h2>Next course unlocked</h2>
+    <p>You completed Ram Ready Digital Literacy. Continue into Ram Ready Financial Futures to apply these
+      digital habits to banking, credit, budgeting, taxes, investing, business, and long-term planning.</p>
+    <a class="btn btn-primary" href="https://brexatlas.github.io/Financial-Literacy-Course/" target="_blank" rel="noopener noreferrer">Continue to Ram Ready Financial Futures</a>
+  </section>
+</main>
+<footer data-site-footer></footer>
+<script type="module">
+  import { initPage, currentProfile } from "./assets/site.js";
+  import { loadState, resetAll, exportProgress, importProgress } from "./assets/profile-engine.js";
+  import { getStarSummary, getAllAchievements, getEarnedAchievements } from "./assets/game-engine.js";
+  import { generateCertificate } from "./assets/certificate.js";
+
+  initPage("journey.html");
+  render();
+
+  function render() {
+    const state = loadState();
+    const foundationsCompleted = state.progress.foundations.completedNodeIds.length;
+    const questCompleted = state.progress.aiQuest.completedNodeIds.length;
+    const earned = getEarnedAchievements().length;
+    const total = getAllAchievements().length;
+
+    document.getElementById("dashboard-tiles").innerHTML = `
+      <div class="stat-tile"><span class="stat-tile__value">${foundationsCompleted}/20</span>Foundations episodes</div>
+      <div class="stat-tile"><span class="stat-tile__value">${questCompleted}/20</span>AI quests</div>
+      <div class="stat-tile"><span class="stat-tile__value">${getStarSummary("foundations")}</span>Foundations stars</div>
+      <div class="stat-tile"><span class="stat-tile__value">${getStarSummary("ai-quest")}</span>AI Quest stars</div>
+      <div class="stat-tile"><span class="stat-tile__value">${earned}/${total}</span>Achievements</div>
+      <div class="stat-tile"><span class="stat-tile__value">${state.streak.currentStreak}</span>Day streak</div>
+    `;
+
+    document.getElementById("foundations-status").textContent = foundationsCompleted === 0
+      ? "You haven't started yet."
+      : `Currently at ${state.progress.foundations.currentNodeId?.toUpperCase() || "—"} · ${foundationsCompleted} of 20 complete.`;
+    document.getElementById("quest-status").textContent = questCompleted === 0
+      ? "You haven't started yet."
+      : `${questCompleted} of 20 quests complete.`;
+
+    document.getElementById("next-course-section").hidden = !(foundationsCompleted === 20 && questCompleted === 20);
+  }
+
+  document.getElementById("export-btn").addEventListener("click", () => {
+    const blob = new Blob([exportProgress()], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "ram-ready-digital-literacy-progress.json";
+    a.click();
+  });
+
+  document.getElementById("import-btn").addEventListener("click", () => document.getElementById("import-file").click());
+  document.getElementById("import-file").addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const text = await file.text();
+    importProgress(text);
+    render();
+  });
+
+  document.getElementById("reset-btn").addEventListener("click", () => {
+    if (window.confirm("This clears all local progress on this device. This cannot be undone. Continue?")) {
+      resetAll();
+      render();
+    }
+  });
+
+  document.getElementById("cert-foundations").addEventListener("click", () => generateCertificate({ pathId: "foundations", displayName: currentProfile().displayName }));
+  document.getElementById("cert-quest").addEventListener("click", () => generateCertificate({ pathId: "ai-quest", displayName: currentProfile().displayName }));
+  document.getElementById("cert-full").addEventListener("click", () => generateCertificate({ pathId: "full", displayName: currentProfile().displayName }));
+</script>
+</body>
+</html>

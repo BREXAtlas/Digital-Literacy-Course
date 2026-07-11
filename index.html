@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ram Ready Digital Literacy</title>
+<meta name="description" content="An independent, open-source digital-literacy pilot for Angelo State students and the public.">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/print.css" media="print">
+</head>
+<body>
+<header data-site-header></header>
+<main id="main-content">
+  <section class="hero">
+    <p class="badge" id="greeting">Welcome</p>
+    <h1>Ram Ready Digital Literacy</h1>
+    <p>Build the file, communication, research, privacy, security, and AI habits college and work expect—then continue into Ram Ready Financial Futures.</p>
+    <p><strong>Independent open-source pilot:</strong> this is not an official Angelo State University course, policy, credential, or AI-use policy. It is built for review and possible future coordination.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" id="continue-btn" href="foundations.html">Continue your story</a>
+      <a class="btn btn-secondary" href="onboarding.html">Create your story</a>
+      <a class="btn btn-secondary" id="generic-btn" href="foundations.html?generic=1">Explore the generic version</a>
+    </div>
+  </section>
+
+  <div class="disclaimer-banner">
+    <strong>This is an independent educational pilot, not official university policy.</strong>
+    Course-specific AI rules may differ by instructor and assignment — the current syllabus, assignment
+    directions, instructor guidance, and official university policies always control. Digital tools and AI
+    systems change over time; verify current instructions and platform behavior. No sponsored tools, affiliate
+    links, or product placement appear anywhere in this course. Read the <a href="disclaimer.html">full disclaimer</a>.
+  </div>
+
+  <section class="section card-grid">
+    <article class="path-card">
+      <span class="badge">University Digital Literacy Foundations</span>
+      <h2>From a first-semester file system to a reliable college digital workflow</h2>
+      <p>20 connected episodes across four acts covering files, submissions, communication, calendars,
+        research, source evaluation, privacy, cybersecurity, official documents, collaboration, and recovery.</p>
+      <p><em>Approximate completion time: 4–6 hours, at your own pace.</em></p>
+      <a class="btn btn-outline" href="foundations.html">Continue or begin</a>
+    </article>
+    <article class="path-card path-card--quest">
+      <span class="badge">AI Digital Literacy Quest</span>
+      <h2>Understand generative AI from prompting through coding assistants and agents</h2>
+      <p>20 advanced, optional quests covering how AI works, hallucinations, prompting, verification, academic
+        integrity, disclosure, synthetic media, coding, vibe coding, workflows, permissions, and responsible
+        agent building.</p>
+      <p><em>Advanced and optional. Approximate completion time: 4–6 hours.</em></p>
+      <a class="btn btn-outline" href="ai-quest.html">Continue or begin</a>
+    </article>
+  </section>
+
+  <section class="section">
+    <h2>How this course works</h2>
+    <p>Every topic explains what a concept is, why it exists, how it may help, what it may cost, who may and
+      may not benefit, and what current facts must be verified — with links to primary sources. See the
+      <a href="sources.html">source registry</a> and <a href="instructor-guide.html">instructor guide</a>.</p>
+  </section>
+
+  <section class="section">
+    <h2>Next in the Ram Ready sequence</h2>
+    <p>Digital readiness supports safer, clearer decisions in every area of college life—including money
+      systems. After completing this course, continue into Ram Ready Financial Futures.</p>
+    <a class="btn btn-outline" href="https://brexatlas.github.io/Financial-Literacy-Course/" target="_blank" rel="noopener noreferrer">Continue to Ram Ready Financial Futures</a>
+  </section>
+</main>
+<footer data-site-footer></footer>
+<script type="module">
+  import { initPage, currentProfile } from "./assets/site.js";
+  initPage("index.html");
+  const profile = currentProfile();
+  const greeting = document.getElementById("greeting");
+  greeting.textContent = profile.displayName ? `Welcome back, ${profile.displayName}` : "Welcome, Ram Fam";
+  if (!profile.onboardingComplete) {
+    document.getElementById("continue-btn").textContent = "Begin your story";
+  }
+</script>
+</body>
+</html>

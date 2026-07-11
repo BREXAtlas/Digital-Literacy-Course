@@ -1,0 +1,21 @@
+name: Curriculum Review
+description: Flag a curriculum accuracy, neutrality, or bias concern
+labels: ["curriculum"]
+body:
+  - type: input
+    id: episode
+    attributes:
+      label: Episode or quest ID (e.g. ep05, q14)
+    validations:
+      required: true
+  - type: textarea
+    id: concern
+    attributes:
+      label: What is the concern?
+      description: Is this a factual error, a biased/absolute claim, a missing tradeoff, or something else?
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested correction (optional)

@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create Your Story — Ram Ready Digital Literacy</title>
+<meta name="description" content="Vision-casting onboarding — every question can be skipped, and no real files, passwords, or private documents are ever required.">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/print.css" media="print">
+</head>
+<body>
+<header data-site-header></header>
+<main id="main-content">
+  <h1>Create Your Story</h1>
+  <p>Every question below can be skipped or answered "Prefer not to answer." Nothing here asks for real files,
+    passwords, account details, grades, student IDs, transcripts, or private documents — only broad preferences
+    and fictional simulation ranges. See the <a href="privacy.html">privacy model</a>.</p>
+  <p aria-live="polite"><strong>Step <span id="step-number">1</span> of 8</strong></p>
+
+  <form class="onboarding-screen" id="onboarding-form">
+
+    <section data-screen="1">
+      <fieldset>
+        <legend>Screen 1 — Your character</legend>
+        <label for="display-name">Display name</label>
+        <input type="text" id="display-name" name="displayName" maxlength="40" placeholder="e.g. Alex">
+        <p class="field-error" id="name-error" hidden>Please use plain text only (no HTML).</p>
+
+        <fieldset>
+          <legend>Play as</legend>
+          <div class="option-grid" id="presentation-options"></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Avatar style (original, non-photographic illustrations)</legend>
+          <div class="option-grid" id="avatar-options"></div>
+        </fieldset>
+      </fieldset>
+    </section>
+
+    <section data-screen="2" hidden>
+      <fieldset>
+        <legend>Screen 2 — What matters to you (select any, or skip)</legend>
+        <div class="option-grid" id="values-options"></div>
+      </fieldset>
+    </section>
+
+    <section data-screen="3" hidden>
+      <fieldset>
+        <legend>Screen 3 — Interests (select any, or skip)</legend>
+        <div class="option-grid" id="interest-options"></div>
+      </fieldset>
+    </section>
+
+    <section data-screen="4" hidden>
+      <fieldset>
+        <legend>Screen 4 — Academic or work direction</legend>
+        <div class="option-grid" id="academic-direction-options"></div>
+      </fieldset>
+    </section>
+
+    <section data-screen="5" hidden>
+      <fieldset>
+        <legend>Screen 5 — Digital priorities (select any, or skip)</legend>
+        <div class="option-grid" id="digital-priority-options"></div>
+      </fieldset>
+    </section>
+
+    <section data-screen="6" hidden>
+      <fieldset>
+        <legend>Screen 6 — Digital goal for the simulation</legend>
+        <div class="option-grid" id="digital-goal-options"></div>
+      </fieldset>
+    </section>
+
+    <section data-screen="7" hidden>
+      <fieldset>
+        <legend>Screen 7 — Starting fictional confidence ranges</legend>
+        <p>These selections create a fictional educational scenario only — they are not an assessment, and no
+          real files, passwords, grades, student IDs, or private documents are ever requested here.</p>
+        <fieldset>
+          <legend>File organization</legend>
+          <div class="option-grid" id="file-org-options"></div>
+        </fieldset>
+        <fieldset>
+          <legend>Research confidence</legend>
+          <div class="option-grid" id="research-confidence-options"></div>
+        </fieldset>
+        <fieldset>
+          <legend>AI experience</legend>
+          <div class="option-grid" id="ai-experience-options"></div>
+        </fieldset>
+      </fieldset>
+    </section>
+
+    <section data-screen="8" hidden>
+      <fieldset>
+        <legend>Screen 8 — Story preview and privacy</legend>
+        <div id="preview-summary"></div>
+        <p>The course never needs your actual passwords, files, grades, student IDs, account numbers,
+          transcripts, or private records, and none are collected here.</p>
+      </fieldset>
+    </section>
+
+    <div class="btn-row">
+      <button type="button" class="btn btn-outline" id="back-btn" hidden>Back</button>
+      <button type="button" class="btn btn-outline" id="skip-btn">Skip this question</button>
+      <button type="button" class="btn btn-primary" id="next-btn">Next</button>
+      <button type="button" class="btn btn-primary" id="begin-btn" hidden>Begin your story</button>
+      <button type="button" class="btn btn-secondary" id="begin-generic-btn" hidden>Begin with a generic story</button>
+      <button type="button" class="btn btn-outline" id="edit-btn" hidden>Edit selections</button>
+    </div>
+  </form>
+</main>
+<footer data-site-footer></footer>
+<script type="module">
+  import { initPage } from "./assets/site.js";
+  import { updateProfile, loadState } from "./assets/profile-engine.js";
+  import { describePersonalizationForPreview } from "./assets/personalization-engine.js";
+  import {
+    CHARACTER_PRESENTATIONS, AVATAR_STYLES, VALUES_OPTIONS, INTEREST_OPTIONS,
+    ACADEMIC_DIRECTION_OPTIONS, DIGITAL_PRIORITY_OPTIONS, DIGITAL_GOAL_OPTIONS,
+    FILE_ORGANIZATION_OPTIONS, RESEARCH_CONFIDENCE_OPTIONS, AI_EXPERIENCE_OPTIONS
+  } from "./data/onboarding-options.js";
+
+  initPage(null);
+
+  const state = loadState();
+  const selections = {
+    displayName: state.profile.displayName || "",
+    presentationId: state.profile.presentationId,
+    avatarStyle: state.profile.avatarStyle,
+    valuesTags: [...(state.profile.valuesTags || [])],
+    interestTags: [...(state.profile.interestTags || [])],
+    academicDirection: state.profile.academicDirection,
+    digitalPriorityTags: [...(state.profile.digitalPriorityTags || [])],
+    digitalGoal: state.profile.digitalGoal,
+    fileOrganization: state.profile.fileOrganization,
+    researchConfidence: state.profile.researchConfidence,
+    aiExperience: state.profile.aiExperience
+  };
+
+  function radioGroup(container, options, name, selectedValue) {
+    container.innerHTML = options.map((o) => `
+      <label>
+        <input type="radio" name="${name}" value="${o.id}" ${selectedValue === o.id ? "checked" : ""}>
+        ${o.label}
+      </label>`).join("");
+    container.addEventListener("change", (e) => {
+      if (e.target.name === name) selections[nameToKey(name)] = e.target.value;
+    });
+  }
+
+  function checkboxGroup(container, options, name, selectedValues) {
+    container.innerHTML = options.map((o) => `
+      <label>
+        <input type="checkbox" name="${name}" value="${o.id}" ${selectedValues.includes(o.id) ? "checked" : ""}>
+        ${o.label}
+      </label>`).join("");
+    container.addEventListener("change", () => {
+      const checked = Array.from(container.querySelectorAll(`input[name="${name}"]:checked`)).map((i) => i.value);
+      selections[nameToKey(name)] = checked;
+    });
+  }
+
+  function nameToKey(name) {
+    return {
+      presentationId: "presentationId", avatarStyle: "avatarStyle",
+      valuesTags: "valuesTags", interestTags: "interestTags",
+      academicDirection: "academicDirection", digitalPriorityTags: "digitalPriorityTags",
+      digitalGoal: "digitalGoal", fileOrganization: "fileOrganization",
+      researchConfidence: "researchConfidence", aiExperience: "aiExperience"
+    }[name];
+  }
+
+  document.getElementById("display-name").value = selections.displayName;
+  document.getElementById("display-name").addEventListener("input", (e) => {
+    selections.displayName = e.target.value;
+  });
+
+  radioGroup(document.getElementById("presentation-options"), CHARACTER_PRESENTATIONS, "presentationId", selections.presentationId);
+  radioGroup(document.getElementById("avatar-options"), AVATAR_STYLES, "avatarStyle", selections.avatarStyle);
+  checkboxGroup(document.getElementById("values-options"), VALUES_OPTIONS, "valuesTags", selections.valuesTags);
+  checkboxGroup(document.getElementById("interest-options"), INTEREST_OPTIONS, "interestTags", selections.interestTags);
+  radioGroup(document.getElementById("academic-direction-options"), ACADEMIC_DIRECTION_OPTIONS, "academicDirection", selections.academicDirection);
+  checkboxGroup(document.getElementById("digital-priority-options"), DIGITAL_PRIORITY_OPTIONS, "digitalPriorityTags", selections.digitalPriorityTags);
+  radioGroup(document.getElementById("digital-goal-options"), DIGITAL_GOAL_OPTIONS, "digitalGoal", selections.digitalGoal);
+  radioGroup(document.getElementById("file-org-options"), FILE_ORGANIZATION_OPTIONS, "fileOrganization", selections.fileOrganization);
+  radioGroup(document.getElementById("research-confidence-options"), RESEARCH_CONFIDENCE_OPTIONS, "researchConfidence", selections.researchConfidence);
+  radioGroup(document.getElementById("ai-experience-options"), AI_EXPERIENCE_OPTIONS, "aiExperience", selections.aiExperience);
+
+  let step = 1;
+  const totalSteps = 8;
+  const screens = document.querySelectorAll("[data-screen]");
+  const stepNumberEl = document.getElementById("step-number");
+  const backBtn = document.getElementById("back-btn");
+  const nextBtn = document.getElementById("next-btn");
+  const skipBtn = document.getElementById("skip-btn");
+  const beginBtn = document.getElementById("begin-btn");
+  const beginGenericBtn = document.getElementById("begin-generic-btn");
+  const editBtn = document.getElementById("edit-btn");
+
+  function renderStep() {
+    screens.forEach((s) => { s.hidden = Number(s.dataset.screen) !== step; });
+    stepNumberEl.textContent = String(step);
+    backBtn.hidden = step === 1;
+    const isLast = step === totalSteps;
+    nextBtn.hidden = isLast;
+    skipBtn.hidden = isLast || step === 1;
+    beginBtn.hidden = !isLast;
+    beginGenericBtn.hidden = !isLast;
+    editBtn.hidden = !isLast;
+    if (isLast) renderPreview();
+  }
+
+  function renderPreview() {
+    const previewProfile = { ...selections, pronouns: state.profile.pronouns };
+    const preview = describePersonalizationForPreview(previewProfile);
+    document.getElementById("preview-summary").innerHTML = `
+      <p><strong>Character:</strong> ${selections.displayName || "Not set"} (${selections.presentationId || "not selected"})</p>
+      <p><strong>Values:</strong> ${selections.valuesTags.join(", ") || "None selected"}</p>
+      <p><strong>Interests:</strong> ${selections.interestTags.join(", ") || "None selected"}</p>
+      <p><strong>Digital priorities:</strong> ${selections.digitalPriorityTags.join(", ") || "None selected"}</p>
+      <p><strong>Digital goal:</strong> ${selections.digitalGoal || "None selected"}</p>
+      <p>${preview.willAdapt}</p>
+      <p>${preview.staysStandard}</p>
+    `;
+  }
+
+  backBtn.addEventListener("click", () => { step = Math.max(1, step - 1); renderStep(); });
+  nextBtn.addEventListener("click", () => { step = Math.min(totalSteps, step + 1); renderStep(); });
+  skipBtn.addEventListener("click", () => { step = Math.min(totalSteps, step + 1); renderStep(); });
+  editBtn.addEventListener("click", () => { step = 1; renderStep(); });
+
+  function finish(generic) {
+    updateProfile({
+      displayName: selections.displayName,
+      presentationId: selections.presentationId,
+      avatarStyle: selections.avatarStyle,
+      valuesTags: selections.valuesTags,
+      interestTags: selections.interestTags,
+      academicDirection: selections.academicDirection,
+      digitalPriorityTags: selections.digitalPriorityTags,
+      digitalGoal: selections.digitalGoal,
+      fileOrganization: selections.fileOrganization,
+      researchConfidence: selections.researchConfidence,
+      aiExperience: selections.aiExperience,
+      onboardingComplete: true,
+      genericStory: generic
+    });
+    window.location.href = "foundations.html";
+  }
+
+  beginBtn.addEventListener("click", () => finish(false));
+  beginGenericBtn.addEventListener("click", () => finish(true));
+
+  renderStep();
+</script>
+</body>
+</html>
