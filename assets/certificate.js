@@ -38,7 +38,7 @@ const CERT_COPY = {
 export function generateCertificate({ pathId, displayName }) {
   const copy = CERT_COPY[pathId];
   if (!copy) throw new Error(`Unknown certificate path: ${pathId}`);
-  const name = displayName?.trim() || "Learner";
+  const name = displayName?.trim() || "Guest Learner";
   const date = new Date().toISOString().slice(0, 10);
 
   const html = `<!doctype html>
@@ -67,7 +67,7 @@ export function generateCertificate({ pathId, displayName }) {
     <p class="name">${escapeHtml(name)}</p>
     <p class="path">has completed ${escapeHtml(copy.path)}</p>
     <p><strong>Skills covered:</strong></p>
-    <ul>${copy.skills.map((s) => `<li>${escapeHtml(s)}</li>`).join("")}</ul>
+    <ul>${copy.skills.map((skill) => `<li>${escapeHtml(skill)}</li>`).join("")}</ul>
     <p class="date">Completion date: ${date}</p>
     <p class="notice">
       Ram Ready Digital Literacy is an independent, open-source educational pilot.
