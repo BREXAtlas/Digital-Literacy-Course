@@ -22,8 +22,9 @@
     <section data-screen="1">
       <fieldset>
         <legend>Screen 1 — Your character</legend>
-        <label for="display-name">Display name</label>
-        <input type="text" id="display-name" name="displayName" maxlength="40" placeholder="e.g. Alex">
+        <label for="display-name">Display name <span class="field-hint">(optional)</span></label>
+        <input type="text" id="display-name" name="displayName" maxlength="40" placeholder="e.g. Alex" autocomplete="nickname">
+        <p>If you leave this blank, the course will speak directly to you using “you” and “your.”</p>
         <p class="field-error" id="name-error" hidden>Please use plain text only (no HTML).</p>
 
         <fieldset>
@@ -201,11 +202,17 @@
   const editBtn = document.getElementById("edit-btn");
 
   function renderStep() {
-    screens.forEach((s) => { s.hidden = Number(s.dataset.screen) !== step; });
+    screens.forEach((screen) => { screen.hidden = Number(screen.dataset.screen) !== step; });
     stepNumberEl.textContent = String(step);
     backBtn.hidden = step === 1;
     const isLast = step === totalSteps;
-    nextBtn.hidden = isLast;
+
+    // Keep Next visible on the final preview, but clearly disabled and greyed out.
+    nextBtn.hidden = false;
+    nextBtn.disabled = isLast;
+    nextBtn.setAttribute("aria-disabled", String(isLast));
+    nextBtn.tabIndex = isLast ? -1 : 0;
+
     skipBtn.hidden = isLast || step === 1;
     beginBtn.hidden = !isLast;
     beginGenericBtn.hidden = !isLast;
@@ -216,19 +223,28 @@
   function renderPreview() {
     const previewProfile = { ...selections, pronouns: state.profile.pronouns };
     const preview = describePersonalizationForPreview(previewProfile);
+    const characterLabel = selections.displayName.trim()
+      ? selections.displayName.trim()
+      : "Second-person guest story (you / your)";
+    const presentationLabel = selections.presentationId || "generic presentation";
+
     document.getElementById("preview-summary").innerHTML = `
-      <p><strong>Character:</strong> ${selections.displayName || "Not set"} (${selections.presentationId || "not selected"})</p>
-      <p><strong>Values:</strong> ${selections.valuesTags.join(", ") || "None selected"}</p>
-      <p><strong>Interests:</strong> ${selections.interestTags.join(", ") || "None selected"}</p>
-      <p><strong>Digital priorities:</strong> ${selections.digitalPriorityTags.join(", ") || "None selected"}</p>
-      <p><strong>Digital goal:</strong> ${selections.digitalGoal || "None selected"}</p>
+      <p><strong>Character:</strong> ${characterLabel} (${presentationLabel})</p>
+      <p><strong>Values:</strong> ${selections.valuesTags.join(", ") || "No preference selected"}</p>
+      <p><strong>Interests:</strong> ${selections.interestTags.join(", ") || "No preference selected"}</p>
+      <p><strong>Digital priorities:</strong> ${selections.digitalPriorityTags.join(", ") || "No preference selected"}</p>
+      <p><strong>Digital goal:</strong> ${selections.digitalGoal || "General digital readiness"}</p>
       <p>${preview.willAdapt}</p>
       <p>${preview.staysStandard}</p>
     `;
   }
 
   backBtn.addEventListener("click", () => { step = Math.max(1, step - 1); renderStep(); });
-  nextBtn.addEventListener("click", () => { step = Math.min(totalSteps, step + 1); renderStep(); });
+  nextBtn.addEventListener("click", () => {
+    if (nextBtn.disabled) return;
+    step = Math.min(totalSteps, step + 1);
+    renderStep();
+  });
   skipBtn.addEventListener("click", () => { step = Math.min(totalSteps, step + 1); renderStep(); });
   editBtn.addEventListener("click", () => { step = 1; renderStep(); });
 
