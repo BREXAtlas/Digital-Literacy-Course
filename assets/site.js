@@ -12,13 +12,21 @@ const NAV_ITEMS = [
   { href: "journey.html", label: "My Journey" },
   { href: "achievements.html", label: "Achievements" },
   { href: "sources.html", label: "Sources" },
-  { href: "instructor-guide.html", label: "Instructor Guide" }
+  { href: "instructor-guide.html", label: "Instructor Guide" },
+  { href: "feedback.html", label: "Pilot Feedback" }
 ];
 
 export function basePath() {
   // Works whether hosted at domain root or under /Digital-Literacy-Course/
   const path = window.location.pathname;
   return path.slice(0, path.lastIndexOf("/") + 1);
+}
+
+function setMenuState(toggle, nav, open) {
+  toggle.setAttribute("aria-expanded", String(open));
+  toggle.textContent = open ? "Close" : "Menu";
+  nav.classList.toggle("site-nav--open", open);
+  document.body.classList.toggle("nav-is-open", open);
 }
 
 export function renderHeader(activeHref) {
@@ -38,7 +46,7 @@ export function renderHeader(activeHref) {
         <span class="brand-mark" aria-hidden="true"></span>
         Ram Ready Digital Literacy
       </a>
-      <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open main menu">Menu</button>
       <nav id="site-nav" class="site-nav" aria-label="Primary">
         ${nav}
         <a href="${base}profile.html" class="site-nav__profile" data-account-indicator>Guest</a>
@@ -47,11 +55,33 @@ export function renderHeader(activeHref) {
   `;
 
   const toggle = header.querySelector(".nav-toggle");
-  const nav_el = header.querySelector(".site-nav");
+  const navEl = header.querySelector(".site-nav");
+
   toggle.addEventListener("click", () => {
-    const expanded = toggle.getAttribute("aria-expanded") === "true";
-    toggle.setAttribute("aria-expanded", String(!expanded));
-    nav_el.classList.toggle("site-nav--open");
+    const open = toggle.getAttribute("aria-expanded") !== "true";
+    setMenuState(toggle, navEl, open);
+    toggle.setAttribute("aria-label", open ? "Close main menu" : "Open main menu");
+  });
+
+  navEl.addEventListener("click", (event) => {
+    if (event.target.closest("a")) setMenuState(toggle, navEl, false);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+      setMenuState(toggle, navEl, false);
+      toggle.focus();
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (toggle.getAttribute("aria-expanded") !== "true") return;
+    if (!header.contains(event.target)) setMenuState(toggle, navEl, false);
+  });
+
+  const desktopQuery = window.matchMedia("(min-width: 760px)");
+  desktopQuery.addEventListener?.("change", (event) => {
+    if (event.matches) setMenuState(toggle, navEl, false);
   });
 
   updateAccountIndicator();
@@ -81,6 +111,7 @@ export function renderFooter() {
       and <a href="${base}privacy.html">privacy model</a>.
     </p>
     <p>
+      <a href="${base}feedback.html">Send pilot feedback</a> ·
       <a href="${base}BRANDING-NOTICE.md">Branding notice</a> ·
       <a href="https://github.com/BREXAtlas/Digital-Literacy-Course" target="_blank" rel="noopener noreferrer">Source on GitHub</a> ·
       <a href="https://brexatlas.github.io/Financial-Literacy-Course/" target="_blank" rel="noopener noreferrer">Continue to Ram Ready Financial Futures</a>
