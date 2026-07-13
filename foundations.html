@@ -29,32 +29,38 @@
     <p id="episode-progress" class="badge"></p>
     <article class="guide-character">
       <div class="guide-character__avatar" aria-hidden="true"></div>
-      <div>
-        <p id="guide-line">Roscoe: Let's get into it.</p>
-      </div>
+      <div><p id="guide-line">Roscoe: Let's get into it.</p></div>
     </article>
     <h1 id="episode-title"></h1>
     <p id="episode-subtitle"></p>
+
     <section>
       <h2>What's happening</h2>
       <p id="episode-narrative"></p>
       <p id="episode-realworld"></p>
     </section>
+
+    <section id="episode-visualization" class="section" aria-label="Lesson visualization"></section>
+
     <section>
       <h2>Concept</h2>
-      <dl id="episode-concept"></dl>
+      <div id="episode-concept" class="concept-groups"></div>
     </section>
+
     <section id="special-widget" class="section"></section>
+
     <section>
       <h2 id="scenario-prompt"></h2>
       <ul class="choice-list" id="choice-list"></ul>
-      <div class="consequence-panel" id="consequence-panel" hidden></div>
     </section>
+
     <section class="knowledge-check" id="knowledge-check-section" hidden>
       <h2>Knowledge check</h2>
       <div id="knowledge-check-body"></div>
     </section>
+
     <section id="source-drawer" class="section"></section>
+
     <div class="btn-row">
       <button class="btn btn-primary" id="continue-episode-btn" hidden>Continue</button>
       <button class="btn btn-outline" id="try-another-path-btn" hidden>Try another path</button>
@@ -68,6 +74,8 @@
     getActs, getEpisodesForAct, getEpisode, applyChoiceEffect, INITIAL_SIM_STATE,
     renderEpisodeNarrative, submitChoice, computeStars, completeEpisode, isEpisodeUnlocked
   } from "./assets/story-engine.js";
+  import { resolveLearnerText } from "./assets/personalization-engine.js";
+  import { renderLearningVisual } from "./assets/visualization-engine.js";
   import { renderSourceDrawer } from "./assets/source-renderer.js";
   import { celebrate } from "./assets/game-engine.js";
   import { renderAccessibleListAlternative } from "./assets/accessibility.js";
@@ -79,10 +87,15 @@
   const epId = params.get("ep");
   const useGenericStory = params.get("generic") === "1" || currentProfile().genericStory;
 
-  if (epId) {
-    renderEpisode(epId);
-  } else {
-    renderMap();
+  if (epId) renderEpisode(epId); else renderMap();
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
   }
 
   function renderMap() {
@@ -92,21 +105,23 @@
     const completed = state.progress.foundations.completedNodeIds;
     const visual = document.getElementById("story-map-visual");
     visual.innerHTML = "";
+
     for (const act of getActs()) {
       const heading = document.createElement("h2");
       heading.textContent = `Act ${act.number}: ${act.title}`;
       visual.appendChild(heading);
       const wrap = document.createElement("div");
       wrap.className = "story-map";
+
       for (const ep of getEpisodesForAct(act.number)) {
         const unlocked = isEpisodeUnlocked(ep.id, completed);
-        const state2 = completed.includes(ep.id) ? "completed" : unlocked ? "active" : "locked";
+        const nodeState = completed.includes(ep.id) ? "completed" : unlocked ? "active" : "locked";
         const node = document.createElement(unlocked ? "a" : "span");
         node.className = "story-node";
-        node.dataset.state = state2;
+        node.dataset.state = nodeState;
         if (unlocked) node.href = `foundations.html?ep=${ep.id}`;
         const stars = state.progress.foundations.stars[ep.id] || 0;
-        node.innerHTML = `<span class="story-node__badge">${ep.id.toUpperCase()} · ${state2}${stars ? " · " + "★".repeat(stars) : ""}</span><span>${ep.title}</span>`;
+        node.innerHTML = `<span class="story-node__badge">${escapeHtml(ep.id.toUpperCase())} · ${escapeHtml(nodeState)}${stars ? " · " + "★".repeat(stars) : ""}</span><span>${escapeHtml(ep.title)}</span>`;
         wrap.appendChild(node);
       }
       visual.appendChild(wrap);
@@ -119,7 +134,7 @@
       listEl.hidden = showingList;
       visualEl.hidden = !showingList;
       if (!listEl.hidden) {
-        const all = getActs().flatMap((a) => getEpisodesForAct(a.number));
+        const all = getActs().flatMap((act) => getEpisodesForAct(act.number));
         renderAccessibleListAlternative(listEl, all, {
           getLabel: (ep) => `${ep.id.toUpperCase()}: ${ep.title}`,
           getState: (ep) => completed.includes(ep.id) ? "Completed" : isEpisodeUnlocked(ep.id, completed) ? "Available" : "Locked"
@@ -128,9 +143,35 @@
     });
   }
 
+  function renderConceptGroups(container, concept, text) {
+    const groups = [
+      { title: "Understand it", items: [["What", concept.what], ["Why it exists", concept.why]] },
+      { title: "Possible value", items: [["How it may help", concept.how], ["Who may benefit", concept.whoMayBenefit]] },
+      { title: "Tradeoffs", items: [["What it may cost", concept.cost], ["Risks or limitations", concept.risks], ["Who may not benefit", concept.whoMayNotBenefit]] },
+      { title: "Use carefully", items: [["When misunderstood", concept.misunderstandingRisk], ["Verify", concept.verifyNote]] }
+    ];
+
+    container.innerHTML = groups.map((group) => {
+      const items = group.items
+        .filter(([, value]) => value)
+        .map(([label, value]) => `<div class="concept-item"><strong>${escapeHtml(label)}</strong><p>${escapeHtml(text(value))}</p></div>`)
+        .join("");
+      return `<article class="concept-group"><h3>${escapeHtml(group.title)}</h3>${items}</article>`;
+    }).join("");
+  }
+
+  function normalizeExampleLanguage(value) {
+    return String(value || "")
+      .replace(/\bcomposite first-year student\b/gi, "fictional first-year student")
+      .replace(/\bcomposite student\b/gi, "fictional student")
+      .replace(/\bcomposite learner\b/gi, "fictional learner")
+      .replace(/\bcomposite scenario(s)?\b/gi, "fictional example$1");
+  }
+
   async function renderEpisode(id) {
     const episode = getEpisode(id);
     if (!episode) { renderMap(); return; }
+
     document.getElementById("map-view").hidden = true;
     document.getElementById("episode-view").hidden = false;
     document.getElementById("episode-progress").textContent = `${episode.id.toUpperCase()} of 20 · Act ${episode.act} · ~${episode.estimatedMinutes} min`;
@@ -141,102 +182,131 @@
       : "Bella: Let's look at the evidence together.";
 
     const profile = currentProfile();
+    const text = (value) => resolveLearnerText(value, profile, useGenericStory);
+
     const narrative = await renderEpisodeNarrative(episode, profile, useGenericStory);
-    document.getElementById("episode-narrative").textContent = narrative;
-    document.getElementById("episode-realworld").textContent = episode.realWorldExample;
+    document.getElementById("episode-narrative").textContent = text(narrative);
+    document.getElementById("episode-realworld").textContent = text(normalizeExampleLanguage(episode.realWorldExample));
 
-    const conceptEl = document.getElementById("episode-concept");
-    conceptEl.innerHTML = "";
-    const c = episode.conceptExplanation || {};
-    const rows = [
-      ["What", c.what], ["Why it exists", c.why], ["How it may help", c.how], ["What it may cost", c.cost],
-      ["Risks or limitations", c.risks], ["Who may benefit", c.whoMayBenefit], ["Who may not benefit", c.whoMayNotBenefit],
-      ["When misunderstood", c.misunderstandingRisk], ["Verify", c.verifyNote]
-    ];
-    for (const [label, value] of rows) {
-      if (!value) continue;
-      const dt = document.createElement("dt"); dt.textContent = label;
-      const dd = document.createElement("dd"); dd.textContent = value;
-      conceptEl.appendChild(dt); conceptEl.appendChild(dd);
-    }
+    renderLearningVisual(document.getElementById("episode-visualization"), episode.id);
+    renderConceptGroups(document.getElementById("episode-concept"), episode.conceptExplanation || {}, text);
+    renderSpecialWidget(episode, text);
 
-    renderSpecialWidget(episode);
-
-    document.getElementById("scenario-prompt").textContent = episode.scenario?.prompt || "Make a choice";
+    document.getElementById("scenario-prompt").textContent = text(episode.scenario?.prompt || "Make a choice");
     const choiceList = document.getElementById("choice-list");
     choiceList.innerHTML = "";
-    let simState = INITIAL_SIM_STATE;
+
+    let simState = { ...INITIAL_SIM_STATE };
     let scenarioComplete = false;
     let knowledgeCheckPassed = false;
+    let selectedChoiceId = null;
+    const answeredChecks = new Set();
+    const correctChecks = new Set();
 
     for (const choice of episode.choices || []) {
       const li = document.createElement("li");
       li.className = "choice-card";
+      li.dataset.choiceCard = choice.id;
       li.innerHTML = `
-        <p><strong>${choice.text}</strong></p>
-        <p><em>Why someone might choose this:</em> ${choice.whyChosen}</p>
-        <p><em>Possible benefit:</em> ${choice.possibleBenefit}</p>
-        <p><em>Possible cost:</em> ${choice.possibleCost}</p>
-        <p><em>Possible risk:</em> ${choice.possibleRisk}</p>
-        <button class="btn btn-outline choose-btn" data-choice-id="${choice.id}">Choose this</button>
+        <p><strong>${escapeHtml(text(choice.text))}</strong></p>
+        <p><em>Why someone might choose this:</em> ${escapeHtml(text(choice.whyChosen))}</p>
+        <p><em>Possible benefit:</em> ${escapeHtml(text(choice.possibleBenefit))}</p>
+        <p><em>Possible cost:</em> ${escapeHtml(text(choice.possibleCost))}</p>
+        <p><em>Possible risk:</em> ${escapeHtml(text(choice.possibleRisk))}</p>
+        <button class="btn btn-outline choose-btn" type="button" data-choice-id="${escapeHtml(choice.id)}">Choose this</button>
+        <div class="choice-result" data-choice-result="${escapeHtml(choice.id)}" role="status" aria-live="polite" tabindex="-1" hidden></div>
       `;
       choiceList.appendChild(li);
     }
 
-    choiceList.addEventListener("click", (e) => {
-      const btn = e.target.closest(".choose-btn");
-      if (!btn) return;
-      const choiceId = btn.dataset.choiceId;
-      const choice = episode.choices.find((c2) => c2.id === choiceId);
-      simState = applyChoiceEffect(simState, choice.immediateEffect);
+    choiceList.addEventListener("click", (event) => {
+      const button = event.target.closest(".choose-btn");
+      if (!button) return;
+
+      const choiceId = button.dataset.choiceId;
+      const choice = episode.choices.find((item) => item.id === choiceId);
+      if (!choice) return;
+
+      selectedChoiceId = choiceId;
+      simState = applyChoiceEffect({ ...INITIAL_SIM_STATE }, choice.immediateEffect);
       submitChoice(episode.id, choiceId);
       scenarioComplete = true;
 
-      const panel = document.getElementById("consequence-panel");
-      panel.hidden = false;
-      panel.innerHTML = `
-        <p><strong>Right away:</strong> ${episode.immediateConsequences?.[choiceId] || ""}</p>
-        <p><strong>One year later:</strong> ${episode.oneYearConsequences?.[choiceId] || ""}</p>
-        <p><strong>Long term:</strong> ${episode.longTermConsequences?.[choiceId] || ""}</p>
-        <p><strong>What could change this outcome:</strong> ${choice.whatCouldChangeThisOutcome}</p>
-        <p><strong>If this didn't go the way you hoped:</strong> ${episode.recoveryPath}</p>
+      for (const card of choiceList.querySelectorAll(".choice-card")) {
+        card.classList.remove("choice-card--selected");
+        const result = card.querySelector("[data-choice-result]");
+        result.hidden = true;
+        result.innerHTML = "";
+      }
+
+      const card = button.closest(".choice-card");
+      const result = card.querySelector(`[data-choice-result="${CSS.escape(choiceId)}"]`);
+      card.classList.add("choice-card--selected");
+      result.hidden = false;
+      result.innerHTML = `
+        <h3>What this choice changes</h3>
+        <p><strong>Right away:</strong> ${escapeHtml(text(episode.immediateConsequences?.[choiceId] || ""))}</p>
+        <p><strong>One year later:</strong> ${escapeHtml(text(episode.oneYearConsequences?.[choiceId] || ""))}</p>
+        <p><strong>Long term:</strong> ${escapeHtml(text(episode.longTermConsequences?.[choiceId] || ""))}</p>
+        <p><strong>What could change this outcome:</strong> ${escapeHtml(text(choice.whatCouldChangeThisOutcome))}</p>
+        <p><strong>If this didn't go the way you hoped:</strong> ${escapeHtml(text(episode.recoveryPath))}</p>
       `;
+      result.focus({ preventScroll: true });
+
       document.getElementById("try-another-path-btn").hidden = false;
       renderKnowledgeCheck();
     });
 
     document.getElementById("try-another-path-btn").addEventListener("click", () => {
-      document.getElementById("consequence-panel").hidden = true;
+      selectedChoiceId = null;
+      scenarioComplete = false;
+      for (const card of choiceList.querySelectorAll(".choice-card")) {
+        card.classList.remove("choice-card--selected");
+        const result = card.querySelector("[data-choice-result]");
+        result.hidden = true;
+        result.innerHTML = "";
+      }
       document.getElementById("try-another-path-btn").hidden = true;
-    }, { once: false });
+      choiceList.querySelector(".choose-btn")?.focus();
+    });
 
     function renderKnowledgeCheck() {
       const section = document.getElementById("knowledge-check-section");
       section.hidden = false;
       const body = document.getElementById("knowledge-check-body");
-      body.innerHTML = "";
+      if (body.childElementCount > 0) return;
+
       for (const kc of episode.knowledgeChecks || []) {
         const wrap = document.createElement("div");
         wrap.innerHTML = `
-          <p>${kc.question}</p>
+          <p><strong>${escapeHtml(text(kc.question))}</strong></p>
           <div class="option-grid">
-            ${kc.options.map((o) => `<label><input type="radio" name="${kc.id}" value="${o}"> ${o}</label>`).join("")}
+            ${kc.options.map((option) => `<label><input type="radio" name="${escapeHtml(kc.id)}" value="${escapeHtml(option)}"> ${escapeHtml(text(option))}</label>`).join("")}
           </div>
-          <button class="btn btn-outline" data-kc="${kc.id}">Check answer</button>
-          <p class="kc-explanation" hidden></p>
+          <button class="btn btn-outline" type="button" data-kc="${escapeHtml(kc.id)}">Check answer</button>
+          <p class="kc-explanation" role="status" aria-live="polite" hidden></p>
         `;
         body.appendChild(wrap);
+
         wrap.querySelector("button").addEventListener("click", () => {
-          const selected = wrap.querySelector(`input[name="${kc.id}"]:checked`);
+          const selected = wrap.querySelector(`input[name="${CSS.escape(kc.id)}"]:checked`);
           const explanationEl = wrap.querySelector(".kc-explanation");
           explanationEl.hidden = false;
+          answeredChecks.add(kc.id);
+
           if (selected && selected.value === kc.correctAnswer) {
-            knowledgeCheckPassed = true;
-            explanationEl.textContent = `Correct. ${kc.explanation}`;
+            correctChecks.add(kc.id);
+            explanationEl.textContent = `Correct. ${text(kc.explanation)}`;
           } else {
-            explanationEl.textContent = `Not quite — the answer is "${kc.correctAnswer}." ${kc.explanation}`;
+            correctChecks.delete(kc.id);
+            explanationEl.textContent = `Not quite — the answer is "${text(kc.correctAnswer)}." ${text(kc.explanation)}`;
           }
-          document.getElementById("continue-episode-btn").hidden = false;
+
+          const totalChecks = (episode.knowledgeChecks || []).length;
+          knowledgeCheckPassed = totalChecks > 0 && correctChecks.size === totalChecks;
+          if (answeredChecks.size === totalChecks) {
+            document.getElementById("continue-episode-btn").hidden = false;
+          }
         });
       }
     }
@@ -244,28 +314,35 @@
     renderSourceDrawer(document.getElementById("source-drawer"), episode.sourceIds);
 
     document.getElementById("continue-episode-btn").addEventListener("click", () => {
+      if (!selectedChoiceId) return;
       const stars = computeStars(episode, { scenarioComplete, knowledgeCheckPassed });
       completeEpisode(episode, { stars });
       celebrate(document.getElementById("episode-view"), {
-        title: `${episode.achievementId ? "Achievement unlocked!" : "Episode complete!"}`,
+        title: episode.achievementId ? "Achievement unlocked!" : "Episode complete!",
         detail: `You earned ${stars} star${stars === 1 ? "" : "s"} for ${episode.title}.`
       });
       window.setTimeout(() => {
-        if (episode.unlocks) {
-          window.location.href = `foundations.html?ep=${episode.unlocks}`;
-        } else {
-          window.location.href = "journey.html";
-        }
+        window.location.href = episode.unlocks ? `foundations.html?ep=${episode.unlocks}` : "journey.html";
       }, 1400);
     }, { once: true });
   }
 
-  function renderSpecialWidget(episode) {
+  function renderSpecialWidget(episode, text) {
     const container = document.getElementById("special-widget");
     container.innerHTML = "";
-    if (episode.compositeVignettes) {
-      container.innerHTML += `<h2>Composite scenarios</h2>` +
-        episode.compositeVignettes.map((v) => `<p><strong>${v.label}:</strong> ${v.description}</p>`).join("");
+    if (!episode.compositeVignettes?.length) return;
+
+    const heading = document.createElement("h2");
+    heading.textContent = "Fictional examples";
+    container.appendChild(heading);
+
+    for (const vignette of episode.compositeVignettes) {
+      const paragraph = document.createElement("p");
+      const strong = document.createElement("strong");
+      strong.textContent = `${text(vignette.label)}: `;
+      paragraph.appendChild(strong);
+      paragraph.append(document.createTextNode(text(normalizeExampleLanguage(vignette.description))));
+      container.appendChild(paragraph);
     }
   }
 </script>
