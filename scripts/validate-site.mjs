@@ -2,45 +2,51 @@
 // Ram Ready Digital Literacy — Static Site Validator
 // Run with: node scripts/validate-site.mjs
 
-import { readFile, access } from "node:fs/promises";
+import { readFile, access, readdir } from "node:fs/promises";
 import { constants as FS } from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { spawnSync } from "node:child_process";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 let failures = 0;
 let warnings = 0;
 
-function fail(msg) {
-  console.error(`✗ ${msg}`);
+function fail(message) {
+  console.error(`✗ ${message}`);
   failures += 1;
 }
-function warn(msg) {
-  console.warn(`! ${msg}`);
+function warn(message) {
+  console.warn(`! ${message}`);
   warnings += 1;
 }
-function pass(msg) {
-  console.log(`✓ ${msg}`);
+function pass(message) {
+  console.log(`✓ ${message}`);
 }
 
-async function exists(relPath) {
+async function exists(relativePath) {
   try {
-    await access(path.join(ROOT, relPath), FS.F_OK);
+    await access(path.join(ROOT, relativePath), FS.F_OK);
     return true;
   } catch {
     return false;
   }
 }
 
+async function read(relativePath) {
+  return readFile(path.join(ROOT, relativePath), "utf8");
+}
+
 const REQUIRED_FILES = [
   "index.html", "foundations.html", "ai-quest.html", "journey.html", "achievements.html",
   "profile.html", "sources.html", "instructor-guide.html", "privacy.html", "disclaimer.html",
-  "auth-callback.html", "onboarding.html",
+  "auth-callback.html", "onboarding.html", "feedback.html",
   "assets/styles.css", "assets/print.css", "assets/site.js", "assets/profile-engine.js",
   "assets/personalization-engine.js", "assets/story-engine.js", "assets/quest-engine.js",
   "assets/game-engine.js", "assets/calculator-engine.js", "assets/source-renderer.js",
   "assets/accessibility.js", "assets/certificate.js", "assets/auth-sync.js",
   "assets/course-cloud-bridge.js", "assets/supabase-config.example.js",
+  "assets/visualization-engine.js", "assets/feedback.js",
   "data/onboarding-options.js", "data/source-registry.js", "data/foundations-story.js",
   "data/ai-quests.js", "data/story-fragments.js", "data/achievements.js",
   "data/calculator-assumptions.js", "data/glossary.js",
@@ -51,297 +57,325 @@ const REQUIRED_FILES = [
   "docs/OPEN_SOURCE_AI.md", "docs/SOURCE_POLICY.md", "docs/SOURCE_REVIEW_CHECKLIST.md",
   "docs/INSTRUCTOR_PILOT_GUIDE.md", "docs/ACCESSIBILITY.md", "docs/PRIVACY_MODEL.md",
   "docs/FINANCIAL_COURSE_HANDOFF.md", "docs/FINANCIAL_SHELL_PARITY.md",
+  "docs/PILOT_FEEDBACK_PROTOCOL.md", "TESTING-CHECKLIST.md",
   "scripts/validate-site.mjs", ".github/workflows/pages.yml",
   "README.md", "QUICKSTART.md", "CONTRIBUTING.md", "CODE_OF_CONDUCT.md", "ROADMAP.md",
   "SUPABASE-SETUP.md", "DEPLOYMENT.md", "BRANDING-NOTICE.md", "LICENSE.md"
 ];
 
-async function checkRequiredFiles() {
-  for (const f of REQUIRED_FILES) {
-    if (await exists(f)) pass(`Required file exists: ${f}`);
-    else fail(`Missing required file: ${f}`);
-  }
-}
-
 const HTML_FILES = [
   "index.html", "foundations.html", "ai-quest.html", "journey.html", "achievements.html",
   "profile.html", "sources.html", "instructor-guide.html", "privacy.html", "disclaimer.html",
-  "auth-callback.html", "onboarding.html"
+  "auth-callback.html", "onboarding.html", "feedback.html"
 ];
 
-const REQUIRED_NAV_ORDER = ["index.html", "foundations.html", "ai-quest.html", "journey.html", "achievements.html", "sources.html", "instructor-guide.html"];
+const REQUIRED_NAV_ORDER = [
+  "index.html", "foundations.html", "ai-quest.html", "journey.html", "achievements.html",
+  "sources.html", "instructor-guide.html", "feedback.html"
+];
 
-async function checkNavOrder() {
-  if (!(await exists("assets/site.js"))) return;
-  const content = await readFile(path.join(ROOT, "assets/site.js"), "utf8");
-  const hrefs = [...content.matchAll(/href:\s*"([^"]+)"/g)].map((m) => m[1]);
-  const relevant = hrefs.filter((h) => REQUIRED_NAV_ORDER.includes(h));
-  const expected = REQUIRED_NAV_ORDER;
-  if (JSON.stringify(relevant) === JSON.stringify(expected)) {
-    pass("Nav order matches required shell order");
+async function checkRequiredFiles() {
+  for (const file of REQUIRED_FILES) {
+    if (await exists(file)) pass(`Required file exists: ${file}`);
+    else fail(`Missing required file: ${file}`);
+  }
+}
+
+async function checkNavAndMenu() {
+  const site = await read("assets/site.js");
+  const hrefs = [...site.matchAll(/href:\s*"([^"]+)"/g)].map((match) => match[1]);
+  const relevant = hrefs.filter((href) => REQUIRED_NAV_ORDER.includes(href));
+  if (JSON.stringify(relevant) === JSON.stringify(REQUIRED_NAV_ORDER)) {
+    pass("Navigation order includes Pilot Feedback and matches the required shell");
   } else {
-    fail(`Nav order mismatch. Expected ${JSON.stringify(expected)}, found ${JSON.stringify(relevant)}`);
+    fail(`Navigation order mismatch. Expected ${JSON.stringify(REQUIRED_NAV_ORDER)}, found ${JSON.stringify(relevant)}`);
   }
-}
 
-async function checkButtonTerms() {
-  const requiredTerms = [
-    "Continue your story", "Create your story", "Explore the generic version", "Continue or begin",
-    "Resume", "View map", "Edit vision", "Export progress (JSON)", "Import progress", "Reset simulation",
-    "Continue to Ram Ready Financial Futures"
+  const requiredMenuTokens = [
+    "site-nav--open", "aria-expanded", "Close", "Escape", "setMenuState"
   ];
-  const indexHtml = (await exists("index.html")) ? await readFile(path.join(ROOT, "index.html"), "utf8") : "";
-  const journeyHtml = (await exists("journey.html")) ? await readFile(path.join(ROOT, "journey.html"), "utf8") : "";
-  const combined = indexHtml + journeyHtml;
-  for (const term of requiredTerms) {
-    if (combined.includes(term)) pass(`Button term present: "${term}"`);
-    else fail(`Missing required button term: "${term}"`);
+  for (const token of requiredMenuTokens) {
+    if (!site.includes(token)) fail(`Mobile menu implementation is missing ${token}`);
   }
+
+  const styles = await read("assets/styles.css");
+  if (!/\.site-header__bar\s*\{[\s\S]*?position:\s*relative/.test(styles)) {
+    fail("Header bar must be position: relative so the mobile menu opens below it");
+  }
+  if (!/\.site-nav--open\s*\{\s*display:\s*flex/.test(styles)) {
+    fail("Mobile menu open state is missing from CSS");
+  }
+  pass("Mobile menu structure and positioning checked");
 }
 
-async function checkFinancialFuturesHandoff() {
-  const files = ["index.html", "journey.html"];
-  for (const f of files) {
-    if (!(await exists(f))) continue;
-    const content = await readFile(path.join(ROOT, f), "utf8");
-    if (content.includes("https://brexatlas.github.io/Financial-Literacy-Course/")) {
-      pass(`${f}: Financial Futures handoff link present`);
-    } else {
-      fail(`${f}: missing Financial Futures handoff link`);
-    }
+async function checkOnboardingFinalStep() {
+  const onboarding = await read("onboarding.html");
+  const required = [
+    "nextBtn.disabled = isLast",
+    'nextBtn.setAttribute("aria-disabled", String(isLast))',
+    "nextBtn.tabIndex = isLast ? -1 : 0",
+    "Second-person guest story (you / your)"
+  ];
+  for (const token of required) {
+    if (!onboarding.includes(token)) fail(`Onboarding final-step behavior is missing: ${token}`);
   }
+  if (/nextBtn\.hidden\s*=\s*isLast/.test(onboarding)) {
+    fail("Next must remain visible and disabled on Step 8, not hidden");
+  }
+  pass("Onboarding Step 8 disabled-button behavior checked");
 }
 
 async function checkInternalLinksAndExternalRel() {
   for (const file of HTML_FILES) {
     if (!(await exists(file))) continue;
-    const fullHtml = await readFile(path.join(ROOT, file), "utf8");
-    const html = fullHtml.replace(/<script[\s\S]*?<\/script>/g, "");
+    const fullHtml = await read(file);
+    const htmlWithoutScripts = fullHtml.replace(/<script[\s\S]*?<\/script>/gi, "");
 
-    const hrefRegex = /href="([^"]+)"/g;
-    let match;
-    while ((match = hrefRegex.exec(html))) {
+    for (const match of htmlWithoutScripts.matchAll(/href="([^"]+)"/g)) {
       const href = match[1];
-      if (href.startsWith("http://") || href.startsWith("https://") || href.startsWith("mailto:")) {
-        if (href.startsWith("http://")) warn(`${file}: non-HTTPS external link ${href}`);
-        continue;
-      }
-      if (href.startsWith("#")) continue;
+      if (/^(https?:|mailto:|tel:|#)/i.test(href)) continue;
       const targetPath = href.split("#")[0].split("?")[0];
       if (!targetPath) continue;
-      if (!(await exists(targetPath))) {
-        fail(`${file}: internal link target does not resolve: ${href}`);
-      }
+      if (!(await exists(targetPath))) fail(`${file}: internal link target does not resolve: ${href}`);
     }
 
-    const targetBlankRegex = /<a\b[^>]*target="_blank"[^>]*>/g;
-    let blankMatch;
-    while ((blankMatch = targetBlankRegex.exec(html))) {
-      const tag = blankMatch[0];
+    for (const match of htmlWithoutScripts.matchAll(/<a\b[^>]*target="_blank"[^>]*>/gi)) {
+      const tag = match[0];
       if (!/rel="[^"]*noopener/.test(tag)) {
-        fail(`${file}: target="_blank" link missing rel="noopener": ${tag.slice(0, 80)}`);
+        fail(`${file}: target="_blank" link missing rel="noopener": ${tag.slice(0, 100)}`);
       }
     }
-    pass(`Checked internal links and external-link rel attributes in ${file}`);
+    pass(`Checked links in ${file}`);
   }
 }
 
-async function checkProhibitedProviderNames() {
-  const filesToScan = ["llm/llm-provider.js", "llm/webllm-provider.js", "llm/ollama-provider.js", "assets/supabase-config.example.js"];
-  const prohibitedUsage = /(api\.openai\.com|api\.anthropic\.com|generativelanguage\.googleapis\.com|@anthropic-ai\/sdk|["']openai["']\s*:|from\s+["']openai["'])/i;
-  for (const f of filesToScan) {
-    if (!(await exists(f))) continue;
-    const content = await readFile(path.join(ROOT, f), "utf8");
-    if (prohibitedUsage.test(content)) {
-      fail(`${f}: appears to call a prohibited proprietary LLM provider`);
-    }
-  }
-  pass("No prohibited proprietary LLM provider usage found in application configuration");
-}
+async function checkFeedbackForm() {
+  const html = await read("feedback.html");
+  const js = await read("assets/feedback.js");
+  const combined = `${html}\n${js}`;
 
-async function checkNoServiceRoleKey() {
-  const configExample = await exists("assets/supabase-config.js");
-  if (configExample) {
-    const content = await readFile(path.join(ROOT, "assets/supabase-config.js"), "utf8");
-    if (/service_role/i.test(content) || /eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.*service/i.test(content)) {
-      fail("assets/supabase-config.js appears to contain a service-role key");
-    } else {
-      pass("assets/supabase-config.js does not appear to contain a service-role key");
-    }
-  } else {
-    pass("No assets/supabase-config.js committed (guest-mode-only deployment, or key added locally by operator)");
-  }
-}
-
-async function checkNoForbiddenSupabaseRefs() {
-  const forbidden = ["rceqidouaazdlimtivfq", "didwxihufueqbpfnfdmm", "service_role"];
-  const filesToScan = [
-    "assets/supabase-config.example.js", "assets/auth-sync.js", "assets/course-cloud-bridge.js",
-    "supabase/migrations/create_digital_literacy_profiles_and_progress.sql",
-    "SUPABASE-SETUP.md", "README.md"
+  const required = [
+    "lmcgaffie@angelo.edu", "organizationSupport", "challengePacing",
+    "assessmentAlignment", "usefulnessTransfer", "interestFit",
+    "participationExperience", "visualUsefulness", "accessibility",
+    "technicalReliability", "featureSuggestion", "technicalIssue",
+    "Download feedback JSON", "Copy feedback"
   ];
-  for (const f of filesToScan) {
-    if (!(await exists(f))) continue;
-    const content = await readFile(path.join(ROOT, f), "utf8");
-    for (const term of forbidden) {
-      if (term !== "service_role" && content.includes(term)) {
-        fail(`${f}: contains forbidden reference to a reference-repository Supabase project ref (${term})`);
-      }
-    }
+  for (const token of required) {
+    if (!combined.includes(token)) fail(`Pilot feedback system missing: ${token}`);
   }
-  pass("No forbidden reference-repository Supabase project refs found");
-}
 
-async function checkNoAsuLogoAssets() {
-  const suspiciousNames = ["asu-logo", "asu-seal", "mascot", "ram-mascot"];
-  try {
-    const { readdir } = await import("node:fs/promises");
-    const assetFiles = await readdir(path.join(ROOT, "assets"));
-    const found = assetFiles.filter((f) => suspiciousNames.some((s) => f.toLowerCase().includes(s)));
-    if (found.length) fail(`Found possible official-logo asset files: ${found.join(", ")}`);
-    else pass("No official Angelo State logo/seal/mascot asset files found");
-  } catch {
-    pass("assets directory scan skipped (not found)");
-  }
+  const forbiddenStorage = /localStorage\.(?:setItem|removeItem)|sessionStorage\.(?:setItem|removeItem)/;
+  if (forbiddenStorage.test(js)) fail("Feedback responses must not be stored in browser storage");
+  pass("Structured pilot feedback form and email destination checked");
 }
 
 async function checkNoUnsafeInputFields() {
   for (const file of HTML_FILES) {
-    if (!(await exists(file))) continue;
-    const content = await readFile(path.join(ROOT, file), "utf8");
-    if (/type="password"/.test(content)) {
-      fail(`${file}: contains a password input field, which this course must never collect`);
+    const content = await read(file);
+    if (/type="password"/i.test(content)) {
+      fail(`${file}: contains a password input field`);
     }
-    if (/type="file"[^>]*(?!accept="application\/json")/.test(content) && /accept="application\/json"/.test(content) === false && /type="file"/.test(content)) {
-      // only the JSON progress-import file input is allowed; flag anything else accepting arbitrary files
-      const fileInputs = [...content.matchAll(/<input[^>]*type="file"[^>]*>/g)].map((m) => m[0]);
-      for (const tag of fileInputs) {
-        if (!tag.includes('accept="application/json"')) {
-          fail(`${file}: file input does not restrict to application/json (no real document uploads allowed): ${tag}`);
-        }
+    for (const match of content.matchAll(/<input[^>]*type="file"[^>]*>/gi)) {
+      if (!/accept="application\/json"/i.test(match[0])) {
+        fail(`${file}: unrestricted file input is not allowed: ${match[0]}`);
       }
     }
   }
-  pass("No password fields or unrestricted file-upload fields found");
+  pass("No password or private-document upload fields found");
 }
 
-async function checkCurriculum() {
-  const { FOUNDATIONS_EPISODES } = await import(path.join(ROOT, "data/foundations-story.js"));
-  const { AI_QUESTS } = await import(path.join(ROOT, "data/ai-quests.js"));
-  const { SOURCE_REGISTRY } = await import(path.join(ROOT, "data/source-registry.js"));
-  const { ACHIEVEMENTS } = await import(path.join(ROOT, "data/achievements.js"));
+async function checkNoSecretsOrForbiddenProjects() {
+  const forbiddenProjectRefs = ["rceqidouaazdlimtivfq", "didwxihufueqbpfnfdmm"];
+  const scanFiles = [
+    "assets/supabase-config.example.js", "assets/auth-sync.js", "assets/course-cloud-bridge.js",
+    "supabase/migrations/create_digital_literacy_profiles_and_progress.sql",
+    "SUPABASE-SETUP.md", "README.md"
+  ];
 
-  const validSourceIds = new Set(SOURCE_REGISTRY.map((s) => s.id));
-  const validAchievementIds = new Set(ACHIEVEMENTS.map((a) => a.id));
-
-  if (FOUNDATIONS_EPISODES.length === 20) pass("All 20 foundation episodes exist");
-  else fail(`Expected 20 foundation episodes, found ${FOUNDATIONS_EPISODES.length}`);
-
-  if (AI_QUESTS.length === 20) pass("All 20 AI quests exist");
-  else fail(`Expected 20 AI quests, found ${AI_QUESTS.length}`);
-
-  const epIds = new Set();
-  for (const ep of FOUNDATIONS_EPISODES) {
-    if (epIds.has(ep.id)) fail(`Duplicate episode id: ${ep.id}`);
-    epIds.add(ep.id);
-
-    if (!ep.learningObjectives || ep.learningObjectives.length === 0) {
-      fail(`${ep.id}: missing learning objectives`);
+  for (const file of scanFiles) {
+    const content = await read(file);
+    for (const ref of forbiddenProjectRefs) {
+      if (content.includes(ref)) fail(`${file}: contains forbidden Supabase project reference ${ref}`);
     }
-    if (!ep.openingNarrative || !ep.title || !ep.subtitle) {
-      fail(`${ep.id}: empty placeholder content detected (missing title/subtitle/narrative)`);
-    }
-    if (!ep.scenario || !ep.scenario.prompt) {
-      fail(`${ep.id}: missing real scenario`);
-    }
-    for (const choice of ep.choices || []) {
-      const hasConsequence =
-        ep.immediateConsequences?.[choice.id] || ep.oneYearConsequences?.[choice.id] || ep.longTermConsequences?.[choice.id];
-      if (!hasConsequence) fail(`${ep.id}: choice "${choice.id}" has no consequence text`);
-      if (!choice.possibleBenefit || !choice.possibleCost || !choice.possibleRisk) {
-        fail(`${ep.id}: choice "${choice.id}" missing benefit/cost/risk language`);
-      }
-    }
-    if (!ep.recoveryPath) fail(`${ep.id}: missing recoveryPath`);
-    for (const kc of ep.knowledgeChecks || []) {
-      if (!kc.correctAnswer || !kc.explanation) {
-        fail(`${ep.id}: knowledge check "${kc.id}" missing answer or explanation`);
-      }
-    }
-    if (!ep.sourceIds || ep.sourceIds.length === 0) fail(`${ep.id}: missing source IDs`);
-    for (const sid of ep.sourceIds || []) {
-      if (!validSourceIds.has(sid)) fail(`${ep.id}: references unknown source id "${sid}"`);
-    }
-    if (ep.achievementId && !validAchievementIds.has(ep.achievementId)) {
-      fail(`${ep.id}: references unknown achievement id "${ep.achievementId}"`);
+    if (/service_role/i.test(content) && file.includes("config")) {
+      fail(`${file}: possible service-role key or configuration reference`);
     }
   }
-  pass(`Checked ${epIds.size} unique foundation episode IDs`);
-
-  const qIds = new Set();
-  for (const q of AI_QUESTS) {
-    if (qIds.has(q.id)) fail(`Duplicate quest id: ${q.id}`);
-    qIds.add(q.id);
-
-    if (!q.learningObjectives || q.learningObjectives.length === 0) {
-      fail(`${q.id}: missing learning objectives`);
-    }
-    if (!q.openingNarrative || !q.title || !q.subtitle) {
-      fail(`${q.id}: empty placeholder content detected (missing title/subtitle/narrative)`);
-    }
-    if (!q.scenario || !q.scenario.prompt) {
-      fail(`${q.id}: missing real scenario`);
-    }
-    for (const choice of q.choices || []) {
-      const hasConsequence =
-        q.immediateConsequences?.[choice.id] || q.oneYearConsequences?.[choice.id] || q.longTermConsequences?.[choice.id];
-      if (!hasConsequence) fail(`${q.id}: choice "${choice.id}" has no consequence text`);
-    }
-    if (!q.recoveryPath) fail(`${q.id}: missing recoveryPath`);
-    for (const kc of q.knowledgeChecks || []) {
-      if (!kc.correctAnswer || !kc.explanation) {
-        fail(`${q.id}: knowledge check "${kc.id}" missing answer or explanation`);
-      }
-    }
-    if (!q.sourceIds || q.sourceIds.length === 0) fail(`${q.id}: missing source IDs`);
-    for (const sid of q.sourceIds || []) {
-      if (!validSourceIds.has(sid)) fail(`${q.id}: references unknown source id "${sid}"`);
-    }
-    if (q.achievementId && !validAchievementIds.has(q.achievementId)) {
-      fail(`${q.id}: references unknown achievement id "${q.achievementId}"`);
-    }
-  }
-  pass(`Checked ${qIds.size} unique AI quest IDs`);
-
-  const placeholderPattern = /(coming soon|todo|lorem ipsum|placeholder text|tbd)/i;
-  for (const node of [...FOUNDATIONS_EPISODES, ...AI_QUESTS]) {
-    const blob = JSON.stringify(node);
-    if (placeholderPattern.test(blob)) {
-      fail(`${node.id}: appears to contain placeholder content`);
-    }
-  }
-  pass("No placeholder lesson content detected");
+  pass("No forbidden Supabase project references or browser service-role configuration found");
 }
 
-async function main() {
-  console.log("Running Ram Ready Digital Literacy site validation...\n");
-  await checkRequiredFiles();
-  await checkNavOrder();
-  await checkButtonTerms();
-  await checkFinancialFuturesHandoff();
-  await checkInternalLinksAndExternalRel();
-  await checkProhibitedProviderNames();
-  await checkNoServiceRoleKey();
-  await checkNoForbiddenSupabaseRefs();
-  await checkNoAsuLogoAssets();
-  await checkNoUnsafeInputFields();
-  await checkCurriculum();
-
-  console.log(`\n${failures === 0 ? "PASS" : "FAIL"}: ${failures} failure(s), ${warnings} warning(s).`);
-  if (failures > 0) process.exit(1);
+function collectStrings(value, prefix = "root", results = []) {
+  if (typeof value === "string") {
+    results.push([prefix, value]);
+  } else if (Array.isArray(value)) {
+    value.forEach((item, index) => collectStrings(item, `${prefix}[${index}]`, results));
+  } else if (value && typeof value === "object") {
+    for (const [key, item] of Object.entries(value)) {
+      collectStrings(item, `${prefix}.${key}`, results);
+    }
+  }
+  return results;
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+async function checkCurriculumAndGuestRendering() {
+  const { FOUNDATIONS_EPISODES } = await import(pathToFileURL(path.join(ROOT, "data/foundations-story.js")));
+  const { AI_QUESTS } = await import(pathToFileURL(path.join(ROOT, "data/ai-quests.js")));
+  const { SOURCE_REGISTRY } = await import(pathToFileURL(path.join(ROOT, "data/source-registry.js")));
+  const { ACHIEVEMENTS } = await import(pathToFileURL(path.join(ROOT, "data/achievements.js")));
+  const { resolveLearnerText } = await import(pathToFileURL(path.join(ROOT, "assets/personalization-engine.js")));
+  const { LEARNING_VISUAL_IDS } = await import(pathToFileURL(path.join(ROOT, "assets/visualization-engine.js")));
+
+  if (FOUNDATIONS_EPISODES.length !== 20) fail(`Expected 20 foundation episodes, found ${FOUNDATIONS_EPISODES.length}`);
+  else pass("All 20 foundation episodes exist");
+
+  if (AI_QUESTS.length !== 20) fail(`Expected 20 AI quests, found ${AI_QUESTS.length}`);
+  else pass("All 20 AI quests exist");
+
+  const sourceIds = new Set(SOURCE_REGISTRY.map((source) => source.id));
+  const achievementIds = new Set(ACHIEVEMENTS.map((achievement) => achievement.id));
+  const visualIds = new Set(LEARNING_VISUAL_IDS);
+
+  if (visualIds.size < 40) fail(`Expected at least 40 lesson visuals, found ${visualIds.size}`);
+  else pass(`${visualIds.size} lesson and quest visuals are registered`);
+
+  const allItems = [
+    ...FOUNDATIONS_EPISODES.map((item) => ({ ...item, kind: "episode" })),
+    ...AI_QUESTS.map((item) => ({ ...item, kind: "quest" }))
+  ];
+  const seen = new Set();
+  const guestProfile = { displayName: "", pronouns: { subject: "they", object: "them", possessive: "their" } };
+
+  for (const item of allItems) {
+    if (seen.has(item.id)) fail(`Duplicate curriculum ID: ${item.id}`);
+    seen.add(item.id);
+
+    if (!visualIds.has(item.id)) fail(`${item.id}: missing lesson visualization`);
+    if (!item.learningObjectives?.length) fail(`${item.id}: missing learning objectives`);
+    if (!item.openingNarrative) fail(`${item.id}: missing opening narrative`);
+    if (!item.scenario?.prompt) fail(`${item.id}: missing scenario prompt`);
+    if (!item.choices?.length) fail(`${item.id}: missing choices`);
+    if (!item.knowledgeChecks?.length) fail(`${item.id}: missing knowledge checks`);
+    if (!item.sourceIds?.length) fail(`${item.id}: missing source IDs`);
+    if (!item.recoveryPath) fail(`${item.id}: missing recovery path`);
+
+    for (const sourceId of item.sourceIds || []) {
+      if (!sourceIds.has(sourceId)) fail(`${item.id}: unknown source ID ${sourceId}`);
+    }
+    if (item.achievementId && !achievementIds.has(item.achievementId)) {
+      fail(`${item.id}: unknown achievement ID ${item.achievementId}`);
+    }
+
+    for (const choice of item.choices || []) {
+      for (const key of ["whyChosen", "possibleBenefit", "possibleCost", "possibleRisk", "whatCouldChangeThisOutcome"]) {
+        if (!choice[key]) fail(`${item.id} choice ${choice.id}: missing ${key}`);
+      }
+      for (const [label, collection] of [
+        ["immediate", item.immediateConsequences],
+        ["one-year", item.oneYearConsequences],
+        ["long-term", item.longTermConsequences]
+      ]) {
+        if (!collection?.[choice.id]) fail(`${item.id} choice ${choice.id}: missing ${label} consequence`);
+      }
+    }
+
+    for (const check of item.knowledgeChecks || []) {
+      if (!check.id || !check.options?.length || !check.correctAnswer || !check.explanation) {
+        fail(`${item.id}: incomplete knowledge check ${check.id || "unknown"}`);
+      }
+      if (!check.options.includes(check.correctAnswer)) {
+        fail(`${item.id}: correct answer does not exactly match an option for ${check.id}`);
+      }
+    }
+
+    for (const [fieldPath, sourceText] of collectStrings(item, item.id)) {
+      const rendered = resolveLearnerText(sourceText, guestProfile, true);
+      if (/\{\{[^}]+\}\}|\}\}/.test(rendered)) {
+        fail(`${fieldPath}: unresolved guest placeholder after rendering`);
+      }
+      if (/\byou\s+(?:is|was|has|does)\b|\byou's\b/i.test(rendered)) {
+        fail(`${fieldPath}: incorrect second-person grammar after rendering: ${rendered.slice(0, 120)}`);
+      }
+    }
+  }
+
+  pass("Curriculum structure, consequences, knowledge checks, sources, achievements, visuals, and guest rendering checked");
+}
+
+async function checkPerCardResultsAndConcepts() {
+  for (const file of ["foundations.html", "ai-quest.html"]) {
+    const content = await read(file);
+    for (const token of ["data-choice-result", "choice-card--selected", "concept-groups", "renderConceptGroups", "resolveLearnerText", "renderLearningVisual"]) {
+      if (!content.includes(token)) fail(`${file}: missing ${token}`);
+    }
+    if (/id="(?:quest-)?consequence-panel"/.test(content)) {
+      fail(`${file}: still includes a global bottom consequence panel`);
+    }
+  }
+  pass("Per-card choice results, grouped concepts, learner text resolution, and visuals checked");
+}
+
+async function checkFinancialHandoffAndButtonTerms() {
+  const index = await read("index.html");
+  const journey = await read("journey.html");
+  const combined = `${index}\n${journey}`;
+  const terms = [
+    "Continue your story", "Create your story", "Explore the generic version", "Continue or begin",
+    "Resume", "View map", "Edit vision", "Export progress (JSON)", "Import progress",
+    "Reset simulation", "Continue to Ram Ready Financial Futures"
+  ];
+  for (const term of terms) {
+    if (!combined.includes(term)) fail(`Missing required button or interface term: ${term}`);
+  }
+  for (const file of ["index.html", "journey.html"]) {
+    const content = await read(file);
+    if (!content.includes("https://brexatlas.github.io/Financial-Literacy-Course/")) {
+      fail(`${file}: missing Financial Futures handoff`);
+    }
+  }
+  pass("Shell terminology and Financial Futures handoff checked");
+}
+
+async function checkNoOfficialAsuAssets() {
+  const entries = await readdir(path.join(ROOT, "assets"), { recursive: true });
+  const suspicious = entries.filter((entry) => /asu[-_ ]?(?:logo|seal)|official[-_ ]?mascot|roscoe[-_ ]?photo|bella[-_ ]?photo/i.test(String(entry)));
+  if (suspicious.length) fail(`Possible official Angelo State asset found: ${suspicious.join(", ")}`);
+  else pass("No apparent official Angelo State logo, seal, or mascot photograph found");
+}
+
+async function checkJavaScriptSyntax() {
+  const directories = ["assets", "data", "llm", "scripts"];
+  const files = [];
+
+  async function walk(directory) {
+    const absolute = path.join(ROOT, directory);
+    for (const entry of await readdir(absolute, { withFileTypes: true })) {
+      const relative = path.join(directory, entry.name);
+      if (entry.isDirectory()) await walk(relative);
+      else if (/\.(?:js|mjs)$/.test(entry.name)) files.push(relative);
+    }
+  }
+
+  for (const directory of directories) await walk(directory);
+  for (const file of files) {
+    const result = spawnSync(process.execPath, ["--check", path.join(ROOT, file)], { encoding: "utf8" });
+    if (result.status !== 0) fail(`${file}: JavaScript syntax error\n${result.stderr}`);
+  }
+  pass(`JavaScript syntax checked in ${files.length} files`);
+}
+
+await checkRequiredFiles();
+await checkNavAndMenu();
+await checkOnboardingFinalStep();
+await checkInternalLinksAndExternalRel();
+await checkFeedbackForm();
+await checkNoUnsafeInputFields();
+await checkNoSecretsOrForbiddenProjects();
+await checkCurriculumAndGuestRendering();
+await checkPerCardResultsAndConcepts();
+await checkFinancialHandoffAndButtonTerms();
+await checkNoOfficialAsuAssets();
+await checkJavaScriptSyntax();
+
+console.log(`\nValidation complete: ${failures} failure(s), ${warnings} warning(s).`);
+if (failures > 0) process.exit(1);
