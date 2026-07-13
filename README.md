@@ -46,6 +46,9 @@ works by selecting **approved story fragments** at specific narrative slots base
 selections (values, interests, academic direction, digital priorities, digital goal). Lesson facts, quiz
 answers, and consequences are identical for every learner. See `docs/PERSONALIZATION_MODEL.md`.
 
+Guest and generic stories use natural second-person language. A saved display name is used only when the
+learner supplies one. Raw template markers such as `{{name}}` must never be visible in the interface.
+
 ## Why core lessons are deterministic
 
 The deterministic template engine (`llm/template-provider.js`) can render the complete course with no AI model
@@ -81,6 +84,34 @@ A separate, dedicated Supabase project (never the Financial-Literacy-Course or t
 Digital-Literacy-Course- project) can enable passwordless email sign-in and cross-device sync, with Row Level
 Security scoping every row to its owner. See `SUPABASE-SETUP.md`.
 
+## Lesson interaction and visuals
+
+Every Foundations episode and AI Quest includes:
+
+- A learner-facing narrative with guest-safe second-person wording
+- A relevant original figure with a text alternative
+- Four grouped Concept cards
+- Decision cards with benefits, costs, and risks
+- A result displayed directly inside the selected card
+- Knowledge checks with explanations
+- Sources, stars, achievements, and progress persistence
+
+The visualization registry is implemented in `assets/visualization-engine.js`.
+
+## Library pilot and feedback
+
+The course now includes a privacy-safe pilot workflow for a small library and student test:
+
+- Public form: `feedback.html`
+- Destination: `lmcgaffie@angelo.edu`
+- Full checklist: `TESTING-CHECKLIST.md`
+- Review and coding protocol: `docs/PILOT_FEEDBACK_PROTOCOL.md`
+
+The feedback framework measures organization and support, challenge and pacing, assessment alignment,
+usefulness and transfer, interest and fit, participation experience, visuals, accessibility, source trust,
+technical reliability, perceived learning change, bugs, and feature requests. The static site does not store
+responses; it prepares an email and offers copy and JSON-download fallbacks.
+
 ## Local run instructions
 
 See `QUICKSTART.md`. Short version: `python3 -m http.server 8080`, no build step required.
@@ -92,15 +123,17 @@ build framework required. See `DEPLOYMENT.md`.
 
 ## Repository structure
 
-```
+```text
 index.html, foundations.html, ai-quest.html, journey.html, achievements.html,
 profile.html, sources.html, instructor-guide.html, privacy.html, disclaimer.html,
-auth-callback.html, onboarding.html
-assets/      — styles, print styles, and all rendering/engine JS (incl. calculator-engine.js digital tools)
+auth-callback.html, onboarding.html, feedback.html
+assets/      — styles, visualizations, feedback, and all rendering/engine JS
+               (incl. calculator-engine.js digital tools)
 data/        — curriculum, source registry, onboarding options, fragments, achievements
 llm/         — open-source LLM provider abstraction + output validator
 supabase/    — optional migration
-docs/        — curriculum map, architecture, personalization, AI, sources, accessibility, instructor guide
+docs/        — curriculum, architecture, personalization, AI, sources, accessibility,
+               instructor guide, and pilot protocol
 scripts/     — scripts/validate-site.mjs
 .github/     — Pages workflow + issue templates
 ```
@@ -108,8 +141,9 @@ scripts/     — scripts/validate-site.mjs
 ## Accessibility
 
 Skip links, full keyboard navigation, visible focus states, screen-reader labels, reduced-motion support,
-no-color-alone signaling, mobile-first responsive layout, plain-language explanations, and print-friendly
-lesson summaries. See `docs/ACCESSIBILITY.md`.
+no-color-alone signaling, mobile-first responsive layout, plain-language explanations, accessible figure
+summaries, per-card live result announcements, and print-friendly lesson summaries. See
+`docs/ACCESSIBILITY.md`.
 
 ## Financial course handoff
 
