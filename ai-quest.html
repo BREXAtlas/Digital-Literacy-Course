@@ -32,33 +32,43 @@
     </article>
     <h1 id="quest-title"></h1>
     <p id="quest-subtitle"></p>
+
     <section>
       <h2>What's happening</h2>
       <p id="quest-narrative"></p>
       <p id="quest-realworld"></p>
     </section>
+
+    <section id="quest-visualization" class="section" aria-label="Quest visualization"></section>
+
     <section>
       <h2>Concept</h2>
-      <dl id="quest-concept"></dl>
+      <div id="quest-concept" class="concept-groups"></div>
     </section>
+
     <section id="quest-special-widget" class="section"></section>
+
     <section>
       <h2 id="quest-scenario-prompt"></h2>
       <ul class="choice-list" id="quest-choice-list"></ul>
-      <div class="consequence-panel" id="quest-consequence-panel" hidden></div>
     </section>
+
     <section id="scoring-section" hidden>
       <h2>Scoring (not just speed or AI usage)</h2>
       <ul id="scoring-list"></ul>
       <p id="closing-reflection"></p>
     </section>
+
     <section class="knowledge-check" id="quest-kc-section" hidden>
       <h2>Knowledge check</h2>
       <div id="quest-kc-body"></div>
     </section>
+
     <section id="quest-source-drawer" class="section"></section>
+
     <div class="btn-row">
       <button class="btn btn-primary" id="continue-quest-btn" hidden>Continue</button>
+      <button class="btn btn-outline" id="try-another-path-btn" hidden>Try another path</button>
     </div>
   </div>
 </main>
@@ -69,6 +79,8 @@
     getTiers, getQuestsForTier, getQuest, renderQuestNarrative,
     submitChoice, computeStars, completeQuest, isQuestUnlocked
   } from "./assets/quest-engine.js";
+  import { resolveLearnerText } from "./assets/personalization-engine.js";
+  import { renderLearningVisual } from "./assets/visualization-engine.js";
   import { renderSourceDrawer } from "./assets/source-renderer.js";
   import { celebrate } from "./assets/game-engine.js";
   import { renderAccessibleListAlternative } from "./assets/accessibility.js";
@@ -82,6 +94,23 @@
 
   if (questId) renderQuest(questId); else renderMap();
 
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function normalizeExampleLanguage(value) {
+    return String(value || "")
+      .replace(/\bcomposite first-year student\b/gi, "fictional first-year student")
+      .replace(/\bcomposite student\b/gi, "fictional student")
+      .replace(/\bcomposite learner\b/gi, "fictional learner")
+      .replace(/\bcomposite scenario(s)?\b/gi, "fictional example$1");
+  }
+
   function renderMap() {
     document.getElementById("map-view").hidden = false;
     document.getElementById("quest-view").hidden = true;
@@ -89,26 +118,34 @@
     const completed = state.progress.aiQuest.completedNodeIds;
     const visual = document.getElementById("quest-map-visual");
     visual.innerHTML = "";
-    const tierNames = { 1: "Tier I — Understand the System", 2: "Tier II — Learn and Create Responsibly", 3: "Tier III — Integrity, Media, and Tool Judgment", 4: "Tier IV — Code, Automate, and Build Responsibly" };
+    const tierNames = {
+      1: "Tier I — Understand the System",
+      2: "Tier II — Learn and Create Responsibly",
+      3: "Tier III — Integrity, Media, and Tool Judgment",
+      4: "Tier IV — Code, Automate, and Build Responsibly"
+    };
+
     for (const tier of getTiers()) {
       const heading = document.createElement("h2");
       heading.textContent = tierNames[tier.number] || `Tier ${tier.number}`;
       visual.appendChild(heading);
       const wrap = document.createElement("div");
       wrap.className = "story-map";
-      for (const q of getQuestsForTier(tier.number)) {
-        const unlocked = isQuestUnlocked(q.id, completed);
-        const st = completed.includes(q.id) ? "completed" : unlocked ? "active" : "locked";
+
+      for (const quest of getQuestsForTier(tier.number)) {
+        const unlocked = isQuestUnlocked(quest.id, completed);
+        const nodeState = completed.includes(quest.id) ? "completed" : unlocked ? "active" : "locked";
         const node = document.createElement(unlocked ? "a" : "span");
         node.className = "story-node";
-        node.dataset.state = st;
-        if (unlocked) node.href = `ai-quest.html?q=${q.id}`;
-        const stars = state.progress.aiQuest.stars[q.id] || 0;
-        node.innerHTML = `<span class="story-node__badge">${q.id.toUpperCase()} · ${st}${stars ? " · " + "★".repeat(stars) : ""}</span><span>${q.title}</span>`;
+        node.dataset.state = nodeState;
+        if (unlocked) node.href = `ai-quest.html?q=${quest.id}`;
+        const stars = state.progress.aiQuest.stars[quest.id] || 0;
+        node.innerHTML = `<span class="story-node__badge">${escapeHtml(quest.id.toUpperCase())} · ${escapeHtml(nodeState)}${stars ? " · " + "★".repeat(stars) : ""}</span><span>${escapeHtml(quest.title)}</span>`;
         wrap.appendChild(node);
       }
       visual.appendChild(wrap);
     }
+
     document.getElementById("toggle-list-view").addEventListener("click", () => {
       const listEl = document.getElementById("quest-map-list");
       const visualEl = document.getElementById("quest-map-visual");
@@ -116,18 +153,36 @@
       listEl.hidden = showingList;
       visualEl.hidden = !showingList;
       if (!listEl.hidden) {
-        const all = getTiers().flatMap((t) => getQuestsForTier(t.number));
+        const all = getTiers().flatMap((tier) => getQuestsForTier(tier.number));
         renderAccessibleListAlternative(listEl, all, {
-          getLabel: (q) => `${q.id.toUpperCase()}: ${q.title}`,
-          getState: (q) => completed.includes(q.id) ? "Completed" : isQuestUnlocked(q.id, completed) ? "Available" : "Locked"
+          getLabel: (quest) => `${quest.id.toUpperCase()}: ${quest.title}`,
+          getState: (quest) => completed.includes(quest.id) ? "Completed" : isQuestUnlocked(quest.id, completed) ? "Available" : "Locked"
         });
       }
     });
   }
 
+  function renderConceptGroups(container, concept, text) {
+    const groups = [
+      { title: "Understand it", items: [["What", concept.what], ["Why it exists", concept.why]] },
+      { title: "Possible value", items: [["How it may help", concept.how], ["Who may benefit", concept.whoMayBenefit]] },
+      { title: "Tradeoffs", items: [["What it may cost", concept.cost], ["Risks or limitations", concept.risks], ["Who may not benefit", concept.whoMayNotBenefit]] },
+      { title: "Use carefully", items: [["When misunderstood", concept.misunderstandingRisk], ["Verify", concept.verifyNote]] }
+    ];
+
+    container.innerHTML = groups.map((group) => {
+      const items = group.items
+        .filter(([, value]) => value)
+        .map(([label, value]) => `<div class="concept-item"><strong>${escapeHtml(label)}</strong><p>${escapeHtml(text(value))}</p></div>`)
+        .join("");
+      return `<article class="concept-group"><h3>${escapeHtml(group.title)}</h3>${items}</article>`;
+    }).join("");
+  }
+
   async function renderQuest(id) {
     const quest = getQuest(id);
     if (!quest) { renderMap(); return; }
+
     document.getElementById("map-view").hidden = true;
     document.getElementById("quest-view").hidden = false;
     document.getElementById("quest-progress").textContent = `${quest.id.toUpperCase()} of 20 · Tier ${quest.tier} · ~${quest.estimatedMinutes} min`;
@@ -135,101 +190,151 @@
     document.getElementById("quest-subtitle").textContent = quest.subtitle;
 
     const profile = currentProfile();
-    document.getElementById("quest-narrative").textContent = await renderQuestNarrative(quest, profile, useGenericStory);
-    document.getElementById("quest-realworld").textContent = quest.realWorldExample;
+    const text = (value) => resolveLearnerText(value, profile, useGenericStory);
 
-    const conceptEl = document.getElementById("quest-concept");
-    conceptEl.innerHTML = "";
-    const c = quest.conceptExplanation || {};
-    const rows = [
-      ["What", c.what], ["Why it exists", c.why], ["How it may help", c.how], ["What it may cost", c.cost],
-      ["Risks or limitations", c.risks], ["Who may benefit", c.whoMayBenefit], ["Who may not benefit", c.whoMayNotBenefit],
-      ["When misunderstood", c.misunderstandingRisk], ["Verify", c.verifyNote]
-    ];
-    for (const [label, value] of rows) {
-      if (!value) continue;
-      const dt = document.createElement("dt"); dt.textContent = label;
-      const dd = document.createElement("dd"); dd.textContent = value;
-      conceptEl.appendChild(dt); conceptEl.appendChild(dd);
-    }
+    document.getElementById("quest-narrative").textContent = text(await renderQuestNarrative(quest, profile, useGenericStory));
+    document.getElementById("quest-realworld").textContent = text(normalizeExampleLanguage(quest.realWorldExample));
+
+    renderLearningVisual(document.getElementById("quest-visualization"), quest.id);
+    renderConceptGroups(document.getElementById("quest-concept"), quest.conceptExplanation || {}, text);
 
     const specialWidget = document.getElementById("quest-special-widget");
-    specialWidget.innerHTML = quest.compositeVignettes
-      ? "<h2>Composite scenarios</h2>" + quest.compositeVignettes.map((v) => `<p><strong>${v.label}:</strong> ${v.description}</p>`).join("")
-      : "";
+    specialWidget.innerHTML = "";
+    if (quest.compositeVignettes?.length) {
+      const heading = document.createElement("h2");
+      heading.textContent = "Fictional examples";
+      specialWidget.appendChild(heading);
+      for (const vignette of quest.compositeVignettes) {
+        const paragraph = document.createElement("p");
+        const strong = document.createElement("strong");
+        strong.textContent = `${text(vignette.label)}: `;
+        paragraph.appendChild(strong);
+        paragraph.append(document.createTextNode(text(normalizeExampleLanguage(vignette.description))));
+        specialWidget.appendChild(paragraph);
+      }
+    }
 
-    document.getElementById("quest-scenario-prompt").textContent = quest.scenario?.prompt || "Make a choice";
+    document.getElementById("quest-scenario-prompt").textContent = text(quest.scenario?.prompt || "Make a choice");
     const choiceList = document.getElementById("quest-choice-list");
     choiceList.innerHTML = "";
+
     let scenarioComplete = false;
     let knowledgeCheckPassed = false;
+    let selectedChoiceId = null;
+    const answeredChecks = new Set();
+    const correctChecks = new Set();
 
     for (const choice of quest.choices || []) {
       const li = document.createElement("li");
       li.className = "choice-card";
+      li.dataset.choiceCard = choice.id;
       li.innerHTML = `
-        <p><strong>${choice.text}</strong></p>
-        <p><em>Why someone might choose this:</em> ${choice.whyChosen}</p>
-        <p><em>Possible benefit:</em> ${choice.possibleBenefit}</p>
-        <p><em>Possible cost:</em> ${choice.possibleCost}</p>
-        <p><em>Possible risk:</em> ${choice.possibleRisk}</p>
-        <button class="btn btn-outline choose-btn" data-choice-id="${choice.id}">Choose this</button>
+        <p><strong>${escapeHtml(text(choice.text))}</strong></p>
+        <p><em>Why someone might choose this:</em> ${escapeHtml(text(choice.whyChosen))}</p>
+        <p><em>Possible benefit:</em> ${escapeHtml(text(choice.possibleBenefit))}</p>
+        <p><em>Possible cost:</em> ${escapeHtml(text(choice.possibleCost))}</p>
+        <p><em>Possible risk:</em> ${escapeHtml(text(choice.possibleRisk))}</p>
+        <button class="btn btn-outline choose-btn" type="button" data-choice-id="${escapeHtml(choice.id)}">Choose this</button>
+        <div class="choice-result" data-choice-result="${escapeHtml(choice.id)}" role="status" aria-live="polite" tabindex="-1" hidden></div>
       `;
       choiceList.appendChild(li);
     }
 
-    choiceList.addEventListener("click", (e) => {
-      const btn = e.target.closest(".choose-btn");
-      if (!btn) return;
-      const choiceId = btn.dataset.choiceId;
-      const choice = quest.choices.find((c2) => c2.id === choiceId);
+    choiceList.addEventListener("click", (event) => {
+      const button = event.target.closest(".choose-btn");
+      if (!button) return;
+      const choiceId = button.dataset.choiceId;
+      const choice = quest.choices.find((item) => item.id === choiceId);
+      if (!choice) return;
+
+      selectedChoiceId = choiceId;
       submitChoice(quest.id, choiceId);
       scenarioComplete = true;
-      const panel = document.getElementById("quest-consequence-panel");
-      panel.hidden = false;
-      panel.innerHTML = `
-        <p><strong>Right away:</strong> ${quest.immediateConsequences?.[choiceId] || ""}</p>
-        <p><strong>One year later:</strong> ${quest.oneYearConsequences?.[choiceId] || ""}</p>
-        <p><strong>Long term:</strong> ${quest.longTermConsequences?.[choiceId] || ""}</p>
-        <p><strong>What could change this outcome:</strong> ${choice.whatCouldChangeThisOutcome}</p>
-        <p><strong>If this didn't go the way you hoped:</strong> ${quest.recoveryPath}</p>
+
+      for (const card of choiceList.querySelectorAll(".choice-card")) {
+        card.classList.remove("choice-card--selected");
+        const result = card.querySelector("[data-choice-result]");
+        result.hidden = true;
+        result.innerHTML = "";
+      }
+
+      const card = button.closest(".choice-card");
+      const result = card.querySelector(`[data-choice-result="${CSS.escape(choiceId)}"]`);
+      card.classList.add("choice-card--selected");
+      result.hidden = false;
+      result.innerHTML = `
+        <h3>What this choice changes</h3>
+        <p><strong>Right away:</strong> ${escapeHtml(text(quest.immediateConsequences?.[choiceId] || ""))}</p>
+        <p><strong>One year later:</strong> ${escapeHtml(text(quest.oneYearConsequences?.[choiceId] || ""))}</p>
+        <p><strong>Long term:</strong> ${escapeHtml(text(quest.longTermConsequences?.[choiceId] || ""))}</p>
+        <p><strong>What could change this outcome:</strong> ${escapeHtml(text(choice.whatCouldChangeThisOutcome))}</p>
+        <p><strong>If this didn't go the way you hoped:</strong> ${escapeHtml(text(quest.recoveryPath))}</p>
       `;
+      result.focus({ preventScroll: true });
+
+      document.getElementById("try-another-path-btn").hidden = false;
+
       if (quest.scoringDimensions) {
         document.getElementById("scoring-section").hidden = false;
         document.getElementById("scoring-list").innerHTML = quest.scoringDimensions
-          .map((d) => `<li><strong>${d.label}:</strong> ${d.description}</li>`).join("");
-        document.getElementById("closing-reflection").textContent = quest.closingReflection || "";
+          .map((dimension) => `<li><strong>${escapeHtml(text(dimension.label))}:</strong> ${escapeHtml(text(dimension.description))}</li>`)
+          .join("");
+        document.getElementById("closing-reflection").textContent = text(quest.closingReflection || "");
       }
+
       renderKnowledgeCheck();
+    });
+
+    document.getElementById("try-another-path-btn").addEventListener("click", () => {
+      selectedChoiceId = null;
+      scenarioComplete = false;
+      for (const card of choiceList.querySelectorAll(".choice-card")) {
+        card.classList.remove("choice-card--selected");
+        const result = card.querySelector("[data-choice-result]");
+        result.hidden = true;
+        result.innerHTML = "";
+      }
+      document.getElementById("try-another-path-btn").hidden = true;
+      choiceList.querySelector(".choose-btn")?.focus();
     });
 
     function renderKnowledgeCheck() {
       const section = document.getElementById("quest-kc-section");
       section.hidden = false;
       const body = document.getElementById("quest-kc-body");
-      body.innerHTML = "";
+      if (body.childElementCount > 0) return;
+
       for (const kc of quest.knowledgeChecks || []) {
         const wrap = document.createElement("div");
         wrap.innerHTML = `
-          <p>${kc.question}</p>
+          <p><strong>${escapeHtml(text(kc.question))}</strong></p>
           <div class="option-grid">
-            ${kc.options.map((o) => `<label><input type="radio" name="${kc.id}" value="${o}"> ${o}</label>`).join("")}
+            ${kc.options.map((option) => `<label><input type="radio" name="${escapeHtml(kc.id)}" value="${escapeHtml(option)}"> ${escapeHtml(text(option))}</label>`).join("")}
           </div>
-          <button class="btn btn-outline" data-kc="${kc.id}">Check answer</button>
-          <p class="kc-explanation" hidden></p>
+          <button class="btn btn-outline" type="button" data-kc="${escapeHtml(kc.id)}">Check answer</button>
+          <p class="kc-explanation" role="status" aria-live="polite" hidden></p>
         `;
         body.appendChild(wrap);
+
         wrap.querySelector("button").addEventListener("click", () => {
-          const selected = wrap.querySelector(`input[name="${kc.id}"]:checked`);
+          const selected = wrap.querySelector(`input[name="${CSS.escape(kc.id)}"]:checked`);
           const explanationEl = wrap.querySelector(".kc-explanation");
           explanationEl.hidden = false;
+          answeredChecks.add(kc.id);
+
           if (selected && selected.value === kc.correctAnswer) {
-            knowledgeCheckPassed = true;
-            explanationEl.textContent = `Correct. ${kc.explanation}`;
+            correctChecks.add(kc.id);
+            explanationEl.textContent = `Correct. ${text(kc.explanation)}`;
           } else {
-            explanationEl.textContent = `Not quite — the answer is "${kc.correctAnswer}." ${kc.explanation}`;
+            correctChecks.delete(kc.id);
+            explanationEl.textContent = `Not quite — the answer is "${text(kc.correctAnswer)}." ${text(kc.explanation)}`;
           }
-          document.getElementById("continue-quest-btn").hidden = false;
+
+          const totalChecks = (quest.knowledgeChecks || []).length;
+          knowledgeCheckPassed = totalChecks > 0 && correctChecks.size === totalChecks;
+          if (answeredChecks.size === totalChecks) {
+            document.getElementById("continue-quest-btn").hidden = false;
+          }
         });
       }
     }
@@ -237,6 +342,7 @@
     renderSourceDrawer(document.getElementById("quest-source-drawer"), quest.sourceIds);
 
     document.getElementById("continue-quest-btn").addEventListener("click", () => {
+      if (!selectedChoiceId) return;
       const stars = computeStars({ scenarioComplete, knowledgeCheckPassed });
       completeQuest(quest, { stars });
       celebrate(document.getElementById("quest-view"), {
