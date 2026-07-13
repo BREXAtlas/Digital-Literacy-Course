@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pilot Feedback — Ram Ready Digital Literacy</title>
+<meta name="description" content="A privacy-safe student, librarian, faculty, and staff feedback form for the Ram Ready Digital Literacy pilot.">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/print.css" media="print">
+</head>
+<body>
+<header data-site-header></header>
+<main id="main-content">
+  <h1>Ram Ready Digital Literacy Pilot Feedback</h1>
+  <p class="disclaimer-banner">
+    This form is for a small library and student pilot. It asks about usefulness, clarity, organization,
+    pacing, knowledge checks, visualizations, accessibility, technical reliability, and suggested changes.
+    Do not include passwords, student ID numbers, grades, private documents, health information, financial
+    information, or anything you would not want included in an email.
+  </p>
+
+  <p>
+    Your responses are not stored by this website. When you finish, the page prepares a structured email to
+    <a href="mailto:lmcgaffie@angelo.edu">lmcgaffie@angelo.edu</a>. You can also copy the summary or download it
+    as a JSON file. All questions are optional except the reviewer role and course path.
+  </p>
+
+  <form id="pilot-feedback-form" novalidate>
+    <section class="feedback-section" aria-labelledby="context-title">
+      <h2 id="context-title">1. Testing context</h2>
+      <div class="option-grid">
+        <label>Reviewer role
+          <select name="reviewerRole" required>
+            <option value="">Choose one</option>
+            <option>First-year student</option>
+            <option>Other undergraduate student</option>
+            <option>Graduate student</option>
+            <option>Librarian</option>
+            <option>Faculty member</option>
+            <option>Academic staff or advisor</option>
+            <option>Technology or accessibility reviewer</option>
+            <option>Community tester</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label>Course path tested
+          <select name="coursePath" required>
+            <option value="">Choose one</option>
+            <option>University Digital Literacy Foundations</option>
+            <option>AI Digital Literacy Quest</option>
+            <option>Both paths</option>
+            <option>Landing page or onboarding only</option>
+          </select>
+        </label>
+        <label>Episode, quest, or page tested
+          <input type="text" name="pageTested" maxlength="100" placeholder="Example: Episode 1 or onboarding Step 8">
+        </label>
+        <label>How much did you complete?
+          <select name="completionLevel">
+            <option value="">Choose one</option>
+            <option>One page only</option>
+            <option>One lesson or quest</option>
+            <option>Several lessons or quests</option>
+            <option>One full learning path</option>
+            <option>Both learning paths</option>
+          </select>
+        </label>
+        <label>Device
+          <select name="device">
+            <option value="">Choose one</option>
+            <option>Android phone</option>
+            <option>iPhone</option>
+            <option>Tablet</option>
+            <option>Windows laptop or desktop</option>
+            <option>Mac</option>
+            <option>Chromebook</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label>Browser
+          <select name="browser">
+            <option value="">Choose one</option>
+            <option>Chrome</option>
+            <option>Safari</option>
+            <option>Edge</option>
+            <option>Firefox</option>
+            <option>Samsung Internet</option>
+            <option>Other</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section class="feedback-section" aria-labelledby="experience-title">
+      <h2 id="experience-title">2. Course-review ratings</h2>
+      <p>Use 1 for strongly disagree and 5 for strongly agree. These dimensions adapt the course-review framework used to examine organization and support, challenge and pacing, assessment alignment, usefulness and transfer, interest and fit, and participation experience.</p>
+      <div id="rating-fields"></div>
+    </section>
+
+    <section class="feedback-section" aria-labelledby="confidence-title">
+      <h2 id="confidence-title">3. Perceived learning change</h2>
+      <p>Estimate your confidence before and after the portion you tested. This is a pilot impression, not a graded assessment.</p>
+      <div class="option-grid">
+        <label>Before: organizing college files
+          <select name="beforeFileConfidence"><option value="">Not rated</option><option>1 - Very low</option><option>2</option><option>3</option><option>4</option><option>5 - Very high</option></select>
+        </label>
+        <label>After: organizing college files
+          <select name="afterFileConfidence"><option value="">Not rated</option><option>1 - Very low</option><option>2</option><option>3</option><option>4</option><option>5 - Very high</option></select>
+        </label>
+        <label>Before: evaluating sources
+          <select name="beforeSourceConfidence"><option value="">Not rated</option><option>1 - Very low</option><option>2</option><option>3</option><option>4</option><option>5 - Very high</option></select>
+        </label>
+        <label>After: evaluating sources
+          <select name="afterSourceConfidence"><option value="">Not rated</option><option>1 - Very low</option><option>2</option><option>3</option><option>4</option><option>5 - Very high</option></select>
+        </label>
+        <label>Before: recognizing security or phishing risks
+          <select name="beforeSecurityConfidence"><option value="">Not rated</option><option>1 - Very low</option><option>2</option><option>3</option><option>4</option><option>5 - Very high</option></select>
+        </label>
+        <label>After: recognizing security or phishing risks
+          <select name="afterSecurityConfidence"><option value="">Not rated</option><option>1 - Very low</option><option>2</option><option>3</option><option>4</option><option>5 - Very high</option></select>
+        </label>
+        <label>Before: using AI responsibly
+          <select name="beforeAIConfidence"><option value="">Not rated</option><option>1 - Very low</option><option>2</option><option>3</option><option>4</option><option>5 - Very high</option></select>
+        </label>
+        <label>After: using AI responsibly
+          <select name="afterAIConfidence"><option value="">Not rated</option><option>1 - Very low</option><option>2</option><option>3</option><option>4</option><option>5 - Very high</option></select>
+        </label>
+      </div>
+    </section>
+
+    <section class="feedback-section" aria-labelledby="open-title">
+      <h2 id="open-title">4. What should change?</h2>
+      <label>What was most useful?
+        <textarea name="mostUseful" maxlength="1200" placeholder="Name the lesson, feature, example, chart, question, or explanation that helped most."></textarea>
+      </label>
+      <label>What was confusing, frustrating, or hard to use?
+        <textarea name="confusing" maxlength="1200" placeholder="Describe the point where you became unsure or wanted to stop."></textarea>
+      </label>
+      <label>What topic, example, or support is missing?
+        <textarea name="missing" maxlength="1200" placeholder="Suggest content that would make the course more useful for students."></textarea>
+      </label>
+      <label>What feature should be added, removed, or changed?
+        <textarea name="featureSuggestion" maxlength="1200" placeholder="Examples: navigation, images, charts, feedback wording, account features, certificates, or mobile layout."></textarea>
+      </label>
+      <label>Did a button, menu, quiz, picture, progress feature, or page fail?
+        <textarea name="technicalIssue" maxlength="1200" placeholder="List the page, what you clicked, what happened, and what you expected."></textarea>
+      </label>
+      <label>Anything else the project team should know?
+        <textarea name="otherComments" maxlength="1200"></textarea>
+      </label>
+    </section>
+
+    <section class="feedback-section" aria-labelledby="followup-title">
+      <h2 id="followup-title">5. Optional follow-up</h2>
+      <label>Your name or testing nickname (optional)
+        <input type="text" name="reviewerName" maxlength="80">
+      </label>
+      <label>Email for follow-up (optional)
+        <input type="email" name="reviewerEmail" maxlength="120">
+      </label>
+      <label>
+        <input type="checkbox" name="followupPermission" value="Yes">
+        Lawrence McGaffie may contact me about this feedback.
+      </label>
+    </section>
+
+    <p class="field-error" id="feedback-error" role="alert" hidden></p>
+    <div class="btn-row">
+      <button class="btn btn-primary" type="submit">Prepare and email feedback</button>
+      <button class="btn btn-outline" type="reset">Clear form</button>
+    </div>
+  </form>
+
+  <section id="feedback-result" class="feedback-section" hidden aria-labelledby="result-title">
+    <h2 id="result-title">Your structured feedback is ready</h2>
+    <p>The email app should open automatically. If it does not, use one of the options below.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" id="feedback-email-link" href="mailto:lmcgaffie@angelo.edu">Email feedback</a>
+      <button class="btn btn-outline" id="copy-feedback" type="button">Copy feedback</button>
+      <button class="btn btn-outline" id="download-feedback" type="button">Download feedback JSON</button>
+    </div>
+    <p id="feedback-status" class="feedback-status" role="status" aria-live="polite"></p>
+    <pre id="feedback-summary" class="feedback-summary"></pre>
+  </section>
+</main>
+<footer data-site-footer></footer>
+<script type="module" src="assets/feedback.js"></script>
+</body>
+</html>
