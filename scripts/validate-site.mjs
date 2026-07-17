@@ -40,7 +40,7 @@ async function read(relativePath) {
 const REQUIRED_FILES = [
   "index.html", "foundations.html", "ai-quest.html", "journey.html", "achievements.html",
   "profile.html", "sources.html", "instructor-guide.html", "privacy.html", "disclaimer.html",
-  "auth-callback.html", "onboarding.html", "feedback.html",
+  "auth-callback.html", "onboarding.html", "feedback.html", "testing-checklist.html",
   "presentation.html", "assets/presentation.css", "assets/presentation.js",
   "assets/presentation-charts.js", "data/presentation-data.js", "data/presentation-sources.js",
   "assets/styles.css", "assets/print.css", "assets/site.js", "assets/profile-engine.js",
@@ -68,7 +68,7 @@ const REQUIRED_FILES = [
 const HTML_FILES = [
   "index.html", "foundations.html", "ai-quest.html", "journey.html", "achievements.html",
   "profile.html", "sources.html", "instructor-guide.html", "privacy.html", "disclaimer.html",
-  "auth-callback.html", "onboarding.html", "feedback.html", "presentation.html"
+  "auth-callback.html", "onboarding.html", "feedback.html", "testing-checklist.html", "presentation.html"
 ];
 
 const REQUIRED_NAV_ORDER = [
@@ -132,7 +132,7 @@ async function checkPresentation() {
   }
   if (!/id="slide-21"[^>]*data-reference-slide/.test(html)) fail("Slide 21 must be the APA references slide");
   if ((html.match(/class="presenter-notes"/g) || []).length !== 21) fail("Every presentation slide must have presenter notes");
-  if ((html.match(/data-open-sources/g) || []).length < 9) fail("Evidence slides must provide source-drawer buttons");
+  if ((html.match(/data-open-sources/g) || []).length < 8) fail("Evidence slides must provide source-drawer buttons");
 
   if (PRESENTATION_SLIDES.length !== 21) fail(`Presentation data must list 21 slides; found ${PRESENTATION_SLIDES.length}`);
   if (new Set(PRESENTATION_SLIDES.map((slide) => slide.id)).size !== 21) fail("Presentation data contains duplicate slide IDs");
@@ -229,9 +229,12 @@ async function checkPresentation() {
     fail("Slide 21 must render every presentation source as an APA reference");
   }
 
-  const relevantText = `${html}\n${css}\n${js}\n${chartsJs}\n${await read("data/presentation-data.js")}\n${await read("data/presentation-sources.js")}`;
+  const relevantText = `${html}\n${css}\n${js}\n${chartsJs}\n${await read("data/presentation-data.js")}\n${await read("data/presentation-sources.js")}\n${await read("docs/PRESENTATION_GUIDE.md")}`;
   if (/\[citation needed\]|lorem ipsum|TEMPLATE_PLACEHOLDER|\{\{[^}]+\}\}/i.test(relevantText)) {
     fail("Presentation contains an unresolved citation or template placeholder");
+  }
+  if (/organizational case[ -]study|EDEA 6302|angelo-edea-assignment|\bconven(?:e|es|ed|ing)\b/i.test(relevantText)) {
+    fail("Presentation retains removed case-study alignment or unexplained convene terminology");
   }
   if (!/@media\s+print/.test(css)) fail("Presentation print styling is missing");
   if (!/prefers-reduced-motion/.test(css)) fail("Presentation reduced-motion handling is missing");
@@ -245,7 +248,21 @@ async function checkPresentation() {
     fail("Financial Futures must not appear as a live demonstration or iframe");
   }
   if (!html.includes("https://brexatlas.github.io/Digital-Literacy-Course/")) fail("Presentation is missing the main Digital Literacy live link");
-  for (const route of ["index.html", "foundations.html", "ai-quest.html", "feedback.html", "TESTING-CHECKLIST.md"]) {
+  const requiredPublicPresentationLinks = [
+    "https://brexatlas.github.io/Digital-Literacy-Course/foundations.html",
+    "https://brexatlas.github.io/Digital-Literacy-Course/ai-quest.html",
+    "https://brexatlas.github.io/Digital-Literacy-Course/feedback.html",
+    "https://brexatlas.github.io/Digital-Literacy-Course/foundations.html?ep=ep09&amp;generic=1",
+    "https://brexatlas.github.io/Digital-Literacy-Course/ai-quest.html?q=q11&amp;generic=1",
+    "https://brexatlas.github.io/Digital-Literacy-Course/testing-checklist.html"
+  ];
+  for (const destination of requiredPublicPresentationLinks) {
+    if (!html.includes(`href="${destination}"`)) fail(`Presentation is missing a working public destination: ${destination}`);
+  }
+  for (const match of html.matchAll(/<a\b[^>]*href="https:\/\/brexatlas\.github\.io\/Digital-Literacy-Course\/[^"]*"[^>]*>/g)) {
+    if (/target="_blank"/i.test(match[0])) fail(`Digital Literacy presentation link must not force a popup: ${match[0]}`);
+  }
+  for (const route of ["foundations.html", "ai-quest.html", "feedback.html", "testing-checklist.html"]) {
     if (!html.includes(route)) fail(`Presentation is missing required local route ${route}`);
   }
   if (/\b(?:reveal\.js|react|next\.js|vite)\b|<canvas/i.test(`${html}\n${js}`)) {

@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Testing Checklist — Ram Ready Digital Literacy</title>
+<meta name="description" content="Interactive browser checklist for reviewing Ram Ready Digital Literacy before and during a library pilot.">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/print.css" media="print">
+</head>
+<body>
+<header data-site-header></header>
+<main id="main-content">
+  <h1>Ram Ready Digital Literacy Testing Checklist</h1>
+  <p>Use this checklist before and during the first library pilot. Checkmarks remain only in this browser tab and
+    are not submitted or stored by the site.</p>
+  <div class="btn-row">
+    <a class="btn btn-primary" href="presentation.html">Open presentation</a>
+    <a class="btn btn-outline" href="feedback.html">Open pilot feedback</a>
+    <a class="btn btn-outline" href="instructor-guide.html">Open instructor guide</a>
+  </div>
+
+  <div class="testing-checklist-grid">
+    <section class="section testing-checklist-section">
+      <h2>Repository and deployment</h2>
+      <ul class="testing-checklist">
+        <li><label><input type="checkbox">Confirm the repository is <code>BREXAtlas/Digital-Literacy-Course</code> without a trailing hyphen.</label></li>
+        <li><label><input type="checkbox">Confirm the active branch is <code>main</code>.</label></li>
+        <li><label><input type="checkbox">Confirm GitHub Pages deploys from the current workflow.</label></li>
+        <li><label><input type="checkbox">Confirm the <a href="https://brexatlas.github.io/Digital-Literacy-Course/">public course URL</a> opens.</label></li>
+        <li><label><input type="checkbox">Confirm no service-role key, password, private document, or student record is committed.</label></li>
+      </ul>
+    </section>
+
+    <section class="section testing-checklist-section">
+      <h2>Mobile menu</h2>
+      <ul class="testing-checklist">
+        <li><label><input type="checkbox">Open the site on an Android phone.</label></li>
+        <li><label><input type="checkbox">Open the site on an iPhone or in Safari responsive mode.</label></li>
+        <li><label><input type="checkbox">Tap <strong>Menu</strong> and confirm navigation appears directly below the header.</label></li>
+        <li><label><input type="checkbox">Confirm the button changes to <strong>Close</strong>.</label></li>
+        <li><label><input type="checkbox">Confirm every navigation link works.</label></li>
+        <li><label><input type="checkbox">Confirm tapping outside or pressing Escape closes the menu.</label></li>
+        <li><label><input type="checkbox">Confirm the menu does not appear behind lesson content.</label></li>
+      </ul>
+    </section>
+
+    <section class="section testing-checklist-section">
+      <h2>Create Your Story</h2>
+      <ul class="testing-checklist">
+        <li><label><input type="checkbox">Complete Steps 1–7 and reach Step 8.</label></li>
+        <li><label><input type="checkbox">Confirm <strong>Next</strong> remains visible, greyed out, and disabled.</label></li>
+        <li><label><input type="checkbox">Confirm <strong>Back</strong> and <strong>Edit selections</strong> work.</label></li>
+        <li><label><input type="checkbox">Confirm <strong>Begin your story</strong> and <strong>Begin with a generic story</strong> work.</label></li>
+        <li><label><input type="checkbox">Leave the display name blank and confirm the course uses natural “you” and “your” language.</label></li>
+        <li><label><input type="checkbox">Confirm no unresolved learner placeholder appears.</label></li>
+        <li><label><input type="checkbox">Enter a display name, begin again, and confirm the name appears naturally.</label></li>
+      </ul>
+    </section>
+
+    <section class="section testing-checklist-section">
+      <h2>Foundations lessons</h2>
+      <p>Test at minimum Episodes 1, 2, 5, 10, 15, and 20.</p>
+      <ul class="testing-checklist">
+        <li><label><input type="checkbox">Opening narrative renders without a placeholder.</label></li>
+        <li><label><input type="checkbox">The fictional example is clearly labeled and understandable.</label></li>
+        <li><label><input type="checkbox">The lesson figure appears with a readable text alternative.</label></li>
+        <li><label><input type="checkbox">The concept section displays four grouped cards.</label></li>
+        <li><label><input type="checkbox">Choice cards are readable on mobile.</label></li>
+        <li><label><input type="checkbox">Selecting <strong>Choose this</strong> displays the result inside that card.</label></li>
+        <li><label><input type="checkbox">Selecting another card closes the first result and opens the second.</label></li>
+        <li><label><input type="checkbox">The knowledge check appears and every answer gives an explanation.</label></li>
+        <li><label><input type="checkbox">Continue works after all checks are answered.</label></li>
+        <li><label><input type="checkbox">Stars, achievements, unlocks, and progress persist after refresh.</label></li>
+      </ul>
+    </section>
+
+    <section class="section testing-checklist-section">
+      <h2>AI Quest</h2>
+      <p>Test at minimum Quests 1, 5, 10, 15, and 20.</p>
+      <ul class="testing-checklist">
+        <li><label><input type="checkbox">No unresolved learner placeholders appear.</label></li>
+        <li><label><input type="checkbox">The lesson figure appears and supports the topic.</label></li>
+        <li><label><input type="checkbox">Concept groups display correctly.</label></li>
+        <li><label><input type="checkbox">Choice results stay inside selected cards.</label></li>
+        <li><label><input type="checkbox">The source drawer works.</label></li>
+        <li><label><input type="checkbox">Knowledge checks and explanations work.</label></li>
+        <li><label><input type="checkbox">Continue saves progress and unlocks the next quest.</label></li>
+      </ul>
+    </section>
+
+    <section class="section testing-checklist-section">
+      <h2>My Journey and achievements</h2>
+      <ul class="testing-checklist">
+        <li><label><input type="checkbox">The dashboard shows the correct completed episodes, quests, stars, and achievements.</label></li>
+        <li><label><input type="checkbox">Resume links open the expected lesson.</label></li>
+        <li><label><input type="checkbox">Export progress produces JSON and import restores state.</label></li>
+        <li><label><input type="checkbox">Reset requires confirmation and clears state.</label></li>
+        <li><label><input type="checkbox">Certificate buttons unlock only when appropriate.</label></li>
+        <li><label><input type="checkbox">The Financial Futures handoff link works.</label></li>
+      </ul>
+    </section>
+
+    <section class="section testing-checklist-section">
+      <h2>Accessibility</h2>
+      <ul class="testing-checklist">
+        <li><label><input type="checkbox">Navigate the site using keyboard only and confirm visible focus on every interactive element.</label></li>
+        <li><label><input type="checkbox">Confirm the skip link works.</label></li>
+        <li><label><input type="checkbox">Confirm the menu exposes accurate expanded and collapsed state.</label></li>
+        <li><label><input type="checkbox">Confirm choice results are announced through an aria-live region.</label></li>
+        <li><label><input type="checkbox">Confirm figures have text alternatives.</label></li>
+        <li><label><input type="checkbox">Confirm no lesson requires dragging and no quiz is timed.</label></li>
+        <li><label><input type="checkbox">Confirm reduced-motion mode removes unnecessary animation.</label></li>
+        <li><label><input type="checkbox">Confirm dark mode remains readable.</label></li>
+        <li><label><input type="checkbox">Confirm 200% text zoom does not hide essential controls.</label></li>
+      </ul>
+    </section>
+
+    <section class="section testing-checklist-section">
+      <h2>Pilot feedback form</h2>
+      <ul class="testing-checklist">
+        <li><label><input type="checkbox">Open <a href="feedback.html">Pilot Feedback</a> and confirm role and course-path validation works.</label></li>
+        <li><label><input type="checkbox">Complete ratings and open comments, then submit the form.</label></li>
+        <li><label><input type="checkbox">Confirm an email is prepared for <a href="mailto:lmcgaffie@angelo.edu">lmcgaffie@angelo.edu</a>.</label></li>
+        <li><label><input type="checkbox">Confirm the structured summary remains visible if no email app opens.</label></li>
+        <li><label><input type="checkbox">Confirm <strong>Copy feedback</strong> and <strong>Download feedback JSON</strong> work.</label></li>
+        <li><label><input type="checkbox">Confirm the form does not store responses in local storage.</label></li>
+        <li><label><input type="checkbox">Confirm the privacy warning is visible.</label></li>
+      </ul>
+    </section>
+
+    <section class="section testing-checklist-section">
+      <h2>Browser console and final readiness</h2>
+      <ul class="testing-checklist">
+        <li><label><input type="checkbox">Confirm no uncaught JavaScript error appears on the landing page, onboarding, Foundations, or AI Quest.</label></li>
+        <li><label><input type="checkbox">Confirm no missing asset or 404 appears for figures, scripts, or styles.</label></li>
+        <li><label><input type="checkbox">Run <code>node scripts/validate-site.mjs</code> and confirm validation passes.</label></li>
+        <li><label><input type="checkbox">Confirm GitHub Actions passes and record the deployed commit SHA.</label></li>
+        <li><label><input type="checkbox">Give testers the public URL and Pilot Feedback link.</label></li>
+        <li><label><input type="checkbox">Assign different testers to different lesson ranges.</label></li>
+        <li><label><input type="checkbox">Preserve returned feedback using de-identified pilot IDs.</label></li>
+        <li><label><input type="checkbox">Use the pilot feedback protocol to code and prioritize findings.</label></li>
+      </ul>
+    </section>
+  </div>
+</main>
+<footer data-site-footer></footer>
+<script type="module">
+  import { initPage } from "./assets/site.js";
+  initPage("testing-checklist.html");
+</script>
+</body>
+</html>

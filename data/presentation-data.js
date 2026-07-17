@@ -12,7 +12,7 @@ export const PRESENTATION_SLIDES = [
   { id: "slide-07", title: "AI Is Already Part of Academic Life", sourceIds: ["d2l-tyton-2026", "marchese-marchese-2026"] },
   { id: "slide-08", title: "Digital Systems Shape Other Literacies", sourceIds: ["finra-nfcs-2025", "finra-knowledge-2025", "cee-survey-states-2026"] },
   { id: "slide-09", title: "One Entry Point Will Not Fit Every Learner", sourceIds: ["lemire-xu-hahn-2025", "gao-kohnen-2026"] },
-  { id: "slide-10", title: "The Library Can Convene Without Owning Everything", sourceIds: ["acrl-framework-2016", "acrl-standards-2026", "acrl-contributions-2016"] },
+  { id: "slide-10", title: "The Library Can Coordinate Without Owning Everything", sourceIds: ["acrl-framework-2016", "acrl-standards-2026", "acrl-contributions-2016"] },
   { id: "slide-11", title: "A Working Open-Source Prototype Already Exists", sourceIds: [] },
   { id: "slide-12", title: "One Complete Learning Cycle", sourceIds: [] },
   { id: "slide-13", title: "The Pilot Is a Question, Not a Conclusion", sourceIds: [] },
@@ -20,7 +20,7 @@ export const PRESENTATION_SLIDES = [
   { id: "slide-15", title: "A Six-Week Formative Pilot", sourceIds: [] },
   { id: "slide-16", title: "What Would Count as Useful Evidence?", sourceIds: [] },
   { id: "slide-17", title: "This Is Both Technical and Adaptive Work", sourceIds: ["randall-coakley-2007", "uhl-bien-arena-2018"] },
-  { id: "slide-18", title: "The Pilot Can Become a Real Organizational Case Study", sourceIds: ["angelo-edea-assignment-2026"] },
+  { id: "slide-18", title: "Library Participation Can Scale With the Evidence", sourceIds: [] },
   { id: "slide-19", title: "What Do You See From the Library’s Perspective?", sourceIds: [] },
   { id: "slide-20", title: "What Is the Smallest Responsible Test?", sourceIds: [] },
   { id: "slide-21", title: "References", sourceIds: [] }

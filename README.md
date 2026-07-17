@@ -104,7 +104,8 @@ The course now includes a privacy-safe pilot workflow for a small library and st
 
 - Public form: `feedback.html`
 - Destination: `lmcgaffie@angelo.edu`
-- Full checklist: `TESTING-CHECKLIST.md`
+- Browser-ready checklist: [`testing-checklist.html`](testing-checklist.html)
+- Maintainer source: `TESTING-CHECKLIST.md`
 - Review and coding protocol: `docs/PILOT_FEEDBACK_PROTOCOL.md`
 
 The feedback framework measures organization and support, challenge and pacing, assessment alignment,

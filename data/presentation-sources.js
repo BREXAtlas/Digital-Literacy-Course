@@ -60,25 +60,6 @@ export const PRESENTATION_SOURCES = [
     notes: "The accompanying ACRL page describes more than 60 campus project reports."
   },
   {
-    id: "angelo-edea-assignment-2026",
-    shortCitation: "Angelo State University, 2026",
-    apa: "Angelo State University. (2026). Organizational challenge case study and change plan assignment [Course assignment, EDEA 6302 Leadership Theories].",
-    apaHtml: "Angelo State University. (2026). <em>Organizational challenge case study and change plan assignment</em> [Course assignment, EDEA 6302 Leadership Theories].",
-    title: "Organizational Challenge Case Study and Change Plan Assignment",
-    authorOrOrganization: "Angelo State University",
-    year: "2026",
-    url: "",
-    doi: "",
-    sourceType: "Unpublished course assignment",
-    peerReviewed: false,
-    usEvidence: false,
-    slideIds: ["slide-18"],
-    verifiedDate: "2026-07-16",
-    support: "Provides the four-part course-assignment structure used to connect the pilot to an organizational case study.",
-    limitation: "This is an unpublished course assignment, not research evidence, and the uploaded assignment document is not published or linked.",
-    notes: "Included as required course context only."
-  },
-  {
     id: "cee-survey-states-2026",
     shortCitation: "Council for Economic Education, 2026",
     apa: "Council for Economic Education. (2026). 2026 survey of the states. https://www.councilforeconed.org/survey-of-the-states/",

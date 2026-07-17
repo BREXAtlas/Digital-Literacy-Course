@@ -29,7 +29,7 @@ view without changing the slide content.
 
 ## Slide sequence
 
-The sequence moves from general evidence to the specific prototype, a bounded pilot, an organizational lens,
+The sequence moves from general evidence to the specific prototype, a bounded pilot, possible library roles,
 and decisions. Do not merge, omit, or reorder slides; the APA references remain a separate final slide.
 
 | Slide | Title | Working purpose or visual |
@@ -43,7 +43,7 @@ and decisions. Do not merge, omit, or reorder slides; the APA references remain 
 | 7 | AI Is Already Part of Academic Life | Compare weekly AI use by role and distinguish national findings from local usage. |
 | 8 | Digital Systems Shape Other Literacies | Show three brief FINRA signals; treat Financial Futures only as later ecosystem proof. |
 | 9 | One Entry Point Will Not Fit Every Learner | Compare four strengths-based learner pathways without deficit framing. |
-| 10 | The Library Can Convene Without Owning Everything | Use the library hub-and-spoke to show coordination across existing expertise. |
+| 10 | The Library Can Coordinate Without Owning Everything | Use the library hub-and-spoke to show coordination across existing expertise. |
 | 11 | A Working Open-Source Prototype Already Exists | Inventory the Digital Literacy prototype and link its maps and feedback route. |
 | 12 | One Complete Learning Cycle | Demonstrate a Digital Literacy scenario-to-feedback cycle in guest mode. |
 | 13 | The Pilot Is a Question, Not a Conclusion | Present the ten questions the pilot must answer. |
@@ -51,7 +51,7 @@ and decisions. Do not merge, omit, or reorder slides; the APA references remain 
 | 15 | A Six-Week Formative Pilot | Show the proposed July-September timeline and approval caveat. |
 | 16 | What Would Count as Useful Evidence? | Organize student, learning, and professional-review evidence plus draft criteria. |
 | 17 | This Is Both Technical and Adaptive Work | Compare technical and adaptive work and show the adaptive experiment cycle. |
-| 18 | The Pilot Can Become a Real Organizational Case Study | Map Diagnose, Leadership Lens, One-Year Plan, and Reflect. |
+| 18 | Library Participation Can Scale With the Evidence | Compare four bounded participation options without treating any as a commitment. |
 | 19 | What Do You See From the Library's Perspective? | Use ten prompts and the non-storing discussion worksheet. |
 | 20 | What Is the Smallest Responsible Test? | Seek five decisions and link feedback, testing, and course-home routes. |
 | 21 | References | Provide the complete, alphabetized APA 7 registry output. |
@@ -93,11 +93,13 @@ trap focus. After entering, exiting, or closing a panel, return focus to a logic
 
 ## Live demonstration runbook
 
-Slide 12 is the only live course demonstration. Open the relative Digital Literacy routes in a separate tab:
+Slide 12 is the only live course demonstration. Its buttons use complete public Digital Literacy URLs and load
+in the current tab so popup blocking cannot produce a blank tab. Use the browser's Back command to return to
+the presentation:
 
-- `foundations.html?ep=ep09` for source selection
-- `ai-quest.html?q=q11` for AI citation and disclosure
-- `feedback.html` for pilot feedback
+- `https://brexatlas.github.io/Digital-Literacy-Course/foundations.html?ep=ep09&generic=1` for source selection
+- `https://brexatlas.github.io/Digital-Literacy-Course/ai-quest.html?q=q11&generic=1` for AI citation and disclosure
+- `https://brexatlas.github.io/Digital-Literacy-Course/feedback.html` for pilot feedback
 
 Begin in guest mode. Show the lesson visual, choose one decision, point out the consequence inside the selected
 card, complete the knowledge check, open the source drawer, and finish at the feedback form. Do not enter real
@@ -186,8 +188,7 @@ reference grid is rebuilt from the registry, then confirm alphabetical order, ha
 links, two columns on wide screens, one column on small screens, and the complete untruncated list in print.
 
 Every source ID cited by slide text or chart data must render on slide 21, and no unused placeholder reference
-should appear. The Angelo State EDEA 6302 assignment is cited as a course assignment only; do not publish or
-link the uploaded assignment document.
+should appear.
 
 ## Accessibility and interaction testing
 
@@ -223,22 +224,6 @@ Presenter notes remain hidden in ordinary print output. To include them, open
 `presentation.html?notes=1` (a slide hash may follow the query) before printing. Check print preview at Letter
 and A4 sizes before sharing a PDF, especially slides with charts, the pilot timeline, and the full references.
 
-## EDEA 6302 organizational case-study use
-
-Slide 18 maps presentation and pilot evidence to the four assignment stages:
-
-1. **Diagnose:** describe organizational context, stakeholders, the challenge, contributing factors, and a
-   defensible problem/root-cause statement using meeting and pilot evidence.
-2. **Select the leadership lens:** explain how Adaptive Leadership might fit, its mechanism, action
-   implications, conditions for success, and limitations.
-3. **Build the one-year change plan:** only after diagnosis, define vision, goals, change agents, resistance,
-   resources, constraints, quarterly actions, communication, and evaluation.
-4. **Reflect:** examine theory in action, its limits, personal leadership learning, and what should be revised.
-
-Use the July working session and any authorized pilot to collect diagnostic evidence, distinguish participant
-perspectives, and document decisions. Do not treat the deck as proof of a predetermined problem, expose private
-participant information, or publish the assignment document itself.
-
 ## Diagnose before prescribing
 
 The course is a working prototype, not evidence that the library has a confirmed local problem or should own
@@ -247,9 +232,9 @@ ownership, and the smallest responsible next action. Stakeholders may recommend 
 step, continuation, integration elsewhere, pausing, or discontinuation. Each is a legitimate evidence-based
 outcome.
 
-Adaptive Leadership is therefore a provisional lens, not a settled diagnosis. Broken links, navigation,
-accessibility defects, and source errors are technical work; responsibility, legitimacy, competing
+Adaptive Leadership is therefore a provisional discussion lens, not a settled diagnosis. Broken links,
+navigation, accessibility defects, and source errors are technical work; responsibility, legitimacy, competing
 expectations, cross-unit coordination, and sustainability may be adaptive work. Library, faculty, student, IT,
 accessibility, advising, and student-success stakeholders must first help confirm which challenge exists, who
 experiences it, which current services address it, and whether adaptation is actually required. Only then
-should the case study commit to that lens or a change plan.
+should participants decide whether that lens is useful and what, if anything, to test next.
