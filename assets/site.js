@@ -13,6 +13,7 @@ const NAV_ITEMS = [
   { href: "achievements.html", label: "Achievements" },
   { href: "sources.html", label: "Sources" },
   { href: "instructor-guide.html", label: "Instructor Guide" },
+  { href: "presentation.html", label: "Presentation" },
   { href: "feedback.html", label: "Pilot Feedback" }
 ];
 
@@ -111,6 +112,7 @@ export function renderFooter() {
       and <a href="${base}privacy.html">privacy model</a>.
     </p>
     <p>
+      <a href="${base}presentation.html">Presentation</a> ·
       <a href="${base}feedback.html">Send pilot feedback</a> ·
       <a href="${base}BRANDING-NOTICE.md">Branding notice</a> ·
       <a href="https://github.com/BREXAtlas/Digital-Literacy-Course" target="_blank" rel="noopener noreferrer">Source on GitHub</a> ·

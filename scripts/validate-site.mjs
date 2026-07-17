@@ -41,6 +41,8 @@ const REQUIRED_FILES = [
   "index.html", "foundations.html", "ai-quest.html", "journey.html", "achievements.html",
   "profile.html", "sources.html", "instructor-guide.html", "privacy.html", "disclaimer.html",
   "auth-callback.html", "onboarding.html", "feedback.html",
+  "presentation.html", "assets/presentation.css", "assets/presentation.js",
+  "assets/presentation-charts.js", "data/presentation-data.js", "data/presentation-sources.js",
   "assets/styles.css", "assets/print.css", "assets/site.js", "assets/profile-engine.js",
   "assets/personalization-engine.js", "assets/story-engine.js", "assets/quest-engine.js",
   "assets/game-engine.js", "assets/calculator-engine.js", "assets/source-renderer.js",
@@ -57,7 +59,7 @@ const REQUIRED_FILES = [
   "docs/OPEN_SOURCE_AI.md", "docs/SOURCE_POLICY.md", "docs/SOURCE_REVIEW_CHECKLIST.md",
   "docs/INSTRUCTOR_PILOT_GUIDE.md", "docs/ACCESSIBILITY.md", "docs/PRIVACY_MODEL.md",
   "docs/FINANCIAL_COURSE_HANDOFF.md", "docs/FINANCIAL_SHELL_PARITY.md",
-  "docs/PILOT_FEEDBACK_PROTOCOL.md", "TESTING-CHECKLIST.md",
+  "docs/PILOT_FEEDBACK_PROTOCOL.md", "docs/PRESENTATION_GUIDE.md", "TESTING-CHECKLIST.md",
   "scripts/validate-site.mjs", ".github/workflows/pages.yml",
   "README.md", "QUICKSTART.md", "CONTRIBUTING.md", "CODE_OF_CONDUCT.md", "ROADMAP.md",
   "SUPABASE-SETUP.md", "DEPLOYMENT.md", "BRANDING-NOTICE.md", "LICENSE.md"
@@ -66,12 +68,12 @@ const REQUIRED_FILES = [
 const HTML_FILES = [
   "index.html", "foundations.html", "ai-quest.html", "journey.html", "achievements.html",
   "profile.html", "sources.html", "instructor-guide.html", "privacy.html", "disclaimer.html",
-  "auth-callback.html", "onboarding.html", "feedback.html"
+  "auth-callback.html", "onboarding.html", "feedback.html", "presentation.html"
 ];
 
 const REQUIRED_NAV_ORDER = [
   "index.html", "foundations.html", "ai-quest.html", "journey.html", "achievements.html",
-  "sources.html", "instructor-guide.html", "feedback.html"
+  "sources.html", "instructor-guide.html", "presentation.html", "feedback.html"
 ];
 
 async function checkRequiredFiles() {
@@ -106,6 +108,151 @@ async function checkNavAndMenu() {
     fail("Mobile menu open state is missing from CSS");
   }
   pass("Mobile menu structure and positioning checked");
+}
+
+async function checkPresentation() {
+  const html = await read("presentation.html");
+  const css = await read("assets/presentation.css");
+  const js = await read("assets/presentation.js");
+  const chartsJs = await read("assets/presentation-charts.js");
+  const { PRESENTATION_SLIDES, PRESENTATION_CHARTS } = await import(
+    pathToFileURL(path.join(ROOT, "data/presentation-data.js"))
+  );
+  const { PRESENTATION_SOURCES } = await import(
+    pathToFileURL(path.join(ROOT, "data/presentation-sources.js"))
+  );
+
+  const slideTags = [...html.matchAll(/<section\b[^>]*class="[^"]*\bp-slide\b[^"]*"[^>]*data-slide\b[^>]*>/g)].map((match) => match[0]);
+  const slideIds = slideTags.map((tag) => tag.match(/\bid="([^"]+)"/)?.[1]).filter(Boolean);
+  if (slideTags.length !== 21) fail(`Presentation must contain exactly 21 slides; found ${slideTags.length}`);
+  if (new Set(slideIds).size !== 21) fail("Presentation slide IDs must be unique");
+  const expectedSlideIds = Array.from({ length: 21 }, (_, index) => `slide-${String(index + 1).padStart(2, "0")}`);
+  if (JSON.stringify(slideIds) !== JSON.stringify(expectedSlideIds)) {
+    fail(`Presentation slide IDs or order are incorrect: ${JSON.stringify(slideIds)}`);
+  }
+  if (!/id="slide-21"[^>]*data-reference-slide/.test(html)) fail("Slide 21 must be the APA references slide");
+  if ((html.match(/class="presenter-notes"/g) || []).length !== 21) fail("Every presentation slide must have presenter notes");
+  if ((html.match(/data-open-sources/g) || []).length < 9) fail("Evidence slides must provide source-drawer buttons");
+
+  if (PRESENTATION_SLIDES.length !== 21) fail(`Presentation data must list 21 slides; found ${PRESENTATION_SLIDES.length}`);
+  if (new Set(PRESENTATION_SLIDES.map((slide) => slide.id)).size !== 21) fail("Presentation data contains duplicate slide IDs");
+  if (PRESENTATION_SLIDES.at(-1)?.id !== "slide-21" || PRESENTATION_SLIDES.at(-1)?.title !== "References") {
+    fail("Presentation data must identify Slide 21 as References");
+  }
+
+  const sourceIds = new Set(PRESENTATION_SOURCES.map((source) => source.id));
+  if (sourceIds.size !== PRESENTATION_SOURCES.length) fail("Presentation source registry contains duplicate IDs");
+  const citedSourceIds = new Set();
+  for (const slide of PRESENTATION_SLIDES) {
+    if (!slideIds.includes(slide.id)) fail(`Presentation data references a missing slide: ${slide.id}`);
+    for (const sourceId of slide.sourceIds || []) {
+      citedSourceIds.add(sourceId);
+      if (!sourceIds.has(sourceId)) fail(`${slide.id}: unknown presentation source ID ${sourceId}`);
+    }
+    const tag = slideTags.find((candidate) => candidate.includes(`id="${slide.id}"`));
+    const htmlSourceIds = (tag?.match(/data-source-ids="([^"]*)"/)?.[1] || "").split(/\s+/).filter(Boolean);
+    if (JSON.stringify(htmlSourceIds) !== JSON.stringify(slide.sourceIds || [])) {
+      fail(`${slide.id}: HTML source IDs do not match structured presentation data`);
+    }
+  }
+
+  for (const source of PRESENTATION_SOURCES) {
+    if (!source.id || !source.shortCitation || !source.apa || !source.apaHtml || !source.title || !source.authorOrOrganization || !source.year) {
+      fail(`Presentation source ${source.id || "unknown"} has incomplete metadata or APA text`);
+    }
+    if (source.verifiedDate !== "2026-07-16") fail(`${source.id}: unexpected source verification date ${source.verifiedDate}`);
+    if (source.url && !source.url.startsWith("https://")) fail(`${source.id}: external source URL must use HTTPS`);
+    if (source.doi && !source.doi.startsWith("https://doi.org/")) fail(`${source.id}: DOI must be an HTTPS DOI URL`);
+    if (!citedSourceIds.has(source.id)) fail(`Unused presentation source registry entry: ${source.id}`);
+    if (!source.slideIds?.length || source.slideIds.some((id) => !slideIds.includes(id))) {
+      fail(`${source.id}: missing or invalid slideIds metadata`);
+    }
+  }
+
+  const chartIds = new Set();
+  for (const chart of PRESENTATION_CHARTS) {
+    if (chartIds.has(chart.id)) fail(`Duplicate presentation chart ID: ${chart.id}`);
+    chartIds.add(chart.id);
+    if (!slideIds.includes(chart.slideId)) fail(`${chart.id}: chart uses an unknown slide ID ${chart.slideId}`);
+    if (!html.includes(`data-chart-id="${chart.id}"`)) fail(`${chart.id}: presentation page has no chart container`);
+    if (!chart.title || !chart.takeaway || !chart.sourceNote) fail(`${chart.id}: missing visible chart title, takeaway, or source note`);
+    if (!chart.limitation) fail(`${chart.id}: missing limitation/context note`);
+    if (!chart.accessibleSummary) fail(`${chart.id}: missing text alternative`);
+    if (!chart.tableHeaders?.length || !chart.tableRows?.length) fail(`${chart.id}: missing accessible data table`);
+    for (const sourceId of chart.sourceIds || []) {
+      citedSourceIds.add(sourceId);
+      if (!sourceIds.has(sourceId)) fail(`${chart.id}: unknown chart source ID ${sourceId}`);
+    }
+  }
+  if (PRESENTATION_CHARTS.length !== 8) fail(`Expected 8 structured presentation charts, found ${PRESENTATION_CHARTS.length}`);
+  for (const token of ["data-chart-table", "data-chart-limitation", "data-chart-text-alternative", "data-chart-source"]) {
+    if (!chartsJs.includes(token)) fail(`Chart renderer is missing ${token}`);
+  }
+
+  const requiredChartValues = new Map([
+    ["nces-aps-age", [28, 26, 31, 35, 40]],
+    ["d2l-weekly-ai", [71, 61, 52]],
+    ["finra-emergency-savings", [53, 46]],
+    ["finra-mobile-banking", [81]],
+    ["finra-inflation-knowledge", [34, 44]],
+    ["pilot-composition", [[10, 12], [3, 4], [12, 18], [4, 6]]]
+  ]);
+  for (const [id, expected] of requiredChartValues) {
+    const chart = PRESENTATION_CHARTS.find((candidate) => candidate.id === id);
+    if (!chart || JSON.stringify(chart.values) !== JSON.stringify(expected)) {
+      fail(`${id}: structured values do not match the presentation specification`);
+    }
+  }
+
+  const requiredInteractionTokens = [
+    "data-start-presentation", "data-previous-slide", "data-next-slide", "data-toggle-fullscreen",
+    "data-toggle-notes", "data-open-overview", "data-print-presentation", "data-exit-presentation",
+    "ArrowRight", "ArrowLeft", "PageDown", "PageUp", "Home", "End", "fullscreenchange",
+    "aria-current", "aria-live", "history.replaceState"
+  ];
+  const interactionSurface = `${html}\n${js}`;
+  for (const token of requiredInteractionTokens) {
+    if (!interactionSurface.includes(token)) fail(`Presentation interaction is missing ${token}`);
+  }
+
+  const requiredDiagramTokens = [
+    "p-ecosystem", "p-bridge", "p-hub", "p-process", "p-chart__timeline", "p-chart__dashboard",
+    "p-compare", "p-cycle", "p-stage-grid"
+  ];
+  for (const token of requiredDiagramTokens) {
+    if (!interactionSurface.includes(token) && !css.includes(token)) fail(`Presentation is missing required diagram component ${token}`);
+  }
+
+  for (const match of html.matchAll(/href="(http:[^"]+)"/g)) fail(`Presentation external link should use HTTPS: ${match[1]}`);
+  if (!js.includes('target="_blank" rel="noopener noreferrer"')) fail("Generated source links must use secure new-tab rel attributes");
+  if (!html.includes("data-reference-list") || !js.includes("PRESENTATION_SOURCES") || !js.includes("p-reference")) {
+    fail("Slide 21 must render every presentation source as an APA reference");
+  }
+
+  const relevantText = `${html}\n${css}\n${js}\n${chartsJs}\n${await read("data/presentation-data.js")}\n${await read("data/presentation-sources.js")}`;
+  if (/\[citation needed\]|lorem ipsum|TEMPLATE_PLACEHOLDER|\{\{[^}]+\}\}/i.test(relevantText)) {
+    fail("Presentation contains an unresolved citation or template placeholder");
+  }
+  if (!/@media\s+print/.test(css)) fail("Presentation print styling is missing");
+  if (!/prefers-reduced-motion/.test(css)) fail("Presentation reduced-motion handling is missing");
+  if (!/prefers-color-scheme:\s*dark/.test(css)) fail("Presentation dark-mode styling is missing");
+  if (!css.includes("aspect-ratio: 16 / 9")) fail("Desktop presentation mode must use a 16:9 frame");
+  if (!css.includes("aspect-ratio: auto")) fail("Mobile presentation mode must switch to vertical reading order");
+
+  const financialLinks = html.match(/https:\/\/brexatlas\.github\.io\/Financial-Literacy-Course\//g) || [];
+  if (financialLinks.length !== 2) fail(`Financial Futures should appear on Slides 8 and 11 only; found ${financialLinks.length} presentation links`);
+  if (/>\s*(?:Demonstrate|Open)\s+Financial|<iframe/i.test(html)) {
+    fail("Financial Futures must not appear as a live demonstration or iframe");
+  }
+  if (!html.includes("https://brexatlas.github.io/Digital-Literacy-Course/")) fail("Presentation is missing the main Digital Literacy live link");
+  for (const route of ["index.html", "foundations.html", "ai-quest.html", "feedback.html", "TESTING-CHECKLIST.md"]) {
+    if (!html.includes(route)) fail(`Presentation is missing required local route ${route}`);
+  }
+  if (/\b(?:reveal\.js|react|next\.js|vite)\b|<canvas/i.test(`${html}\n${js}`)) {
+    fail("Presentation must not add a proprietary slide framework, app framework, or Canvas chart dependency");
+  }
+
+  pass(`Presentation structure, ${PRESENTATION_CHARTS.length} charts, ${PRESENTATION_SOURCES.length} sources, controls, accessibility, and print rules checked`);
 }
 
 async function checkOnboardingFinalStep() {
@@ -366,6 +513,7 @@ async function checkJavaScriptSyntax() {
 
 await checkRequiredFiles();
 await checkNavAndMenu();
+await checkPresentation();
 await checkOnboardingFinalStep();
 await checkInternalLinksAndExternalRel();
 await checkFeedbackForm();

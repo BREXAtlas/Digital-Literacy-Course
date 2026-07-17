@@ -17,6 +17,10 @@ The workflow triggers on every push to `main` and supports manual `workflow_disp
 3. After the first successful run, the site is published at:
    `https://brexatlas.github.io/Digital-Literacy-Course/`
 
+The library working-session presentation is a static route in the same deployment:
+`https://brexatlas.github.io/Digital-Literacy-Course/presentation.html`. It requires no separate build or
+deployment step.
+
 ### Base path
 
 All internal links are relative (e.g. `foundations.html`, `assets/styles.css`), so the site works correctly
@@ -32,7 +36,8 @@ python3 -m http.server 8080
 # or: npx serve .
 ```
 
-Then open `http://localhost:8080/`.
+Then open `http://localhost:8080/`. The presentation is available locally at
+`http://localhost:8080/presentation.html`.
 
 ## Validation before deploying
 

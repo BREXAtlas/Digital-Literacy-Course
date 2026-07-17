@@ -112,6 +112,40 @@ usefulness and transfer, interest and fit, participation experience, visuals, ac
 technical reliability, perceived learning change, bugs, and feature requests. The static site does not store
 responses; it prepares an email and offers copy and JSON-download fallbacks.
 
+## Porter Henderson Library working-session presentation
+
+The website-based presentation at [`presentation.html`](presentation.html) supports the Porter Henderson
+Library working session on July 21, 2026. Its purpose is to help the group determine whether the library should
+help shape and test a small, evidence-generating Ram Ready Digital Literacy pilot. The meeting audience is
+Lawrence McGaffie (doctoral student and project creator), Emily Haynes (Instruction Librarian), Aubrey Madler
+(Executive Director of Library Services), and Kim Wirth (Assistant Director of Academic Engagement).
+
+The route opens as a normal webpage with all 21 slides available for review. Select **Start Presentation** to
+enter the one-slide-at-a-time mode. Presenter controls provide Previous, Next, fullscreen, notes, overview,
+print, and exit actions; the URL hash identifies the active slide, so links such as
+`presentation.html#slide-05` open a specific slide.
+
+Keyboard controls are:
+
+- `Right Arrow`, `Page Down`, or `Space` (outside interactive controls): next slide
+- `Left Arrow` or `Page Up`: previous slide
+- `Home` / `End`: first / last slide
+- `N`: show or hide presenter notes
+- `O`: open the slide overview
+- `Escape`: exit fullscreen or presentation mode
+
+**Print / Save as PDF** opens the browser print dialog. Print styling displays all slides, normally one per
+page, with a white background and complete references while hiding site and presentation controls. Presenter
+notes print only when the page is opened with `?notes=1`.
+
+Presentation evidence is maintained separately from curriculum sources in
+`data/presentation-sources.js`, and chart values are stored in `data/presentation-data.js`. Sources used for
+this working session were checked against their primary source pages on 2026-07-16. Maintainers must not infer
+or invent missing metadata: use an organization as author when appropriate, use `n.d.` only when no date is
+available, preserve HTTPS DOI URLs for journal articles, and update both the evidence slide and its APA 7 entry
+when a source changes. See [`docs/PRESENTATION_GUIDE.md`](docs/PRESENTATION_GUIDE.md) for the presenter and
+maintenance guide.
+
 ## Local run instructions
 
 See `QUICKSTART.md`. Short version: `python3 -m http.server 8080`, no build step required.
@@ -126,14 +160,14 @@ build framework required. See `DEPLOYMENT.md`.
 ```text
 index.html, foundations.html, ai-quest.html, journey.html, achievements.html,
 profile.html, sources.html, instructor-guide.html, privacy.html, disclaimer.html,
-auth-callback.html, onboarding.html, feedback.html
-assets/      — styles, visualizations, feedback, and all rendering/engine JS
-               (incl. calculator-engine.js digital tools)
-data/        — curriculum, source registry, onboarding options, fragments, achievements
+auth-callback.html, onboarding.html, feedback.html, presentation.html
+assets/      — styles, visualizations, feedback, presentation, and all rendering/engine JS
+               (incl. calculator-engine.js digital tools and presentation.js)
+data/        — curriculum, source registries, presentation data, onboarding options, fragments, achievements
 llm/         — open-source LLM provider abstraction + output validator
 supabase/    — optional migration
 docs/        — curriculum, architecture, personalization, AI, sources, accessibility,
-               instructor guide, and pilot protocol
+               instructor guide, pilot protocol, and presentation guide
 scripts/     — scripts/validate-site.mjs
 .github/     — Pages workflow + issue templates
 ```
