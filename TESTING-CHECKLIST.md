@@ -41,6 +41,9 @@ Use this checklist before and during the first library pilot.
 
 Test at minimum Episodes 1, 2, 5, 10, 15, and 20.
 
+- [ ] Confirm all 20 map nodes are links labeled available or completed.
+- [ ] Open Episode 20 from a fresh guest state without completing Episode 19.
+
 For each tested episode:
 
 - [ ] Opening narrative renders without a placeholder.
@@ -55,12 +58,15 @@ For each tested episode:
 - [ ] Every answer gives an explanation.
 - [ ] Continue works after all checks are answered.
 - [ ] Stars and achievements save.
-- [ ] The next episode unlocks.
+- [ ] The next episode remains available from both Continue and the map.
 - [ ] Refreshing preserves progress.
 
 ## AI Quest
 
 Test at minimum Quests 1, 5, 10, 15, and 20.
+
+- [ ] Confirm all 20 map nodes are links labeled available or completed.
+- [ ] Open Quest 20 from a fresh guest state without completing Quest 19.
 
 - [ ] No unresolved learner placeholders appear.
 - [ ] Lesson figure appears and supports the topic.
@@ -69,7 +75,7 @@ Test at minimum Quests 1, 5, 10, 15, and 20.
 - [ ] Source drawer works.
 - [ ] Knowledge checks and explanations work.
 - [ ] Continue saves progress.
-- [ ] The next quest unlocks.
+- [ ] The next quest remains available from both Continue and the map.
 
 ## My Journey and achievements
 

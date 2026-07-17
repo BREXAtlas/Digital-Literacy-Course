@@ -34,6 +34,10 @@ See `BRANDING-NOTICE.md`.
    coding, workflows, automation, and responsible agent building. These tiers describe **increasing system
    capability and risk**, not intelligence or a ranking of learners.
 
+All 20 Foundations episodes and all 20 AI quests are open from their maps without prerequisite completion.
+Progress, stars, and achievements are still recorded. Instructors and testers can assign a stable direct URL
+such as `foundations.html?ep=ep15&generic=1` or `ai-quest.html?q=q20&generic=1`.
+
 ## Who it's for
 
 Built with first-year Angelo State University students in mind, while remaining openly accessible to the

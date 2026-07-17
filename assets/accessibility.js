@@ -58,14 +58,23 @@ export function announce(message) {
   window.setTimeout(() => { region.textContent = message; }, 50);
 }
 
-export function renderAccessibleListAlternative(container, items, { getLabel, getState }) {
+export function renderAccessibleListAlternative(container, items, { getLabel, getState, getHref }) {
   if (!container) return;
   const list = document.createElement("ol");
   list.className = "accessible-map-list";
   for (const item of items) {
     const li = document.createElement("li");
     const state = getState(item);
-    li.textContent = `${getLabel(item)} — ${state}`;
+    const label = getLabel(item);
+    const href = getHref?.(item);
+    if (href) {
+      const link = document.createElement("a");
+      link.href = href;
+      link.textContent = label;
+      li.append(link, ` — ${state}`);
+    } else {
+      li.textContent = `${label} — ${state}`;
+    }
     list.appendChild(li);
   }
   container.innerHTML = "";

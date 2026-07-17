@@ -2,8 +2,8 @@
 //
 // Mirrors story-engine.js for the advanced, optional AI Quest path. Quest
 // tiers describe increasing system capability and risk — not intelligence,
-// human value, or a ranking of learners. Unlocks are based on learning
-// progress only.
+// human value, or a ranking of learners. Every quest is open for review,
+// testing, and assignment; completion is tracked separately.
 
 import { AI_QUESTS, AI_TIERS } from "../data/ai-quests.js";
 import { getSourcesByIds } from "../data/source-registry.js";
@@ -22,12 +22,9 @@ export function getTiers() {
   return AI_TIERS;
 }
 
-export function isQuestUnlocked(id, completedNodeIds) {
-  if (id === "q01") return true;
-  const index = AI_QUESTS.findIndex((q) => q.id === id);
-  if (index <= 0) return true;
-  const prev = AI_QUESTS[index - 1];
-  return completedNodeIds.includes(prev.id);
+export function isQuestUnlocked(id, _completedNodeIds = []) {
+  // Every real quest is intentionally open; prior completion is not required.
+  return Boolean(getQuest(id));
 }
 
 export async function renderQuestNarrative(quest, profile, useGenericStory) {

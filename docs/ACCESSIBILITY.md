@@ -15,10 +15,11 @@ shared helpers and `assets/styles.css` for focus/contrast rules.
 - No required audio; celebrations are visual/text and respect `prefers-reduced-motion`
 - Sufficient color contrast against both light and dark surfaces (see CSS custom properties)
 - No information communicated by color alone — story/quest map nodes use both a left-border color **and** a
-  text label ("completed"/"active"/"locked")
+  text label ("completed" or "available")
 - Responsive, mobile-first layout with large (44px minimum) touch targets
 - Plain-language explanations throughout lesson content
-- `renderAccessibleListAlternative()` provides a non-visual list alternative to the story/quest map
+- `renderAccessibleListAlternative()` provides a non-visual list alternative with working links to every
+  episode and quest
 - Print-friendly lesson summaries (`assets/print.css`)
 - No timed quizzes anywhere in the course
 - No inaccessible drag-only interactions; every tool uses standard form controls

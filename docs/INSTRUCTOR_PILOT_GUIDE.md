@@ -34,6 +34,16 @@ identify appropriate permission boundaries for an AI agent.
 - IT and cybersecurity awareness training
 - Faculty AI-policy preparation discussion
 
+## Assigning individual episodes and quests
+
+Every Foundations episode and AI quest is available without prerequisite completion. Progress, stars, and
+achievements remain tracked, but they do not control access. Use the maps to browse all items, or assign a
+stable direct URL. Add `generic=1` when a learner should receive assignment-safe second-person wording without
+completing onboarding.
+
+- Foundations: `foundations.html?ep=ep01&generic=1` through `foundations.html?ep=ep20&generic=1`
+- AI Quest: `ai-quest.html?q=q01&generic=1` through `ai-quest.html?q=q20&generic=1`
+
 ## Facilitation questions
 
 - What is one tradeoff (not a universal answer) this episode/quest presented?

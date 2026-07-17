@@ -1,5 +1,8 @@
 # Curriculum Map
 
+All 20 Foundations episodes and all 20 AI quests are available from their maps without prerequisite
+completion. The order below remains the recommended narrative sequence, not an access restriction.
+
 Every episode and quest links its topic to its primary sources. IDs match `data/foundations-story.js` and
 `data/ai-quests.js`. See `data/source-registry.js` for full source details.
 

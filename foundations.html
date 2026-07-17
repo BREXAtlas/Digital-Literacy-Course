@@ -16,6 +16,8 @@
     <p>A continuous storyline in four acts, from your first semester through a reliable digital workflow. Guides
       Roscoe and Bella will join you along the way — original interface characters, not official university
       speech.</p>
+    <p class="section"><strong>All 20 episodes are available.</strong> Choose any episode for review, testing, or
+      an assignment. Completion, stars, and achievements are still recorded, but earlier episodes are not prerequisites.</p>
     <div class="btn-row">
       <button class="btn btn-outline" id="toggle-list-view">Show accessible list view</button>
       <a class="btn btn-outline" href="journey.html">View my dashboard</a>
@@ -72,7 +74,7 @@
   import { initPage, currentProfile } from "./assets/site.js";
   import {
     getActs, getEpisodesForAct, getEpisode, applyChoiceEffect, INITIAL_SIM_STATE,
-    renderEpisodeNarrative, submitChoice, computeStars, completeEpisode, isEpisodeUnlocked
+    renderEpisodeNarrative, submitChoice, computeStars, completeEpisode
   } from "./assets/story-engine.js";
   import { resolveLearnerText } from "./assets/personalization-engine.js";
   import { renderLearningVisual } from "./assets/visualization-engine.js";
@@ -114,12 +116,11 @@
       wrap.className = "story-map";
 
       for (const ep of getEpisodesForAct(act.number)) {
-        const unlocked = isEpisodeUnlocked(ep.id, completed);
-        const nodeState = completed.includes(ep.id) ? "completed" : unlocked ? "active" : "locked";
-        const node = document.createElement(unlocked ? "a" : "span");
+        const nodeState = completed.includes(ep.id) ? "completed" : "available";
+        const node = document.createElement("a");
         node.className = "story-node";
         node.dataset.state = nodeState;
-        if (unlocked) node.href = `foundations.html?ep=${ep.id}`;
+        node.href = `foundations.html?ep=${ep.id}`;
         const stars = state.progress.foundations.stars[ep.id] || 0;
         node.innerHTML = `<span class="story-node__badge">${escapeHtml(ep.id.toUpperCase())} · ${escapeHtml(nodeState)}${stars ? " · " + "★".repeat(stars) : ""}</span><span>${escapeHtml(ep.title)}</span>`;
         wrap.appendChild(node);
@@ -137,7 +138,8 @@
         const all = getActs().flatMap((act) => getEpisodesForAct(act.number));
         renderAccessibleListAlternative(listEl, all, {
           getLabel: (ep) => `${ep.id.toUpperCase()}: ${ep.title}`,
-          getState: (ep) => completed.includes(ep.id) ? "Completed" : isEpisodeUnlocked(ep.id, completed) ? "Available" : "Locked"
+          getState: (ep) => completed.includes(ep.id) ? "Completed" : "Available",
+          getHref: (ep) => `foundations.html?ep=${ep.id}`
         });
       }
     });

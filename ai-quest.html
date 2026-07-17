@@ -14,7 +14,9 @@
   <div id="map-view">
     <h1>AI Digital Literacy Quest</h1>
     <p>Advanced and optional. These four tiers describe increasing AI system capability and risk — not
-      intelligence, human value, or a ranking of learners. Quests unlock based on learning progress.</p>
+      intelligence, human value, or a ranking of learners.</p>
+    <p class="section"><strong>All 20 quests are available.</strong> Choose any quest for review, testing, or an
+      assignment. Completion, stars, and achievements are still recorded, but earlier quests are not prerequisites.</p>
     <div class="btn-row">
       <button class="btn btn-outline" id="toggle-list-view">Show accessible list view</button>
       <a class="btn btn-outline" href="journey.html">View my dashboard</a>
@@ -77,7 +79,7 @@
   import { initPage, currentProfile } from "./assets/site.js";
   import {
     getTiers, getQuestsForTier, getQuest, renderQuestNarrative,
-    submitChoice, computeStars, completeQuest, isQuestUnlocked
+    submitChoice, computeStars, completeQuest
   } from "./assets/quest-engine.js";
   import { resolveLearnerText } from "./assets/personalization-engine.js";
   import { renderLearningVisual } from "./assets/visualization-engine.js";
@@ -133,12 +135,11 @@
       wrap.className = "story-map";
 
       for (const quest of getQuestsForTier(tier.number)) {
-        const unlocked = isQuestUnlocked(quest.id, completed);
-        const nodeState = completed.includes(quest.id) ? "completed" : unlocked ? "active" : "locked";
-        const node = document.createElement(unlocked ? "a" : "span");
+        const nodeState = completed.includes(quest.id) ? "completed" : "available";
+        const node = document.createElement("a");
         node.className = "story-node";
         node.dataset.state = nodeState;
-        if (unlocked) node.href = `ai-quest.html?q=${quest.id}`;
+        node.href = `ai-quest.html?q=${quest.id}`;
         const stars = state.progress.aiQuest.stars[quest.id] || 0;
         node.innerHTML = `<span class="story-node__badge">${escapeHtml(quest.id.toUpperCase())} · ${escapeHtml(nodeState)}${stars ? " · " + "★".repeat(stars) : ""}</span><span>${escapeHtml(quest.title)}</span>`;
         wrap.appendChild(node);
@@ -156,7 +157,8 @@
         const all = getTiers().flatMap((tier) => getQuestsForTier(tier.number));
         renderAccessibleListAlternative(listEl, all, {
           getLabel: (quest) => `${quest.id.toUpperCase()}: ${quest.title}`,
-          getState: (quest) => completed.includes(quest.id) ? "Completed" : isQuestUnlocked(quest.id, completed) ? "Available" : "Locked"
+          getState: (quest) => completed.includes(quest.id) ? "Completed" : "Available",
+          getHref: (quest) => `ai-quest.html?q=${quest.id}`
         });
       }
     });

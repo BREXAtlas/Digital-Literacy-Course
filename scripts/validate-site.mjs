@@ -389,12 +389,36 @@ async function checkCurriculumAndGuestRendering() {
   const { ACHIEVEMENTS } = await import(pathToFileURL(path.join(ROOT, "data/achievements.js")));
   const { resolveLearnerText } = await import(pathToFileURL(path.join(ROOT, "assets/personalization-engine.js")));
   const { LEARNING_VISUAL_IDS } = await import(pathToFileURL(path.join(ROOT, "assets/visualization-engine.js")));
+  const { isEpisodeUnlocked } = await import(pathToFileURL(path.join(ROOT, "assets/story-engine.js")));
+  const { isQuestUnlocked } = await import(pathToFileURL(path.join(ROOT, "assets/quest-engine.js")));
 
   if (FOUNDATIONS_EPISODES.length !== 20) fail(`Expected 20 foundation episodes, found ${FOUNDATIONS_EPISODES.length}`);
   else pass("All 20 foundation episodes exist");
 
   if (AI_QUESTS.length !== 20) fail(`Expected 20 AI quests, found ${AI_QUESTS.length}`);
   else pass("All 20 AI quests exist");
+
+  const closedEpisodes = FOUNDATIONS_EPISODES.filter((episode) => !isEpisodeUnlocked(episode.id, [])).map((episode) => episode.id);
+  const closedQuests = AI_QUESTS.filter((quest) => !isQuestUnlocked(quest.id, [])).map((quest) => quest.id);
+  if (closedEpisodes.length) fail(`Foundation episodes still gated without progress: ${closedEpisodes.join(", ")}`);
+  if (closedQuests.length) fail(`AI quests still gated without progress: ${closedQuests.join(", ")}`);
+  if (!closedEpisodes.length && !closedQuests.length) pass("All 20 episodes and all 20 quests are open without prerequisite progress");
+  if (isEpisodeUnlocked("ep99", []) || isQuestUnlocked("q99", [])) fail("Unknown curriculum IDs must not be treated as available");
+
+  const foundationsPage = await read("foundations.html");
+  const aiQuestPage = await read("ai-quest.html");
+  for (const [file, content, routeToken] of [
+    ["foundations.html", foundationsPage, "foundations.html?ep=${ep.id}"],
+    ["ai-quest.html", aiQuestPage, "ai-quest.html?q=${quest.id}"]
+  ]) {
+    if (!content.includes('document.createElement("a")')) fail(`${file}: map nodes must always render as links`);
+    if (!content.includes('"available"')) fail(`${file}: map nodes must expose an available state`);
+    if (!content.includes("getHref:")) fail(`${file}: accessible list must link to every curriculum item`);
+    if (!content.includes(routeToken)) fail(`${file}: missing stable lesson route pattern`);
+    if (/\?\s*"active"\s*:\s*"locked"|document\.createElement\(unlocked\s*\?/.test(content)) {
+      fail(`${file}: retains progress-gated map rendering`);
+    }
+  }
 
   const sourceIds = new Set(SOURCE_REGISTRY.map((source) => source.id));
   const achievementIds = new Set(ACHIEVEMENTS.map((achievement) => achievement.id));

@@ -46,12 +46,10 @@ export function getNextEpisodeId(id) {
   return ep ? ep.unlocks : null;
 }
 
-export function isEpisodeUnlocked(id, completedNodeIds) {
-  if (id === "ep01") return true;
-  const index = FOUNDATIONS_EPISODES.findIndex((e) => e.id === id);
-  if (index <= 0) return true;
-  const prev = FOUNDATIONS_EPISODES[index - 1];
-  return completedNodeIds.includes(prev.id);
+export function isEpisodeUnlocked(id, _completedNodeIds = []) {
+  // Every real episode is intentionally open for review, testing, and assignment.
+  // Completion remains tracked, but it never gates access to another episode.
+  return Boolean(getEpisode(id));
 }
 
 export function applyChoiceEffect(simState, effect = {}) {

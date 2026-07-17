@@ -217,8 +217,7 @@ main { max-width: var(--max-width); margin: 0 auto; padding: 1.25rem 1rem 4rem; 
   min-height: 44px;
 }
 .story-node[data-state="completed"] { border-left: 6px solid var(--success); }
-.story-node[data-state="active"] { border-left: 6px solid var(--gold-500); }
-.story-node[data-state="locked"] { border-left: 6px solid var(--border); opacity: 0.65; }
+.story-node[data-state="available"] { border-left: 6px solid var(--gold-500); }
 .story-node__badge { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--ink-soft); }
 
 .accessible-map-list { padding-left: 1.25rem; }

@@ -21,6 +21,9 @@ schema. Key fields: `openingNarrative`, `personalizationSlots`, `scenario`, `cho
 `longTermConsequences` (narrative text keyed by choice id), `recoveryPath`, `conceptExplanation` (the
 what/why/how/cost/risk/who-benefits framework), `knowledgeChecks`, `sourceIds`, `achievementId`, `unlocks`.
 
+The `unlocks` field identifies the recommended next item for the Continue action. It does not gate map access:
+all 20 episodes and all 20 quests remain directly available for review, testing, and assignment.
+
 ## Simulation variables
 
 A simplified educational simulation state (`INITIAL_SIM_STATE` in `story-engine.js`) tracks variables like
