@@ -34,11 +34,11 @@ export const STORY_FRAGMENTS_FOUNDATIONS = [
 
   // ---- Episode 3: organization style ----
   { slot: "ep03.context", matchTags: ["generic"],
-    text: "{{name}}'s folder system is new enough that {{subject}} hasn't yet built the habit of double-checking versions before submitting." },
+    text: "Taylor's folder system is still new, so Taylor has not yet developed the habit of checking file versions before submitting." },
   { slot: "ep03.context", matchTags: ["everything_in_downloads"],
-    text: "{{name}} is still getting used to having any folder system at all, after years of everything living in Downloads." },
+    text: "Taylor is still getting used to having a folder system after years of keeping everything in Downloads." },
   { slot: "ep03.context", matchTags: ["already_organized"],
-    text: "{{name}} is generally organized already, but version mix-ups can still catch even a careful system off guard." },
+    text: "Taylor is generally organized, but version mix-ups can still disrupt even a careful system." },
 
   // ---- Episode 4: deadline and submission context ----
   { slot: "ep04.context", matchTags: ["generic"],

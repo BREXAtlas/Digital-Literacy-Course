@@ -275,10 +275,10 @@ export const EPISODES_PART1 = [
     personalizationSlots: ["ep03.context"],
     approvedStoryFragments: ["ep03.context"],
     openingNarrative:
-      "{{name}} revised a paper's conclusion last night, but this morning {{subject}} isn't sure which file in the folder is actually the updated one.",
+      "Taylor, an English major at Angelo State, revised a paper's conclusion last night, but this morning Taylor is not sure which file contains the updated version.",
     scenario: {
       prompt:
-        "{{name}} revised the conclusion but the most recent item in Recent Files is actually an older draft that a friend re-opened for a look. The upload is due in ten minutes.",
+        "Taylor revised the conclusion, but the first item in Recent Files is an older draft that a study partner reopened. The upload is due in ten minutes.",
       type: "identify_missing_information"
     },
     choices: [
@@ -286,7 +286,7 @@ export const EPISODES_PART1 = [
         id: "a",
         text: "Open the file directly from the Final folder and check the first and last page",
         whyChosen: "This confirms the exact file that will actually be submitted, not just a guess based on recency.",
-        possibleBenefit: "Removes the guessing entirely — {{name}} sees exactly what the professor will see.",
+        possibleBenefit: "Removes the guesswork entirely — Taylor sees exactly what the professor will see.",
         possibleCost: "Takes an extra thirty seconds before uploading.",
         possibleRisk: "None significant.",
         immediateEffect: { fileOrganization: 3, submissionReliability: 4, resilience: 1 },
@@ -320,19 +320,19 @@ export const EPISODES_PART1 = [
       }
     ],
     immediateConsequences: {
-      a: "{{name}} submits with full confidence in the exact file uploaded.",
-      b: "{{name}} may submit the wrong file without realizing it until feedback arrives.",
-      c: "{{name}}'s folder now has several files all claiming to be 'Final.'"
+      a: "Taylor submits the assignment with full confidence that the correct file was uploaded.",
+      b: "Taylor may submit the wrong file without realizing the mistake until the professor's feedback arrives.",
+      c: "Taylor's folder now contains several files that all claim to be 'Final.'"
     },
     oneYearConsequences: {
-      a: "Opening the exact file before submission has become an automatic habit that prevents this mistake entirely.",
-      b: "Recurring version mix-ups create extra emails to professors asking for resubmission chances.",
-      c: "The mislabeling habit continues to create confusion in every subsequent assignment."
+      a: "A year later, Taylor automatically opens and checks the exact file before every submission.",
+      b: "A year later, recurring version mix-ups have led Taylor to send several emails requesting permission to resubmit assignments.",
+      c: "A year later, Taylor's habit of labeling multiple drafts 'Final' continues to create confusion."
     },
     longTermConsequences: {
-      a: "A reliable version-checking habit protects grades and reduces stress before every deadline.",
-      b: "Chronic version confusion can affect grades and professional credibility in group and workplace settings.",
-      c: "Meaningless labels eventually require rebuilding a naming system from scratch."
+      a: "Taylor's reliable version-checking habit protects grades and reduces stress before deadlines.",
+      b: "Taylor's recurring version confusion can affect grades and professional credibility in group and workplace settings.",
+      c: "Taylor eventually has to rebuild the naming system because the labels no longer distinguish one version from another."
     },
     recoveryPath:
       "If an old draft is submitted by mistake, emailing the professor immediately — before the deadline if possible, or right after with an honest explanation — and attaching the correct file usually resolves it. Most instructors respond well to a quick, honest correction.",
@@ -348,7 +348,7 @@ export const EPISODES_PART1 = [
       verifyNote: "This is a general workflow practice, not a specific platform feature — behavior of 'Recent Files' can vary by device and app."
     },
     realWorldExample:
-      "A composite student, Taylor, revised an essay's conclusion but uploaded an older file that had simply been reopened by a study partner. Because Recent Files showed that file first, Taylor didn't notice — the professor received a paper missing the final argument.",
+      "Taylor, an English major at Angelo State, revised an essay's conclusion but uploaded an older file that a study partner had reopened. Because Recent Files displayed that document first, Taylor did not notice the mistake, and the professor received a paper without the final argument.",
     knowledgeChecks: [
       {
         id: "kc1",
