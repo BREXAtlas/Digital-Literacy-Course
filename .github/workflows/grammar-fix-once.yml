@@ -1,0 +1,125 @@
+name: One-time Episode 3 grammar correction
+
+on:
+  push:
+    branches:
+      - grammar-only-episode3
+
+permissions:
+  contents: write
+
+jobs:
+  correct-copy:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: grammar-only-episode3
+          fetch-depth: 0
+
+      - name: Apply grammar-only content corrections
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          replacements = {
+              Path('data/foundations-episodes-part1.js'): [
+                  (
+                      '"{{name}} revised a paper\'s conclusion last night, but this morning {{subject}} isn\'t sure which file in the folder is actually the updated one."',
+                      '"Taylor, an English major at Angelo State, revised a paper\'s conclusion last night, but this morning Taylor is not sure which file contains the updated version."'
+                  ),
+                  (
+                      '"{{name}} revised the conclusion but the most recent item in Recent Files is actually an older draft that a friend re-opened for a look. The upload is due in ten minutes."',
+                      '"Taylor revised the conclusion, but the first item in Recent Files is an older draft that a study partner reopened. The upload is due in ten minutes."'
+                  ),
+                  (
+                      '"Removes the guessing entirely — {{name}} sees exactly what the professor will see."',
+                      '"Removes the guesswork entirely — Taylor sees exactly what the professor will see."'
+                  ),
+                  (
+                      'a: "{{name}} submits with full confidence in the exact file uploaded."',
+                      'a: "Taylor submits the assignment with full confidence that the correct file was uploaded."'
+                  ),
+                  (
+                      'b: "{{name}} may submit the wrong file without realizing it until feedback arrives."',
+                      'b: "Taylor may submit the wrong file without realizing the mistake until the professor\'s feedback arrives."'
+                  ),
+                  (
+                      'c: "{{name}}\'s folder now has several files all claiming to be \'Final.\'"',
+                      'c: "Taylor\'s folder now contains several files that all claim to be \'Final.\'"'
+                  ),
+                  (
+                      'a: "Opening the exact file before submission has become an automatic habit that prevents this mistake entirely."',
+                      'a: "A year later, Taylor automatically opens and checks the exact file before every submission."'
+                  ),
+                  (
+                      'b: "Recurring version mix-ups create extra emails to professors asking for resubmission chances."',
+                      'b: "A year later, recurring version mix-ups have led Taylor to send several emails requesting permission to resubmit assignments."'
+                  ),
+                  (
+                      'c: "The mislabeling habit continues to create confusion in every subsequent assignment."',
+                      'c: "A year later, Taylor\'s habit of labeling multiple drafts \'Final\' continues to create confusion."'
+                  ),
+                  (
+                      'a: "A reliable version-checking habit protects grades and reduces stress before every deadline."',
+                      'a: "Taylor\'s reliable version-checking habit protects grades and reduces stress before deadlines."'
+                  ),
+                  (
+                      'b: "Chronic version confusion can affect grades and professional credibility in group and workplace settings."',
+                      'b: "Taylor\'s recurring version confusion can affect grades and professional credibility in group and workplace settings."'
+                  ),
+                  (
+                      'c: "Meaningless labels eventually require rebuilding a naming system from scratch."',
+                      'c: "Taylor eventually has to rebuild the naming system because the labels no longer distinguish one version from another."'
+                  ),
+                  (
+                      '"A composite student, Taylor, revised an essay\'s conclusion but uploaded an older file that had simply been reopened by a study partner. Because Recent Files showed that file first, Taylor didn\'t notice — the professor received a paper missing the final argument."',
+                      '"Taylor, an English major at Angelo State, revised an essay\'s conclusion but uploaded an older file that a study partner had reopened. Because Recent Files displayed that document first, Taylor did not notice the mistake, and the professor received a paper without the final argument."'
+                  ),
+              ],
+              Path('data/story-fragments-foundations.js'): [
+                  (
+                      '"{{name}}\'s folder system is new enough that {{subject}} hasn\'t yet built the habit of double-checking versions before submitting."',
+                      '"Taylor\'s folder system is still new, so Taylor has not yet developed the habit of checking file versions before submitting."'
+                  ),
+                  (
+                      '"{{name}} is still getting used to having any folder system at all, after years of everything living in Downloads."',
+                      '"Taylor is still getting used to having a folder system after years of keeping everything in Downloads."'
+                  ),
+                  (
+                      '"{{name}} is generally organized already, but version mix-ups can still catch even a careful system off guard."',
+                      '"Taylor is generally organized, but version mix-ups can still disrupt even a careful system."'
+                  ),
+              ],
+          }
+
+          for path, pairs in replacements.items():
+              text = path.read_text(encoding='utf-8')
+              for old, new in pairs:
+                  count = text.count(old)
+                  if count != 1:
+                      raise SystemExit(f'{path}: expected one occurrence, found {count}: {old}')
+                  text = text.replace(old, new)
+              path.write_text(text, encoding='utf-8')
+
+          episode = Path('data/foundations-episodes-part1.js').read_text(encoding='utf-8')
+          start = episode.index('id: "ep03"')
+          end = episode.index('id: "ep04"')
+          ep03 = episode[start:end]
+          forbidden = ['{{name}}', '{{subject}}', 'composite student', 'fictional student', 'you isn\'t', 'you hasn\'t', 'your folder']
+          for token in forbidden:
+              if token.lower() in ep03.lower():
+                  raise SystemExit(f'Episode 3 still contains forbidden wording: {token}')
+          PY
+
+      - name: Remove one-time workflow and commit only copy changes
+        shell: bash
+        run: |
+          rm .github/workflows/grammar-fix-once.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/foundations-episodes-part1.js data/story-fragments-foundations.js .github/workflows/grammar-fix-once.yml
+          git commit -m "Correct Episode 3 grammar and named ASU-major example"
+          git push origin HEAD:grammar-only-episode3
