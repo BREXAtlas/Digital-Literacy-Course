@@ -1,3 +1,5 @@
+import { LESSON_CHARACTERS } from "./lesson-characters.js";
+
 // Ram Ready Digital Literacy — University Digital Literacy Foundations
 // Episodes 11-20 (Act III: Read, Cite, and Protect / Act IV: Share, Recover, and Succeed)
 // See docs/STORY_ARCHITECTURE.md and docs/CURRICULUM_MAP.md.
@@ -5,6 +7,7 @@
 export const EPISODES_PART2 = [
   {
     id: "ep11",
+    primaryStudent: LESSON_CHARACTERS.ep11,
     act: 3,
     title: "Read Academic Sources Without Drowning",
     subtitle: "A strategic first pass before reading every line",
@@ -18,10 +21,10 @@ export const EPISODES_PART2 = [
     personalizationSlots: ["ep11.context"],
     approvedStoryFragments: ["ep11.context"],
     openingNarrative:
-      "{{name}} opens a forty-page academic article, reads the first paragraph three times, and starts to wonder if academic research is simply impossible.",
+      "Tiana Robinson, a Computer Science major at Angelo State, opens a forty-page academic article, reads the first paragraph three times, and starts to wonder whether academic research is simply impossible.",
     scenario: {
       prompt:
-        "{{name}} has a research question and a long article. How should {{subject}} approach reading it under a real time limit?",
+        "Tiana Robinson has a research question and a long article. How should Tiana approach reading it under a real time limit?",
       type: "identify_missing_information"
     },
     choices: [
@@ -29,7 +32,7 @@ export const EPISODES_PART2 = [
         id: "a",
         text: "Preview the title, abstract, headings, figures, and limitations before deep reading",
         whyChosen: "A structured first pass builds a map of the article before committing to a full read.",
-        possibleBenefit: "Quickly reveals whether the article is even relevant, and where the key findings live.",
+        possibleBenefit: "Tiana Robinson quickly sees whether the article is relevant and where the key findings appear.",
         possibleCost: "Requires resisting the urge to read start to finish immediately.",
         possibleRisk: "None significant.",
         immediateEffect: { researchConfidence: 4, sourceJudgment: 2 },
@@ -63,22 +66,22 @@ export const EPISODES_PART2 = [
       }
     ],
     immediateConsequences: {
-      a: "{{name}} builds a clear map of the article before investing time in a full read.",
-      b: "{{name}} spends much more time and may lose the thread of the argument.",
-      c: "{{name}} finishes reading faster but risks overstating what the study actually found."
+      a: "Tiana Robinson builds a clear map of the article before investing time in a full read.",
+      b: "Tiana Robinson spends much more time and may lose the thread of the argument.",
+      c: "Tiana Robinson finishes reading faster but risks overstating what the study actually found."
     },
     oneYearConsequences: {
-      a: "Academic reading has become a manageable, repeatable process instead of a source of dread.",
+      a: "Tiana Robinson has made academic reading a manageable, repeatable process instead of a source of dread.",
       b: "Long readings continue to feel like a major time burden every semester.",
       c: "Occasional overclaiming in papers draws professor feedback about unsupported conclusions."
     },
     longTermConsequences: {
-      a: "Strategic reading skills support efficient research throughout a full degree and any evidence-based career.",
+      a: "Tiana Robinson's strategic reading skills support efficient research throughout a full degree and any evidence-based career.",
       b: "Inefficient reading habits can limit how much material can realistically be covered under real deadlines.",
       c: "A pattern of missing limitations sections can undermine academic credibility over time."
     },
     recoveryPath:
-      "A reading approach can be adjusted mid-assignment — switching to a first-pass strategy partway through, even after struggling with a full linear read, still saves meaningful time.",
+      "Tiana Robinson can adjust the reading approach mid-assignment; switching to a first-pass strategy after struggling with a full linear read still saves meaningful time.",
     conceptExplanation: {
       what: "A strategic first pass means previewing an article's title, abstract, headings, figures, and limitations before reading it in full.",
       why: "Academic articles are structured to support this kind of preview — the abstract and headings exist specifically to orient a reader quickly.",
@@ -91,7 +94,7 @@ export const EPISODES_PART2 = [
       verifyNote: "Article structure conventions can vary somewhat by discipline — check field-specific guidance for unusual formats."
     },
     realWorldExample:
-      "A composite first-year student froze after repeatedly rereading the first paragraph of a dense article. Using a structured first pass — abstract, headings, findings, limitations — turned the same article into a manageable twenty-minute task with a clear takeaway.",
+      "Tiana Robinson froze after repeatedly rereading the first paragraph of a dense article. Using a structured first pass — abstract, headings, findings, limitations — turned the same article into a manageable twenty-minute task with a clear takeaway.",
     knowledgeChecks: [
       {
         id: "kc1",
@@ -129,9 +132,10 @@ export const EPISODES_PART2 = [
 
   {
     id: "ep12",
+    primaryStudent: LESSON_CHARACTERS.ep12,
     act: 3,
-    title: "Separate Quotes, Paraphrases, and Your Ideas",
-    subtitle: "Keep a citation trail while you research",
+    title: "Separate Quotes, Paraphrases, and Original Ideas",
+    subtitle: "Keep Owen Park's citation trail clear during research",
     estimatedMinutes: 10,
     learningObjectives: [
       "Label direct quotations immediately during note-taking",
@@ -142,10 +146,10 @@ export const EPISODES_PART2 = [
     personalizationSlots: ["ep12.context"],
     approvedStoryFragments: ["ep12.context"],
     openingNarrative:
-      "{{name}} copies a striking sentence into a notes document while researching, planning to properly cite it later — but 'later' gets away from {{object}}.",
+      "Owen Park, a Biology major at Angelo State, copies a striking sentence into a notes document while researching and plans to cite it later, but that plan slips away.",
     scenario: {
       prompt:
-        "Weeks later, {{name}} finds that sentence again in the notes, no longer marked as a quotation, and isn't sure anymore whether it was copied or paraphrased.",
+        "Weeks later, Owen Park finds that sentence again in the notes, no longer marked as a quotation, and isn't sure anymore whether it was copied or paraphrased.",
       type: "identify_quotation_vs_paraphrase"
     },
     choices: [
@@ -153,7 +157,7 @@ export const EPISODES_PART2 = [
         id: "a",
         text: "Track down the original source and either quote it properly or paraphrase and cite it correctly",
         whyChosen: "Fixing the ambiguity now protects academic integrity later.",
-        possibleBenefit: "Removes any risk of accidental plagiarism from that note.",
+        possibleBenefit: "Owen Park removes the risk of accidental plagiarism from that note.",
         possibleCost: "Takes time to relocate the original source.",
         possibleRisk: "None significant.",
         immediateEffect: { citationIntegrity: 4, integrity: 2 },
@@ -187,22 +191,22 @@ export const EPISODES_PART2 = [
       }
     ],
     immediateConsequences: {
-      a: "{{name}}'s notes and paper are fully protected from this specific integrity risk.",
-      b: "{{name}} may unknowingly submit unattributed source language.",
-      c: "{{name}}'s paper is safe, but loses a potentially useful piece of evidence."
+      a: "Owen Park's notes and paper are fully protected from this specific integrity risk.",
+      b: "Owen Park may unknowingly submit unattributed source language.",
+      c: "Owen Park's paper is safe, but loses a potentially useful piece of evidence."
     },
     oneYearConsequences: {
-      a: "{{name}}'s citation practices are consistently reliable across every research assignment.",
+      a: "Owen Park's citation practices are consistently reliable across every research assignment.",
       b: "An accidental plagiarism issue could surface in a future course, with real academic consequences.",
       c: "Research quality is slightly limited by cautious over-removal of unclear notes."
     },
     longTermConsequences: {
-      a: "Reliable citation habits protect academic integrity throughout a full degree and any research-based career.",
+      a: "Owen Park's reliable citation habits protect academic integrity throughout a full degree and any research-based career.",
       b: "Repeated citation-trail gaps significantly raise the risk of an eventual integrity violation, even without intent to deceive.",
       c: "Removing uncertain material is safer than misusing it, but doesn't build the deeper skill needed to avoid the problem long-term."
     },
     recoveryPath:
-      "An ambiguous note can always be resolved by returning to the original source — this is a normal part of careful research, not a sign of failure.",
+      "Owen Park can resolve an ambiguous note by returning to the original source; this is a normal part of careful research, not a sign of failure.",
     conceptExplanation: {
       what: "Keeping a citation trail means labeling direct quotations, paraphrases, and personal analysis clearly and separately at the moment notes are taken.",
       why: "It exists because accidental plagiarism often begins in messy notes, not intentional deception — a copied sentence can lose its quotation marks long before a paper is written.",
@@ -215,7 +219,7 @@ export const EPISODES_PART2 = [
       verifyNote: "Citation-trail practices apply across citation styles — check the specific formatting rules required by the assignment separately."
     },
     realWorldExample:
-      "A composite student copied a sentence into research notes without quotation marks, forgot it had been copied, and later submitted it as original wording — the integrity issue began weeks earlier, during a rushed note-taking session, not at the moment of writing.",
+      "Owen Park copied a sentence into research notes without quotation marks, forgot it had been copied, and later submitted it as original wording — the integrity issue began weeks earlier, during a rushed note-taking session, not at the moment of writing.",
     knowledgeChecks: [
       {
         id: "kc1",
@@ -253,6 +257,7 @@ export const EPISODES_PART2 = [
 
   {
     id: "ep13",
+    primaryStudent: LESSON_CHARACTERS.ep13,
     act: 3,
     title: "Protect Student Accounts",
     subtitle: "Strong authentication as the foundation of digital safety",
@@ -266,10 +271,10 @@ export const EPISODES_PART2 = [
     personalizationSlots: ["ep13.context"],
     approvedStoryFragments: ["ep13.context"],
     openingNarrative:
-      "{{name}}'s phone buzzes with a multi-factor authentication approval request for the university account — but {{subject}} isn't currently trying to log in anywhere.",
+      "Isabel Flores, a Marketing major at Angelo State, receives a multi-factor authentication approval request for the university account without trying to log in anywhere.",
     scenario: {
       prompt:
-        "{{name}} did not initiate this login attempt. The prompt is right there, one tap away from approval.",
+        "Isabel Flores did not initiate this login attempt. The prompt is right there, one tap away from approval.",
       type: "sort_safe_unsafe"
     },
     choices: [
@@ -277,7 +282,7 @@ export const EPISODES_PART2 = [
         id: "a",
         text: "Deny the request and review account security immediately",
         whyChosen: "An MFA prompt that wasn't self-initiated is a clear warning sign, not a neutral event.",
-        possibleBenefit: "Blocks a potential unauthorized login and prompts a useful security review.",
+        possibleBenefit: "Isabel Flores blocks a potential unauthorized login and begins a useful security review.",
         possibleCost: "A few minutes spent checking account activity and possibly changing the password.",
         possibleRisk: "None — this is the safe response.",
         immediateEffect: { accountSecurity: 4, resilience: 1 },
@@ -311,22 +316,22 @@ export const EPISODES_PART2 = [
       }
     ],
     immediateConsequences: {
-      a: "{{name}} blocks the attempt and starts checking for any other suspicious activity.",
-      b: "{{name}} may have just handed account access to an attacker.",
-      c: "{{name}} avoided the immediate risk but left the underlying exposure unaddressed."
+      a: "Isabel Flores blocks the attempt and starts checking for any other suspicious activity.",
+      b: "Isabel Flores may have just handed account access to an attacker.",
+      c: "Isabel Flores avoided the immediate risk but left the underlying exposure unaddressed."
     },
     oneYearConsequences: {
-      a: "{{name}}'s account security habits consistently protect email, coursework, and connected campus systems.",
-      b: "If this was a real attack, {{name}} may now be dealing with a compromised account, changed passwords, and lost access.",
+      a: "Isabel Flores's account security habits consistently protect email, coursework, and connected campus systems.",
+      b: "If this was a real attack, Isabel Flores may now be dealing with a compromised account, changed passwords, and lost access.",
       c: "The password that triggered the original prompt may still be exposed and vulnerable to another attempt."
     },
     longTermConsequences: {
-      a: "Strong, consistent account-security habits protect against a wide range of future attacks with minimal ongoing effort.",
+      a: "Isabel Flores's consistent account-security habits protect against a wide range of future attacks with minimal ongoing effort.",
       b: "A single approved malicious prompt can cascade into email compromise, financial-aid fraud, or identity theft.",
       c: "Partial responses to security warnings leave real risk unaddressed even when the immediate danger is avoided."
     },
     recoveryPath:
-      "If a prompt was accidentally approved, changing the password immediately, reviewing recent account activity, and contacting the university's IT help desk can limit the damage — quick action significantly reduces the impact of a mistake.",
+      "If Isabel Flores accidentally approves a prompt, changing the password immediately, reviewing recent account activity, and contacting the university's IT help desk can limit the damage. Quick action significantly reduces the impact of a mistake.",
     conceptExplanation: {
       what: "Multi-factor authentication (MFA) adds a second verification step beyond a password; a strong, unique password or passphrase is the first layer of account protection.",
       why: "These exist because passwords alone are frequently exposed through breaches on other websites, and a second factor blocks most unauthorized access attempts even when a password is compromised.",
@@ -336,14 +341,14 @@ export const EPISODES_PART2 = [
       whoMayBenefit: "Every student with a university account, email, or any account tied to identity, coursework, or financial aid.",
       whoMayNotBenefit: "There is no legitimate case where skipping MFA or approving an unrequested prompt is the safer choice.",
       misunderstandingRisk: "Believing that a real-looking, official-seeming prompt must be legitimate — attackers deliberately design prompts to look exactly like real ones.",
-      verifyNote: "This course never asks for an actual password or MFA code — practice these decisions using the fictional scenario only."
+      verifyNote: "This course never asks for an actual password or MFA code; Isabel Flores practices the decision with illustrative details only."
     },
     realWorldExample:
-      "A composite student reused one password across an entertainment site and their university email; when the entertainment site was breached, an attacker tried the same password on the university account and triggered an MFA prompt — the student denied it and changed the password immediately, preventing a compromise.",
+      "Isabel Flores reused one password across an entertainment site and Isabel's university email. When the entertainment site was breached, an attacker tried the same password on the university account and triggered an MFA prompt. Isabel denied it and changed the password immediately, preventing a compromise.",
     knowledgeChecks: [
       {
         id: "kc1",
-        question: "What should a student do with an unexpected MFA approval request they did not initiate?",
+        question: "What should Isabel Flores do with an unexpected MFA approval request that Isabel did not initiate?",
         type: "multiple_choice",
         options: [
           "Deny it and review account security",
@@ -377,6 +382,7 @@ export const EPISODES_PART2 = [
 
   {
     id: "ep14",
+    primaryStudent: LESSON_CHARACTERS.ep14,
     act: 3,
     title: "Recognize Phishing and Urgency Tricks",
     subtitle: "Pause before clicking a message that creates pressure",
@@ -390,10 +396,10 @@ export const EPISODES_PART2 = [
     personalizationSlots: ["ep14.context"],
     approvedStoryFragments: ["ep14.context"],
     openingNarrative:
-      "{{name}} gets an email claiming financial aid will be canceled in ten minutes unless {{subject}} logs in immediately through a shortened link.",
+      "Marcus Reed, a Nursing major at Angelo State, gets an email claiming financial aid will be canceled in ten minutes unless Marcus logs in immediately through a shortened link.",
     scenario: {
       prompt:
-        "The message is designed to create panic and rush a decision before {{name}} has time to think it through.",
+        "The message is designed to create panic and rush a decision before Marcus Reed has time to think it through.",
       type: "inspect_phishing_message"
     },
     choices: [
@@ -401,7 +407,7 @@ export const EPISODES_PART2 = [
         id: "a",
         text: "Go to the official university website directly and check financial aid status there",
         whyChosen: "Verifying through a known, trusted channel avoids relying on a potentially malicious link entirely.",
-        possibleBenefit: "Confirms the real status without any risk from the suspicious link.",
+        possibleBenefit: "Marcus Reed confirms the real status without taking any risk from the suspicious link.",
         possibleCost: "Takes a few extra minutes compared to clicking the link in the message.",
         possibleRisk: "None — this is the safe response.",
         immediateEffect: { accountSecurity: 4, resilience: 2 },
@@ -435,22 +441,22 @@ export const EPISODES_PART2 = [
       }
     ],
     immediateConsequences: {
-      a: "{{name}} confirms the real financial aid status is unaffected and the message was fake.",
-      b: "{{name}} may have handed login credentials directly to an attacker.",
-      c: "{{name}}'s classmates are warned, but the campus IT office never learns about the attack."
+      a: "Marcus Reed confirms the real financial aid status is unaffected and the message was fake.",
+      b: "Marcus Reed may have handed login credentials directly to an attacker.",
+      c: "Marcus Reed's classmates are warned, but the campus IT office never learns about the attack."
     },
     oneYearConsequences: {
-      a: "{{name}} continues to recognize and safely dismiss urgency-based phishing attempts.",
-      b: "If this was a real attack, {{name}} may be dealing with a compromised account and identity-theft risk.",
+      a: "Marcus Reed continues to recognize and safely dismiss urgency-based phishing attempts.",
+      b: "If this was a real attack, Marcus Reed may be dealing with a compromised account and identity-theft risk.",
       c: "The same phishing campaign may resurface, since it was never formally reported."
     },
     longTermConsequences: {
-      a: "Reliable phishing recognition protects against a wide range of financial-aid, scholarship, and account-impersonation scams throughout college.",
+      a: "Marcus Reed's reliable phishing recognition protects against financial-aid, scholarship, and account-impersonation scams throughout college.",
       b: "A single successful phishing attempt can have consequences well beyond one account, including financial and identity harm.",
       c: "Informal warnings help individuals but don't address the broader campus-wide threat the way an official report can."
     },
     recoveryPath:
-      "If credentials were accidentally entered on a phishing site, changing the password immediately, enabling or reviewing MFA, and contacting university IT right away can significantly limit the damage.",
+      "If Marcus Reed accidentally enters credentials on a phishing site, changing the password immediately, enabling or reviewing MFA, and contacting university IT right away can significantly limit the damage.",
     conceptExplanation: {
       what: "Phishing messages imitate trusted organizations and use urgency — 'verify now,' 'account closing,' 'scholarship expiring' — to short-circuit careful thinking.",
       why: "Urgency and fear are used deliberately because they make people less likely to pause and verify before acting.",
@@ -463,7 +469,7 @@ export const EPISODES_PART2 = [
       verifyNote: "Reporting channels and official verification steps vary by institution — check current campus IT guidance for how to report phishing."
     },
     realWorldExample:
-      "A composite student received a message claiming financial aid would be canceled in ten minutes unless they logged in through a shortened link. Recognizing the urgency tactic, they went directly to the official financial aid portal instead — where their aid status was completely unaffected, confirming the message was fake.",
+      "Marcus Reed received a message claiming financial aid would be canceled in ten minutes unless Marcus logged in through a shortened link. Recognizing the urgency tactic, Marcus went directly to the official financial aid portal, where the unchanged aid status confirmed the message was fake.",
     knowledgeChecks: [
       {
         id: "kc1",
@@ -471,7 +477,7 @@ export const EPISODES_PART2 = [
         type: "multiple_choice",
         options: [
           "Open the official website directly and verify there",
-          "Reply with your password",
+          "Reply with Marcus Reed's password",
           "Forward it to every classmate without reporting it",
           "Click the link immediately to avoid losing access"
         ],
@@ -501,6 +507,7 @@ export const EPISODES_PART2 = [
 
   {
     id: "ep15",
+    primaryStudent: LESSON_CHARACTERS.ep15,
     act: 3,
     title: "Handle Official Documents Carefully",
     subtitle: "IDs, transcripts, and signed forms are not ordinary homework",
@@ -514,10 +521,10 @@ export const EPISODES_PART2 = [
     personalizationSlots: ["ep15.context"],
     approvedStoryFragments: ["ep15.context"],
     openingNarrative:
-      "{{name}} needs to send a transcript to a scholarship office and, in a rush, considers just dropping it into a public cloud folder because the link is easy to share.",
+      "Nia Thompson, a Civil Engineering major at Angelo State, needs to send a transcript to a scholarship office and considers placing it in a public cloud folder because the link is easy to share.",
     scenario: {
       prompt:
-        "{{name}} has to decide how to send an official transcript containing a birth date, student ID number, and academic record.",
+        "Nia Thompson has to decide how to send an official transcript containing a birth date, student ID number, and academic record.",
       type: "sort_safe_unsafe"
     },
     choices: [
@@ -525,11 +532,11 @@ export const EPISODES_PART2 = [
         id: "a",
         text: "Use the approved scholarship portal or the official recipient's verified, private channel",
         whyChosen: "Official records need controlled handling, not convenience-first sharing.",
-        possibleBenefit: "Sensitive information stays limited to the intended, verified recipient.",
+        possibleBenefit: "Nia Thompson keeps sensitive information limited to the intended, verified recipient.",
         possibleCost: "May take a few extra minutes to locate the correct approved process.",
         possibleRisk: "None significant.",
         immediateEffect: { privacyAwareness: 4, integrity: 1 },
-        futureEffect: "This habit protects every future official document {{name}} needs to send.",
+        futureEffect: "This habit protects every future official document Nia Thompson needs to send.",
         whatCouldChangeThisOutcome: "Nothing changes this outcome — using the approved, private channel is the correct choice for any official record.",
         sourceIds: ["ferpa-overview", "studentaid-gov"]
       },
@@ -553,28 +560,28 @@ export const EPISODES_PART2 = [
         possibleCost: "An unfamiliar, unapproved third-party tool now has a copy of a sensitive official document.",
         possibleRisk: "Unknown data handling practices at an unvetted site could expose the document further.",
         immediateEffect: { privacyAwareness: -2 },
-        futureEffect: "The document's data handling is now outside {{name}}'s control, with no way to verify what happens to it.",
+        futureEffect: "The document's data handling is now outside Nia Thompson's control, with no way to verify what happens to it.",
         whatCouldChangeThisOutcome: "Asking the receiving office directly about accepted formats and file-size limits before using any third-party tool.",
         sourceIds: ["ferpa-overview"]
       }
     ],
     immediateConsequences: {
-      a: "The transcript reaches only the intended, verified recipient.",
+      a: "Nia Thompson's transcript reaches only the intended, verified recipient.",
       b: "The transcript's sensitive information is now exposed to anyone with the link.",
       c: "A copy of the sensitive document now exists on an unverified third-party site."
     },
     oneYearConsequences: {
-      a: "{{name}} has a reliable, trusted process for handling every official document that comes up.",
-      b: "If the link was found or forwarded, {{name}} may face identity-theft or privacy-related consequences.",
-      c: "{{name}} has no way to confirm whether the uploaded copy was deleted or retained by the third-party site."
+      a: "Nia Thompson has a reliable, trusted process for handling every official document that comes up.",
+      b: "If the link was found or forwarded, Nia Thompson may face identity-theft or privacy-related consequences.",
+      c: "Nia Thompson has no way to confirm whether the uploaded copy was deleted or retained by the third-party site."
     },
     longTermConsequences: {
-      a: "Careful handling of official records — including future financial, tax, aid, and employment documents — becomes a durable, protective habit.",
+      a: "Nia Thompson turns careful handling of official records — including future financial, tax, aid, and employment documents — into a durable, protective habit.",
       b: "A pattern of using convenient-but-insecure sharing methods for sensitive documents creates repeated exposure risk.",
       c: "Relying on unvetted third-party tools for sensitive documents is a recurring, avoidable privacy risk."
     },
     recoveryPath:
-      "If a sensitive document was shared insecurely, contacting the issuing office immediately, removing public access to the link if possible, and monitoring for identity-theft warning signs can limit the impact — most situations are recoverable with prompt action.",
+      "If Nia Thompson shares a sensitive document insecurely, contacting the issuing office immediately, removing public access to the link if possible, and monitoring for identity-theft warning signs can limit the impact. Most situations are recoverable with prompt action.",
     conceptExplanation: {
       what: "Official documents — IDs, transcripts, financial-aid forms, health forms, signed forms, and employment records — often contain birth dates, addresses, and identifiers that require more careful handling than ordinary coursework.",
       why: "These documents exist as verified records of identity and status, which makes them valuable targets for identity theft and fraud if mishandled.",
@@ -584,10 +591,10 @@ export const EPISODES_PART2 = [
       whoMayBenefit: "Every student who submits transcripts, aid forms, health records, or signed official documents.",
       whoMayNotBenefit: "There's no legitimate case where convenience should outweigh the privacy of an official document.",
       misunderstandingRisk: "Assuming a document is 'just paperwork' rather than recognizing it as sensitive personal information.",
-      verifyNote: "This same careful-handling principle extends directly into financial, tax, banking, and employment documents — a skill this course's habits are specifically preparing you to carry forward."
+      verifyNote: "The same careful-handling principle extends to financial, tax, banking, and employment documents, a skill Nia Thompson is preparing to carry forward."
     },
     realWorldExample:
-      "A composite student placed a transcript in a public cloud folder because the link was easy to share with a scholarship committee; the link was later found in a search engine's index, exposing the student's birth date and academic record to anyone who came across it.",
+      "Nia Thompson placed a transcript in a public cloud folder because the link was easy to share with a scholarship committee. The link was later found in a search engine's index, exposing Nia's birth date and academic record to anyone who came across it.",
     knowledgeChecks: [
       {
         id: "kc1",
@@ -625,9 +632,10 @@ export const EPISODES_PART2 = [
 
   {
     id: "ep16",
+    primaryStudent: LESSON_CHARACTERS.ep16,
     act: 4,
     title: "Control Sharing Permissions and Digital Footprints",
-    subtitle: "Know who can see, edit, and reshare your work",
+    subtitle: "Know who can see, edit, and reshare Gabriel Torres's work",
     estimatedMinutes: 10,
     learningObjectives: [
       "Distinguish view, comment, and edit permissions",
@@ -638,10 +646,10 @@ export const EPISODES_PART2 = [
     personalizationSlots: ["ep16.context"],
     approvedStoryFragments: ["ep16.context"],
     openingNarrative:
-      "{{name}}'s group submits a shared presentation link, and the professor immediately hits an access-denied screen in front of the whole class.",
+      "Gabriel Torres, a Communication major at Angelo State, watches a professor hit an access-denied screen after Gabriel's group submits a shared presentation link.",
     scenario: {
       prompt:
-        "{{name}}'s group needs to share a document with the professor. What sharing setting actually guarantees the professor can open it?",
+        "Gabriel Torres's group needs to share a document with the professor. What sharing setting actually guarantees the professor can open it?",
       type: "choose_sharing_permission"
     },
     choices: [
@@ -649,7 +657,7 @@ export const EPISODES_PART2 = [
         id: "a",
         text: "Set the link to allow viewing by anyone with the link, and test it in a private browser window first",
         whyChosen: "Testing from outside the group's signed-in view confirms it will actually work for the professor.",
-        possibleBenefit: "Removes the guesswork — {{name}} sees exactly what the professor will experience.",
+        possibleBenefit: "Removes the guesswork — Gabriel Torres sees exactly what the professor will experience.",
         possibleCost: "Takes an extra minute to test before sending.",
         possibleRisk: "None significant if only the minimum necessary access level is granted.",
         immediateEffect: { sharingControl: 4, professionalConfidence: 1 },
@@ -683,22 +691,22 @@ export const EPISODES_PART2 = [
       }
     ],
     immediateConsequences: {
-      a: "The professor opens the presentation without any issue.",
+      a: "The professor opens Gabriel Torres's presentation without any issue.",
       b: "The professor hits an access-denied screen and the group scrambles to fix it live.",
       c: "The professor can open it, but so can anyone else who finds the link, with full edit access."
     },
     oneYearConsequences: {
-      a: "{{name}}'s group work consistently reaches its intended audience without access problems.",
+      a: "Gabriel Torres's group work consistently reaches its intended audience without access problems.",
       b: "Access errors continue to create stressful, avoidable moments during group presentations.",
       c: "Overly public sharing settings create ongoing, low-level exposure risk across multiple projects."
     },
     longTermConsequences: {
-      a: "A habit of testing and matching permission to purpose supports reliable collaboration throughout college and future work.",
+      a: "Gabriel Torres's habit of testing and matching permission to purpose supports reliable collaboration throughout college and future work.",
       b: "Repeated access failures can affect group grades and professional credibility.",
       c: "A pattern of over-permissioned sharing can expose increasingly sensitive group and personal work over time."
     },
     recoveryPath:
-      "A sharing permission can be fixed the moment an access problem is noticed — updating the link setting live, even during a presentation, is a normal and fully recoverable fix.",
+      "Gabriel Torres can fix a sharing permission the moment an access problem is noticed; updating the setting live, even during a presentation, is a normal and fully recoverable fix.",
     conceptExplanation: {
       what: "Sharing permissions define who can view, comment, or edit a document, and at what scope — private, organization-only, anyone-with-link, or fully public.",
       why: "These settings exist to match access to actual need, protecting both privacy and the integrity of shared work.",
@@ -708,10 +716,10 @@ export const EPISODES_PART2 = [
       whoMayBenefit: "Any student sharing documents, presentations, or files with a professor, group, or the public.",
       whoMayNotBenefit: "There's no real downside to testing permissions — it costs a small amount of time regardless of the audience size.",
       misunderstandingRisk: "Assuming that because a link 'works' for the person who created it, it will automatically work the same way for everyone else.",
-      verifyNote: "Sharing permission systems and their exact behavior vary by platform — check the specific tool being used for group work."
+      verifyNote: "Sharing permissions vary by platform, so Gabriel Torres should check the specific tool used for group work."
     },
     realWorldExample:
-      "A composite group submitted a shared presentation link with organization-only access; the professor's account wasn't recognized in that scope, resulting in an access-denied screen during the actual presentation — a thirty-second test from an outside browser would have caught it in advance.",
+      "Gabriel Torres's group submitted a shared presentation link with organization-only access; the professor's account wasn't recognized in that scope, resulting in an access-denied screen during the actual presentation — a thirty-second test from an outside browser would have caught it in advance.",
     knowledgeChecks: [
       {
         id: "kc1",
@@ -749,6 +757,7 @@ export const EPISODES_PART2 = [
 
   {
     id: "ep17",
+    primaryStudent: LESSON_CHARACTERS.ep17,
     act: 4,
     title: "Run a Weekly Digital Reset",
     subtitle: "One short routine that prevents small problems from piling up",
@@ -762,10 +771,10 @@ export const EPISODES_PART2 = [
     personalizationSlots: ["ep17.context"],
     approvedStoryFragments: ["ep17.context"],
     openingNarrative:
-      "{{name}} has been meaning to set up some kind of weekly check-in routine but keeps putting it off in favor of whatever feels most urgent that day.",
+      "Hannah Kim, a Psychology major at Angelo State, has been meaning to establish a weekly digital check-in but keeps postponing it for whatever feels most urgent that day.",
     scenario: {
       prompt:
-        "{{name}} sets aside fifteen minutes on a Sunday to check email, LMS announcements, calendar, deadlines, grades, and the Downloads folder.",
+        "Hannah Kim sets aside fifteen minutes on a Sunday to check email, LMS announcements, calendar, deadlines, grades, and the Downloads folder.",
       type: "multiple_choice"
     },
     choices: [
@@ -773,7 +782,7 @@ export const EPISODES_PART2 = [
         id: "a",
         text: "Build a consistent weekly time slot for the full reset routine",
         whyChosen: "A repeatable time slot is more likely to actually happen every week.",
-        possibleBenefit: "Catches changed deadlines, missing work, and file clutter before they become emergencies.",
+        possibleBenefit: "Hannah Kim catches changed deadlines, missing work, and file clutter before they become emergencies.",
         possibleCost: "Requires committing fifteen minutes every week, even during busy stretches.",
         possibleRisk: "None significant.",
         immediateEffect: { calendarReadiness: 3, resilience: 2, professionalConfidence: 1 },
@@ -807,22 +816,22 @@ export const EPISODES_PART2 = [
       }
     ],
     immediateConsequences: {
-      a: "{{name}} catches a changed exam date during the very first reset, well before it would have been a surprise.",
+      a: "Hannah Kim catches a changed exam date during the very first reset, well before it would have been a surprise.",
       b: "Several weeks pass with no visibility into changes or missing work.",
-      c: "An important group-project message is deleted before {{name}} ever sees it."
+      c: "An important group-project message is deleted before Hannah Kim ever sees it."
     },
     oneYearConsequences: {
-      a: "The weekly reset has become an automatic habit that consistently prevents last-minute surprises.",
+      a: "Hannah Kim has made the weekly reset an automatic habit that consistently prevents last-minute surprises.",
       b: "Occasional last-minute discoveries continue to create avoidable stress.",
       c: "Missed important messages continue to cause friction with group members and professors."
     },
     longTermConsequences: {
-      a: "A reliable weekly maintenance habit is a durable skill that extends well into any future job or personal system.",
+      a: "Hannah Kim carries a reliable weekly maintenance habit into future jobs and personal systems.",
       b: "Infrequent check-ins tend to let small problems grow into larger, harder-to-fix ones.",
       c: "Bulk-deleting communication without review is a recurring, avoidable source of missed information."
     },
     recoveryPath:
-      "A missed weekly reset can simply resume the next week — there's no penalty for an inconsistent start, and even an occasional reset is better than none at all.",
+      "Hannah Kim can resume a missed weekly reset the next week; there is no penalty for an inconsistent start, and even an occasional reset is better than none at all.",
     conceptExplanation: {
       what: "A weekly digital reset is a short, repeatable routine that reviews email, LMS announcements, calendar, deadlines, grades, missing work, and the Downloads folder.",
       why: "It exists to catch small changes and problems early, before they compound into missed deadlines or lost work.",
@@ -832,10 +841,10 @@ export const EPISODES_PART2 = [
       whoMayBenefit: "Every student managing multiple courses, deadlines, and communication channels.",
       whoMayNotBenefit: "There's little downside to this habit — it costs a small, predictable amount of time each week.",
       misunderstandingRisk: "Treating the weekly reset as extra schoolwork rather than maintenance that protects work already completed.",
-      verifyNote: "This is a general workflow practice, not tied to a specific platform — the exact checklist can be adapted to whatever tools a student's courses actually use."
+      verifyNote: "This is a general workflow practice rather than a platform-specific rule; Hannah Kim can adapt the checklist to the tools used in Hannah's courses."
     },
     realWorldExample:
-      "A composite student, Casey, spent fifteen minutes every Sunday checking the learning management system, calendar, and files. A changed exam date was caught during one of these routine resets, days before it would otherwise have been a surprise.",
+      "Hannah Kim spent fifteen minutes every Sunday checking the learning management system, calendar, and files. A changed exam date was caught during one of these routine resets, days before it would otherwise have been a surprise.",
     knowledgeChecks: [
       {
         id: "kc1",
@@ -873,6 +882,7 @@ export const EPISODES_PART2 = [
 
   {
     id: "ep18",
+    primaryStudent: LESSON_CHARACTERS.ep18,
     act: 4,
     title: "Use the Final Submission Check",
     subtitle: "Sixty seconds before sending important work",
@@ -886,10 +896,10 @@ export const EPISODES_PART2 = [
     personalizationSlots: ["ep18.context"],
     approvedStoryFragments: ["ep18.context"],
     openingNarrative:
-      "{{name}} just finished a strong final paper and is about to upload it without a second look, eager to be done.",
+      "Amir Davis, an English major at Angelo State, has just finished a strong final paper and is eager to upload it without a second look.",
     scenario: {
       prompt:
-        "The assignment instructions specifically required a PDF, but {{name}}'s file is still saved in its original editing format.",
+        "The assignment instructions specifically required a PDF, but Amir Davis's file is still saved in its original editing format.",
       type: "multiple_choice"
     },
     choices: [
@@ -897,7 +907,7 @@ export const EPISODES_PART2 = [
         id: "a",
         text: "Run the final check: instructions, format, file name, and destination, before uploading",
         whyChosen: "A sixty-second pause catches format and version problems before they become submission failures.",
-        possibleBenefit: "Catches the wrong file format before the professor ever sees it.",
+        possibleBenefit: "Amir Davis catches the wrong file format before the professor ever sees it.",
         possibleCost: "A short pause before what already felt like a finished task.",
         possibleRisk: "None significant.",
         immediateEffect: { submissionReliability: 4, accessibilityAwareness: 1, professionalConfidence: 2 },
@@ -931,22 +941,22 @@ export const EPISODES_PART2 = [
       }
     ],
     immediateConsequences: {
-      a: "{{name}} catches the format mismatch and fixes it before submitting.",
+      a: "Amir Davis catches the format mismatch and fixes it before submitting.",
       b: "The professor may be unable to open the file at all.",
-      c: "{{name}} risks a requirement being missed despite strong actual writing."
+      c: "Amir Davis risks a requirement being missed despite strong actual writing."
     },
     oneYearConsequences: {
-      a: "{{name}}'s submissions are consistently complete, correctly formatted, and reach the right destination.",
+      a: "Amir Davis's submissions are consistently complete, correctly formatted, and reach the right destination.",
       b: "Format-related submission problems continue to create avoidable friction with professors.",
       c: "Instruction-related points continue to be lost on otherwise strong work."
     },
     longTermConsequences: {
-      a: "A reliable final-check habit protects the quality of work already completed, across college and any future job.",
+      a: "Amir Davis's reliable final-check habit protects the quality of completed work across college and future jobs.",
       b: "Repeated technical submission failures can undermine an otherwise strong academic record.",
       c: "Treating instructions as optional once writing is 'done' is a durable and preventable source of lost credit."
     },
     recoveryPath:
-      "If a format or destination mistake is caught after submission but before the deadline, a quick resubmission with the correct file usually resolves it cleanly — this is a normal, low-stakes fix.",
+      "If Amir Davis catches a format or destination mistake after submission but before the deadline, a quick resubmission with the correct file usually resolves it cleanly. This is a normal, low-stakes fix.",
     conceptExplanation: {
       what: "The final submission check confirms instructions were followed, the file is the correct version and format, and the destination and permissions are correct — all in about sixty seconds before sending.",
       why: "It exists because strong work can still fail to count if it's in the wrong format, sent to the wrong place, or missing a required element.",
@@ -959,7 +969,7 @@ export const EPISODES_PART2 = [
       verifyNote: "Specific format and submission requirements vary by course and assignment — always check the actual instructions rather than assuming a default."
     },
     realWorldExample:
-      "A composite student submitted a fully complete essay in the wrong file format because the instructions required a PDF specifically; the professor couldn't open the file, and the otherwise strong work initially registered as a missing submission until it was corrected.",
+      "Amir Davis submitted a fully complete essay in the wrong file format because the instructions required a PDF specifically; the professor couldn't open the file, and the otherwise strong work initially registered as a missing submission until it was corrected.",
     knowledgeChecks: [
       {
         id: "kc1",
@@ -997,6 +1007,7 @@ export const EPISODES_PART2 = [
 
   {
     id: "ep19",
+    primaryStudent: LESSON_CHARACTERS.ep19,
     act: 4,
     title: "Recover Professionally When Technology Fails",
     subtitle: "Document the problem and communicate quickly",
@@ -1010,10 +1021,10 @@ export const EPISODES_PART2 = [
     personalizationSlots: ["ep19.context"],
     approvedStoryFragments: ["ep19.context"],
     openingNarrative:
-      "At 8:40 p.m., twenty minutes before a paper is due, the upload portal throws an error {{name}} has never seen before.",
+      "Elena Morales, a Social Work major at Angelo State, encounters an unfamiliar upload-portal error at 8:40 p.m., twenty minutes before a paper is due.",
     scenario: {
       prompt:
-        "{{name}} has the finished paper ready but the portal will not accept the upload. The deadline is approaching fast.",
+        "Elena Morales has the finished paper ready but the portal will not accept the upload. The deadline is approaching fast.",
       type: "identify_missing_information"
     },
     choices: [
@@ -1021,7 +1032,7 @@ export const EPISODES_PART2 = [
         id: "a",
         text: "Screenshot the error, keep the final file safe, and email the professor with specific details before the deadline",
         whyChosen: "Documenting the problem and communicating promptly gives the professor everything needed to respond fairly.",
-        possibleBenefit: "Provides clear evidence of a good-faith effort made before the deadline passed.",
+        possibleBenefit: "Elena Morales provides clear evidence of a good-faith effort made before the deadline passed.",
         possibleCost: "A few minutes spent capturing evidence instead of only retrying the upload.",
         possibleRisk: "None significant.",
         immediateEffect: { resilience: 4, communicationClarity: 3, professionalConfidence: 1 },
@@ -1037,7 +1048,7 @@ export const EPISODES_PART2 = [
         possibleCost: "If the deadline passes with no evidence of the attempt, there's nothing to show what happened.",
         possibleRisk: "A late submission with no documentation is harder to resolve fairly.",
         immediateEffect: { resilience: -2, communicationClarity: -1 },
-        futureEffect: "Without evidence, {{name}} has a weaker position when requesting any accommodation.",
+        futureEffect: "Without evidence, Elena Morales has a weaker position when requesting any accommodation.",
         whatCouldChangeThisOutcome: "Pausing to capture a screenshot even while continuing to retry the upload.",
         sourceIds: ["asu-core-values"]
       },
@@ -1056,34 +1067,34 @@ export const EPISODES_PART2 = [
     ],
     immediateConsequences: {
       a: "The professor receives a clear, well-documented explanation before the deadline passes.",
-      b: "{{name}} may run out the clock with no record of the actual problem.",
+      b: "Elena Morales may run out the clock with no record of the actual problem.",
       c: "The professor receives a vague message with no evidence, hours after the fact."
     },
     oneYearConsequences: {
-      a: "{{name}} has a reliable, professional pattern for handling technology failures fairly.",
-      b: "Undocumented late submissions continue to be harder to resolve in {{name}}'s favor.",
+      a: "Elena Morales has a reliable, professional pattern for handling technology failures fairly.",
+      b: "Undocumented late submissions continue to be harder to resolve in Elena Morales's favor.",
       c: "Vague, delayed communication continues to create friction and slower resolutions."
     },
     longTermConsequences: {
-      a: "This calm, evidence-based recovery pattern is a durable professional skill useful well beyond college.",
+      a: "Elena Morales carries this calm, evidence-based recovery pattern beyond college as a durable professional skill.",
       b: "A pattern of undocumented technical failures can erode trust with instructors over time.",
       c: "Delayed, vague communication habits can affect professional relationships and outcomes throughout a career."
     },
     recoveryPath:
-      "Even a technology failure handled poorly the first time can be corrected — sending a late but honest, specific explanation with any available evidence is always better than sending nothing at all.",
+      "Even if Elena Morales handles a technology failure poorly at first, sending a late but honest, specific explanation with any available evidence is better than sending nothing at all.",
     conceptExplanation: {
       what: "Professional technology-failure recovery means capturing evidence (like a screenshot), preserving the final file, trying one reasonable alternative, and contacting the right person promptly with specific details.",
       why: "It exists because technology can fail even with good preparation, and a documented, prompt response supports a fair resolution.",
       how: "It may help by giving the professor or office clear evidence of a good-faith effort made on time.",
       cost: "It takes a few minutes of documentation during an already stressful moment.",
-      risks: "A vague, delayed, or undocumented report is much harder to resolve fairly, even when the original problem wasn't the student's fault.",
+      risks: "A vague, delayed, or undocumented report is much harder to resolve fairly, even when the original problem was not Elena Morales's fault.",
       whoMayBenefit: "Every student, since technology failures happen unpredictably regardless of preparation.",
       whoMayNotBenefit: "There's no real downside to this habit — documentation costs a few minutes and only helps the outcome.",
       misunderstandingRisk: "Assuming a professor will simply know what happened without a specific, timely explanation.",
       verifyNote: "Specific late-work and technical-difficulty policies vary by course — check the syllabus for what's expected in this situation."
     },
     realWorldExample:
-      "A composite student, at 8:40 p.m. with a portal error twenty minutes before a deadline, took a screenshot, kept the final file untouched, and emailed the professor with the course, assignment, exact error, and time — receiving a same-night reply extending the deadline slightly to resolve the technical issue.",
+      "Elena Morales, at 8:40 p.m. with a portal error twenty minutes before a deadline, took a screenshot, kept the final file untouched, and emailed the professor with the course, assignment, exact error, and time — receiving a same-night reply extending the deadline slightly to resolve the technical issue.",
     knowledgeChecks: [
       {
         id: "kc1",
@@ -1121,6 +1132,7 @@ export const EPISODES_PART2 = [
 
   {
     id: "ep20",
+    primaryStudent: LESSON_CHARACTERS.ep20,
     act: 4,
     title: "Freshman Digital Readiness Simulation",
     subtitle: "One realistic week, every skill combined",
@@ -1134,10 +1146,10 @@ export const EPISODES_PART2 = [
     personalizationSlots: ["ep20.context"],
     approvedStoryFragments: ["ep20.context"],
     openingNarrative:
-      "It's the busiest week of {{name}}'s semester so far: a syllabus change lands in the inbox, a group document invitation appears, a research assignment is due, and something doesn't feel right about a message claiming to be from financial aid.",
+      "Logan Carter, a Criminal Justice major at Angelo State, faces the busiest week of the semester: a syllabus change, a group document invitation, a research deadline, and a suspicious financial-aid message.",
     scenario: {
       prompt:
-        "In the same week, {{name}} faces: a syllabus update changing a deadline, a group-document invitation needing the right sharing permissions, a research assignment requiring credible sources, a decision about how much AI help is actually allowed, a suspicious account email, an official scholarship document to send, a file to submit correctly, a portal error, a professor email to write, and a source to verify before citing it. What order of action best protects both urgent security risks and academic responsibilities?",
+        "In the same week, Logan Carter faces: a syllabus update changing a deadline, a group-document invitation needing the right sharing permissions, a research assignment requiring credible sources, a decision about how much AI help is actually allowed, a suspicious account email, an official scholarship document to send, a file to submit correctly, a portal error, a professor email to write, and a source to verify before citing it. What order of action best protects both urgent security risks and academic responsibilities?",
       type: "rank_tradeoffs"
     },
     choices: [
@@ -1145,11 +1157,11 @@ export const EPISODES_PART2 = [
         id: "a",
         text: "Verify the suspicious email first, then update the calendar, set correct sharing, use the approved document portal for the scholarship form, verify the source, and confirm the final submission",
         whyChosen: "This sequence addresses the most time-sensitive security risk first, then works through academic responsibilities in a logical order.",
-        possibleBenefit: "Every part of the week is handled deliberately, with security addressed before it can compound into a bigger problem.",
+        possibleBenefit: "Logan Carter handles every part of the week deliberately, addressing security before it can compound into a bigger problem.",
         possibleCost: "Requires organizing a genuinely busy week rather than reacting to whichever task feels loudest.",
         possibleRisk: "None significant — this sequence reflects the full set of habits built across the course.",
         immediateEffect: { fileOrganization: 2, accountSecurity: 3, sourceJudgment: 2, submissionReliability: 3, integrity: 2 },
-        futureEffect: "{{name}} enters the next semester with a proven, repeatable system for handling a genuinely demanding week.",
+        futureEffect: "Logan Carter enters the next semester with a proven, repeatable system for handling a genuinely demanding week.",
         whatCouldChangeThisOutcome: "Nothing changes this outcome — this sequence reflects the safest, most complete response to every element of the week.",
         sourceIds: ["asu-core-values", "cisa-phishing", "acrl-info-literacy", "ferpa-overview"]
       },
@@ -1179,22 +1191,22 @@ export const EPISODES_PART2 = [
       }
     ],
     immediateConsequences: {
-      a: "{{name}} closes out the week with every responsibility handled and no security exposure.",
-      b: "{{name}} may have engaged with a phishing attempt or missed a real deadline in the rush to clear the inbox.",
-      c: "{{name}} finishes the research assignment but discovers unresolved, time-sensitive problems afterward."
+      a: "Logan Carter closes out the week with every responsibility handled and no security exposure.",
+      b: "Logan Carter may have engaged with a phishing attempt or missed a real deadline in the rush to clear the inbox.",
+      c: "Logan Carter finishes the research assignment but discovers unresolved, time-sensitive problems afterward."
     },
     oneYearConsequences: {
-      a: "{{name}} has a genuinely proven system for handling high-pressure weeks across every area of digital life.",
+      a: "Logan Carter has a genuinely proven system for handling high-pressure weeks across every area of digital life.",
       b: "A rushed, unverified approach to a demanding week creates real risk of recurring security or academic problems.",
       c: "Single-tasking through demanding weeks without triage continues to let urgent items slip through."
     },
     longTermConsequences: {
-      a: "This combined skill set — organization, communication, research, privacy, security, and recovery — is exactly what carries into a reliable professional digital workflow after college.",
+      a: "Logan Carter carries this combined skill set — organization, communication, research, privacy, security, and recovery — into a reliable professional digital workflow after college.",
       b: "Speed-over-verification habits, if they continue, create meaningful cumulative risk across a full degree.",
       c: "Without a triage system, demanding weeks will continue to feel overwhelming rather than manageable."
     },
     recoveryPath:
-      "Even a week that goes sideways can be recovered from — reviewing the syllabus and calendar for missed items, verifying account security after the fact, and reaching out honestly about any late or mishandled item are all still available paths forward.",
+      "Even when Logan Carter's week goes sideways, reviewing the syllabus and calendar, verifying account security, and reaching out honestly about any late or mishandled item remain available paths forward.",
     conceptExplanation: {
       what: "Digital readiness is the ability to calmly and repeatably combine file organization, communication, research, privacy, security, and recovery skills under real, competing time pressure.",
       why: "A single skill practiced in isolation is useful, but real weeks require prioritizing and sequencing several skills at once.",
@@ -1204,10 +1216,10 @@ export const EPISODES_PART2 = [
       whoMayBenefit: "Every student who will face a genuinely demanding week — which is, realistically, every student at some point.",
       whoMayNotBenefit: "There's no real case where this combined skill set isn't useful — the value scales with how demanding the week actually is.",
       misunderstandingRisk: "Believing that digital literacy is a collection of separate, unrelated tricks rather than one integrated way of approaching a busy week.",
-      verifyNote: "This scenario is a fictional composite designed to combine the course's skills — real weeks will vary, but the underlying sequence of triage and verification applies broadly."
+      verifyNote: "This illustrative scenario combines the course's skills. Real weeks will vary, but the sequence of triage and verification applies broadly."
     },
     realWorldExample:
-      "A composite first-year student faced a changed exam date, a group-document invitation, a scholarship form, and a suspicious login email in the same week. By verifying the security risk first, then working through the calendar, sharing settings, and submission in sequence, the entire week was resolved without a single missed deadline or security incident.",
+      "Logan Carter faced a changed exam date, a group-document invitation, a scholarship form, and a suspicious login email in the same week. By verifying the security risk first, then working through the calendar, sharing settings, and submission in sequence, the entire week was resolved without a single missed deadline or security incident.",
     knowledgeChecks: [
       {
         id: "kc1",
@@ -1244,7 +1256,7 @@ export const EPISODES_PART2 = [
       url: "https://brexatlas.github.io/Financial-Literacy-Course/"
     },
     closingNarrative:
-      "You are ready to carry these habits into the next Ram Ready course.",
+      "Logan Carter is ready to carry these habits into the next Ram Ready course.",
     accessibilitySummary: "The capstone is presented as a plain-text ranked scenario with every element described in words, not relying on a visual timeline alone.",
     reviewedDate: "2026-07-11"
   }

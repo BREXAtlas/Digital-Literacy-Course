@@ -11,6 +11,7 @@
 <body>
 <header data-site-header></header>
 <main id="main-content">
+  <p class="disclaimer-banner">Student names and scenarios are illustrative. Majors are current Angelo State academic programs used to provide relevant context.</p>
   <div id="map-view">
     <h1>AI Digital Literacy Quest</h1>
     <p>Advanced and optional. These four tiers describe increasing AI system capability and risk — not
@@ -27,7 +28,10 @@
 
   <div id="quest-view" hidden>
     <a class="btn btn-outline" href="ai-quest.html">&larr; Back to map</a>
-    <p id="quest-progress" class="badge"></p>
+    <div class="lesson-toolbar">
+      <p id="quest-progress" class="badge"></p>
+      <div id="quest-rating"></div>
+    </div>
     <article class="guide-character">
       <div class="guide-character__avatar" aria-hidden="true"></div>
       <div><p id="guide-line-q">Bella: Let's look at how this actually works.</p></div>
@@ -51,6 +55,7 @@
     <section id="quest-special-widget" class="section"></section>
 
     <section>
+      <p id="quest-scenario-student" class="badge"></p>
       <h2 id="quest-scenario-prompt"></h2>
       <ul class="choice-list" id="quest-choice-list"></ul>
     </section>
@@ -62,7 +67,7 @@
     </section>
 
     <section class="knowledge-check" id="quest-kc-section" hidden>
-      <h2>Knowledge check</h2>
+      <h2 id="quest-kc-heading">Knowledge check</h2>
       <div id="quest-kc-body"></div>
     </section>
 
@@ -86,6 +91,7 @@
   import { renderSourceDrawer } from "./assets/source-renderer.js";
   import { celebrate } from "./assets/game-engine.js";
   import { renderAccessibleListAlternative } from "./assets/accessibility.js";
+  import { mountLessonRating } from "./assets/lesson-rating.js";
   import { loadState } from "./assets/profile-engine.js";
 
   initPage("ai-quest.html");
@@ -103,14 +109,6 @@
       .replaceAll(">", "&gt;")
       .replaceAll('"', "&quot;")
       .replaceAll("'", "&#039;");
-  }
-
-  function normalizeExampleLanguage(value) {
-    return String(value || "")
-      .replace(/\bcomposite first-year student\b/gi, "fictional first-year student")
-      .replace(/\bcomposite student\b/gi, "fictional student")
-      .replace(/\bcomposite learner\b/gi, "fictional learner")
-      .replace(/\bcomposite scenario(s)?\b/gi, "fictional example$1");
   }
 
   function renderMap() {
@@ -136,13 +134,18 @@
 
       for (const quest of getQuestsForTier(tier.number)) {
         const nodeState = completed.includes(quest.id) ? "completed" : "available";
+        const row = document.createElement("div");
+        row.className = "story-node-row";
         const node = document.createElement("a");
         node.className = "story-node";
         node.dataset.state = nodeState;
         node.href = `ai-quest.html?q=${quest.id}`;
         const stars = state.progress.aiQuest.stars[quest.id] || 0;
         node.innerHTML = `<span class="story-node__badge">${escapeHtml(quest.id.toUpperCase())} · ${escapeHtml(nodeState)}${stars ? " · " + "★".repeat(stars) : ""}</span><span>${escapeHtml(quest.title)}</span>`;
-        wrap.appendChild(node);
+        const ratingHost = document.createElement("div");
+        row.append(node, ratingHost);
+        mountLessonRating(ratingHost, { lessonId: quest.id, completed: completed.includes(quest.id) });
+        wrap.appendChild(row);
       }
       visual.appendChild(wrap);
     }
@@ -158,7 +161,12 @@
         renderAccessibleListAlternative(listEl, all, {
           getLabel: (quest) => `${quest.id.toUpperCase()}: ${quest.title}`,
           getState: (quest) => completed.includes(quest.id) ? "Completed" : "Available",
-          getHref: (quest) => `ai-quest.html?q=${quest.id}`
+          getHref: (quest) => `ai-quest.html?q=${quest.id}`,
+          renderAfter: (listItem, quest) => {
+            const ratingHost = document.createElement("div");
+            listItem.appendChild(ratingHost);
+            mountLessonRating(ratingHost, { lessonId: quest.id, completed: completed.includes(quest.id) });
+          }
         });
       }
     });
@@ -167,7 +175,7 @@
   function renderConceptGroups(container, concept, text) {
     const groups = [
       { title: "Understand it", items: [["What", concept.what], ["Why it exists", concept.why]] },
-      { title: "Possible value", items: [["How it may help", concept.how], ["Who may benefit", concept.whoMayBenefit]] },
+      { title: "Possible value", items: [["How it may help", concept.how], ["Who May Benefit", concept.whoMayBenefit]] },
       { title: "Tradeoffs", items: [["What it may cost", concept.cost], ["Risks or limitations", concept.risks], ["Who may not benefit", concept.whoMayNotBenefit]] },
       { title: "Use carefully", items: [["When misunderstood", concept.misunderstandingRisk], ["Verify", concept.verifyNote]] }
     ];
@@ -190,28 +198,39 @@
     document.getElementById("quest-progress").textContent = `${quest.id.toUpperCase()} of 20 · Tier ${quest.tier} · ~${quest.estimatedMinutes} min`;
     document.getElementById("quest-title").textContent = quest.title;
     document.getElementById("quest-subtitle").textContent = quest.subtitle;
+    document.getElementById("quest-scenario-student").textContent = `${quest.primaryStudent.name}'s scenario`;
+    document.getElementById("quest-kc-heading").textContent = `Knowledge check for ${quest.primaryStudent.name}`;
+    const questRatingControl = mountLessonRating(document.getElementById("quest-rating"), {
+      lessonId: quest.id,
+      completed: loadState().progress.aiQuest.completedNodeIds.includes(quest.id)
+    });
 
     const profile = currentProfile();
     const text = (value) => resolveLearnerText(value, profile, useGenericStory);
 
     document.getElementById("quest-narrative").textContent = text(await renderQuestNarrative(quest, profile, useGenericStory));
-    document.getElementById("quest-realworld").textContent = text(normalizeExampleLanguage(quest.realWorldExample));
+    document.getElementById("quest-realworld").textContent = text(quest.realWorldExample);
 
     renderLearningVisual(document.getElementById("quest-visualization"), quest.id);
     renderConceptGroups(document.getElementById("quest-concept"), quest.conceptExplanation || {}, text);
 
     const specialWidget = document.getElementById("quest-special-widget");
     specialWidget.innerHTML = "";
-    if (quest.compositeVignettes?.length) {
+    if (quest.appliedVignettes?.length) {
       const heading = document.createElement("h2");
-      heading.textContent = "Fictional examples";
+      heading.textContent = "Applied examples";
       specialWidget.appendChild(heading);
-      for (const vignette of quest.compositeVignettes) {
+      for (const vignette of quest.appliedVignettes) {
         const paragraph = document.createElement("p");
+        if (typeof vignette === "string") {
+          paragraph.textContent = text(vignette);
+          specialWidget.appendChild(paragraph);
+          continue;
+        }
         const strong = document.createElement("strong");
         strong.textContent = `${text(vignette.label)}: `;
         paragraph.appendChild(strong);
-        paragraph.append(document.createTextNode(text(normalizeExampleLanguage(vignette.description))));
+        paragraph.append(document.createTextNode(text(vignette.description)));
         specialWidget.appendChild(paragraph);
       }
     }
@@ -232,10 +251,10 @@
       li.dataset.choiceCard = choice.id;
       li.innerHTML = `
         <p><strong>${escapeHtml(text(choice.text))}</strong></p>
-        <p><em>Why someone might choose this:</em> ${escapeHtml(text(choice.whyChosen))}</p>
-        <p><em>Possible benefit:</em> ${escapeHtml(text(choice.possibleBenefit))}</p>
-        <p><em>Possible cost:</em> ${escapeHtml(text(choice.possibleCost))}</p>
-        <p><em>Possible risk:</em> ${escapeHtml(text(choice.possibleRisk))}</p>
+        <p><em>Why ${escapeHtml(quest.primaryStudent.name)} might choose this:</em> ${escapeHtml(text(choice.whyChosen))}</p>
+        <p><em>Possible benefit for ${escapeHtml(quest.primaryStudent.name)}:</em> ${escapeHtml(text(choice.possibleBenefit))}</p>
+        <p><em>Possible cost for ${escapeHtml(quest.primaryStudent.name)}:</em> ${escapeHtml(text(choice.possibleCost))}</p>
+        <p><em>Possible risk for ${escapeHtml(quest.primaryStudent.name)}:</em> ${escapeHtml(text(choice.possibleRisk))}</p>
         <button class="btn btn-outline choose-btn" type="button" data-choice-id="${escapeHtml(choice.id)}">Choose this</button>
         <div class="choice-result" data-choice-result="${escapeHtml(choice.id)}" role="status" aria-live="polite" tabindex="-1" hidden></div>
       `;
@@ -266,11 +285,11 @@
       result.hidden = false;
       result.innerHTML = `
         <h3>What this choice changes</h3>
-        <p><strong>Right away:</strong> ${escapeHtml(text(quest.immediateConsequences?.[choiceId] || ""))}</p>
-        <p><strong>One year later:</strong> ${escapeHtml(text(quest.oneYearConsequences?.[choiceId] || ""))}</p>
-        <p><strong>Long term:</strong> ${escapeHtml(text(quest.longTermConsequences?.[choiceId] || ""))}</p>
+        <p><strong>Right away for ${escapeHtml(quest.primaryStudent.name)}:</strong> ${escapeHtml(text(quest.immediateConsequences?.[choiceId] || ""))}</p>
+        <p><strong>One year later for ${escapeHtml(quest.primaryStudent.name)}:</strong> ${escapeHtml(text(quest.oneYearConsequences?.[choiceId] || ""))}</p>
+        <p><strong>Long term for ${escapeHtml(quest.primaryStudent.name)}:</strong> ${escapeHtml(text(quest.longTermConsequences?.[choiceId] || ""))}</p>
         <p><strong>What could change this outcome:</strong> ${escapeHtml(text(choice.whatCouldChangeThisOutcome))}</p>
-        <p><strong>If this didn't go the way you hoped:</strong> ${escapeHtml(text(quest.recoveryPath))}</p>
+        <p><strong>Recovery option for ${escapeHtml(quest.primaryStudent.name)}:</strong> ${escapeHtml(text(quest.recoveryPath))}</p>
       `;
       result.focus({ preventScroll: true });
 
@@ -347,9 +366,10 @@
       if (!selectedChoiceId) return;
       const stars = computeStars({ scenarioComplete, knowledgeCheckPassed });
       completeQuest(quest, { stars });
+      questRatingControl?.setCompleted(true);
       celebrate(document.getElementById("quest-view"), {
         title: "Quest complete!",
-        detail: `You earned ${stars} star${stars === 1 ? "" : "s"} for ${quest.title}.`
+        detail: `${quest.primaryStudent.name} earned ${stars} star${stars === 1 ? "" : "s"} for ${quest.title}.`
       });
       window.setTimeout(() => {
         window.location.href = quest.unlocks ? `ai-quest.html?q=${quest.unlocks}` : "journey.html";

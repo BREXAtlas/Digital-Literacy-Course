@@ -32,7 +32,8 @@ export async function renderQuestNarrative(quest, profile, useGenericStory) {
     slot: quest.personalizationSlots?.[0] || null,
     baseText: quest.openingNarrative,
     profile,
-    useGenericStory
+    useGenericStory,
+    preserveNamedStudent: true
   });
 }
 

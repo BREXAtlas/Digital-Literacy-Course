@@ -1,3 +1,5 @@
+import { LESSON_CHARACTERS } from "./lesson-characters.js";
+
 // Ram Ready Digital Literacy — AI Digital Literacy Quest, Quests 1-10
 // Tier I (q01-q05): Understand the System. Tier II (q06-q10): Learn and Create
 // Responsibly. Content is prewritten and reviewed. Personalization only
@@ -8,6 +10,7 @@
 export const QUESTS_PART1 = [
   {
     id: "q01",
+    primaryStudent: LESSON_CHARACTERS.q01,
     tier: 1,
     title: "AI Is a Pattern System, Not a Person",
     subtitle: "Understand what generative AI is actually doing",
@@ -19,18 +22,18 @@ export const QUESTS_PART1 = [
       "Explain why responsibility for a decision remains with the human user"
     ],
     openingNarrative:
-      "{{name}} opens a chatbot for the first time this semester expecting something like a search engine. What {{subject}} finds instead is a system that writes fluent, confident paragraphs — some accurate, some not — with no visible difference between the two.",
+      "Chloe Adams, a Nursing major at Angelo State, opens a chatbot expecting something like a search engine and instead finds fluent, confident paragraphs whose accurate and inaccurate claims look alike.",
     personalizationSlots: ["q01.context"],
     approvedStoryFragments: ["q01.context"],
     scenario: {
       prompt:
-        "A generative AI tool explains a historical event in a polished, confident paragraph. The tone sounds certain, but one date in the explanation is wrong. What is the safest mental model for treating this kind of output?",
+        "Chloe Adams receives a polished, confident AI explanation of a historical event, but one date is wrong. What is the safest mental model for treating this kind of output?",
       type: "multiple_choice"
     },
     choices: [
       { id: "a", text: "Treat it as a useful generated draft that still needs evaluation",
         whyChosen: "Recognizes that usefulness and truth are separate questions.",
-        possibleBenefit: "Keeps the learner in the habit of verifying before relying on AI output.",
+        possibleBenefit: "Keeps Chloe Adams in the habit of verifying before relying on AI output.",
         possibleCost: "Takes extra time compared to accepting the answer immediately.",
         possibleRisk: "None — this is the accurate framing.",
         immediateEffect: { aiLiteracy: 5, integrity: 2 },
@@ -57,22 +60,22 @@ export const QUESTS_PART1 = [
         sourceIds: ["nist-genai-profile"] }
     ],
     immediateConsequences: {
-      a: "{{name}} notes the questionable date and looks it up before using it.",
-      b: "{{name}} repeats the wrong date in a class discussion before anyone catches it.",
-      c: "{{name}} copies the paragraph into notes without flagging the date to check later."
+      a: "Chloe Adams notes the questionable date and looks it up before using it.",
+      b: "Chloe Adams repeats the wrong date in a class discussion before anyone catches it.",
+      c: "Chloe Adams copies the paragraph into notes without flagging the date to check later."
     },
     oneYearConsequences: {
-      a: "{{name}} has a reliable habit of verifying AI output before using it in coursework.",
-      b: "{{name}} has been corrected publicly at least once for repeating an AI-generated error.",
-      c: "{{name}} occasionally submits work containing unverified AI errors."
+      a: "Chloe Adams has a reliable habit of verifying AI output before using it in coursework.",
+      b: "Chloe Adams has been corrected publicly at least once for repeating an AI-generated error.",
+      c: "Chloe Adams occasionally submits work containing unverified AI errors."
     },
     longTermConsequences: {
-      a: "Treating AI output as a draft that needs review is a durable habit that transfers to any future job involving AI tools.",
+      a: "Chloe Adams carries the durable habit of treating AI output as a draft that needs review into any future job involving AI tools.",
       b: "Repeated reliance on fluent tone as proof of truth can damage academic and professional credibility over time.",
       c: "Skipping verification as a habit increases long-term risk of academic integrity issues and factual errors."
     },
     recoveryPath:
-      "Any AI-generated claim can be checked after the fact — {{name}} can always go back, find the original source, and correct the record before it causes real harm.",
+      "Any AI-generated claim can be checked after the fact — Chloe Adams can always go back, find the original source, and correct the record before it causes real harm.",
     conceptExplanation: {
       what: "Generative AI produces new text, images, audio, or code by predicting likely patterns learned from large amounts of training data.",
       why: "These systems exist to assist with drafting, summarizing, explaining, and generating content quickly across many tasks.",
@@ -85,7 +88,7 @@ export const QUESTS_PART1 = [
       verifyNote: "This is a general AI-literacy concept, not a claim about any single tool's current accuracy, which changes over time."
     },
     realWorldExample:
-      "A composite first-year student asked a chatbot to summarize a reading and received a confident, well-organized summary that misstated the author's main argument. The student caught the error only because they reread the original text before citing the summary.",
+      "Chloe Adams asked a chatbot to summarize a reading and received a confident, well-organized summary that misstated the author's main argument. Chloe caught the error only by rereading the original text before citing the summary.",
     knowledgeChecks: [
       { id: "kc1", question: "What is the safest mental model for generative AI output?",
         type: "multiple_choice",
@@ -102,9 +105,10 @@ export const QUESTS_PART1 = [
 
   {
     id: "q02",
+    primaryStudent: LESSON_CHARACTERS.q02,
     tier: 1,
     title: "Generative AI Is Not the Same as Search",
-    subtitle: "Know when you need real sources instead of a synthesized response",
+    subtitle: "Know when Diego Hernandez needs real sources instead of a synthesized response",
     estimatedMinutes: 12,
     learningObjectives: [
       "Distinguish search tools that point to real sources from generative AI that synthesizes a new response",
@@ -113,18 +117,18 @@ export const QUESTS_PART1 = [
       "Practice tracing a claim back to real evidence"
     ],
     openingNarrative:
-      "For a research assignment, {{name}} asks a chatbot for three statistics on a topic. The answer arrives instantly and sounds authoritative — but none of the numbers are linked to a real report.",
+      "Diego Hernandez, an English major at Angelo State, asks a chatbot for three research statistics and receives an authoritative-sounding answer with no links to real reports.",
     personalizationSlots: ["q02.context"],
     approvedStoryFragments: ["q02.context"],
     scenario: {
       prompt:
-        "A research assignment requires evidence from real sources. Which task belongs primarily to a research database or source search rather than a generative AI chatbot?",
+        "Diego Hernandez has a research assignment that requires evidence from real sources. Which task belongs primarily to a research database or source search rather than a generative AI chatbot?",
       type: "multiple_choice"
     },
     choices: [
       { id: "a", text: "Finding the actual peer-reviewed article that supports a claim",
         whyChosen: "Evidence for an academic claim should connect to a real, checkable source.",
-        possibleBenefit: "Produces citable, verifiable evidence that satisfies the assignment's source requirement.",
+        possibleBenefit: "Diego Hernandez finds citable, verifiable evidence that satisfies the assignment's source requirement.",
         possibleCost: "Takes longer than accepting a generated answer.",
         possibleRisk: "None — this is the correct research step.",
         immediateEffect: { aiLiteracy: 5, sourceJudgment: 4 },
@@ -151,22 +155,22 @@ export const QUESTS_PART1 = [
         sourceIds: ["unesco-ai-education"] }
     ],
     immediateConsequences: {
-      a: "{{name}} locates the real article and can cite it with confidence.",
-      b: "{{name}} gets useful search terms but still needs to verify them in a database.",
-      c: "{{name}} understands the concept better but has no new evidence for the paper."
+      a: "Diego Hernandez locates the real article and can cite it with confidence.",
+      b: "Diego Hernandez gets useful search terms but still needs to verify them in a database.",
+      c: "Diego Hernandez understands the concept better but has no new evidence for the paper."
     },
     oneYearConsequences: {
-      a: "{{name}} builds a research habit that consistently produces citable, defensible evidence.",
-      b: "{{name}} develops efficient search skills without confusing brainstorming for evidence.",
-      c: "{{name}} may need to build additional research habits before the next major assignment."
+      a: "Diego Hernandez builds a research habit that consistently produces citable, defensible evidence.",
+      b: "Diego Hernandez develops efficient search skills without confusing brainstorming for evidence.",
+      c: "Diego Hernandez may need to build additional research habits before the next major assignment."
     },
     longTermConsequences: {
-      a: "This distinction between synthesis and search protects against a common form of accidental academic integrity violation.",
+      a: "Diego Hernandez uses the distinction between synthesis and search to avoid a common form of accidental academic integrity violation.",
       b: "Combining AI brainstorming with real database searching becomes an efficient long-term research workflow.",
       c: "Practicing explanations alone does not build the research skills needed for source-based assignments."
     },
     recoveryPath:
-      "If {{name}} already used unsupported AI claims in a draft, the fix is straightforward: replace each claim with a real, located source before submitting — professors generally welcome this correction if caught early.",
+      "If Diego Hernandez already used unsupported AI claims in a draft, the fix is straightforward: replace each claim with a real, located source before submitting — professors generally welcome this correction if caught early.",
     conceptExplanation: {
       what: "Search tools point to real webpages, articles, and documents; generative AI often combines patterns into a new synthesized response without showing the original evidence.",
       why: "These are different technologies solving different problems — search indexes existing content, while generative AI produces new content from learned patterns.",
@@ -174,12 +178,12 @@ export const QUESTS_PART1 = [
       cost: "Using both tools together takes more time than relying on one alone.",
       risks: "Treating a generated summary as equivalent to a citation risks presenting fabricated or unsupported claims as fact.",
       whoMayBenefit: "Any researcher who uses AI for the brainstorming stage while reserving evidence-finding for real sources.",
-      whoMayNotBenefit: "A student who skips the source-finding step entirely loses the evidentiary basis their argument needs.",
+      whoMayNotBenefit: "Diego Hernandez loses the evidentiary basis for the argument by skipping the source-finding step.",
       misunderstandingRisk: "Assuming a generated answer already constitutes a source or citation.",
-      verifyNote: "Always locate the real source and verify it directly — an AI-provided 'citation' is not verified until you find it yourself."
+      verifyNote: "Diego Hernandez must locate and independently verify the real source before treating an AI-provided citation as usable evidence."
     },
     realWorldExample:
-      "A composite student asked a chatbot for statistics on local food insecurity and copied them directly into a paper. None of the numbers were linked to a real report, and the professor flagged the unsupported claims during grading.",
+      "Diego Hernandez asked a chatbot for statistics on local food insecurity and copied the numbers directly into a paper. None were linked to a real report, and the professor flagged the unsupported claims during grading.",
     knowledgeChecks: [
       { id: "kc1", question: "Which task belongs primarily to a research database or source search?",
         type: "multiple_choice",
@@ -196,6 +200,7 @@ export const QUESTS_PART1 = [
 
   {
     id: "q03",
+    primaryStudent: LESSON_CHARACTERS.q03,
     tier: 1,
     title: "Why AI Hallucinates",
     subtitle: "Recognize fabricated facts, quotations, links, and citations",
@@ -204,20 +209,20 @@ export const QUESTS_PART1 = [
       "Define hallucination as plausible-sounding but unsupported or fabricated AI output",
       "Recognize that fabricated citations can include realistic-looking titles, journals, and DOIs",
       "Practice verifying a citation by locating the real source",
-      "Explain why asking the same model 'are you sure?' is not verification"
+      "Explain why asking the same model whether it is sure does not count as verification"
     ],
     openingNarrative:
-      "{{name}} asks an AI tool for a supporting citation and receives a journal title, volume number, and DOI that all look completely legitimate. The DOI leads nowhere, and the article does not exist in any database {{name}} checks.",
+      "Naomi Williams, a Marketing major at Angelo State, receives an AI-generated journal citation with a convincing title, volume, and DOI, but the DOI and article do not exist in any database Naomi checks.",
     personalizationSlots: ["q03.context"],
     approvedStoryFragments: ["q03.context"],
     scenario: {
-      prompt: "What should {{name}} do with an AI-generated citation before using it in an assignment?",
+      prompt: "What should Naomi Williams do with an AI-generated citation before using it in an assignment?",
       type: "identify_missing_information"
     },
     choices: [
       { id: "a", text: "Locate the real source and verify every detail independently",
         whyChosen: "A citation is not trustworthy until the source itself has been found and checked.",
-        possibleBenefit: "Guarantees the citation is real before it appears in submitted work.",
+        possibleBenefit: "Naomi Williams confirms that the citation is real before it appears in submitted work.",
         possibleCost: "Takes extra time compared to using the citation immediately.",
         possibleRisk: "None — this is the correct verification step.",
         immediateEffect: { aiLiteracy: 5, citationIntegrity: 5 },
@@ -244,22 +249,22 @@ export const QUESTS_PART1 = [
         sourceIds: ["nist-genai-profile"] }
     ],
     immediateConsequences: {
-      a: "{{name}} discovers the citation is fabricated and finds a real source instead.",
-      b: "{{name}} submits a paper with a citation that cannot be verified by the professor either.",
-      c: "{{name}} gets a false reassurance and still submits an unverifiable citation."
+      a: "Naomi Williams discovers the citation is fabricated and finds a real source instead.",
+      b: "Naomi Williams submits a paper with a citation that cannot be verified by the professor either.",
+      c: "Naomi Williams gets a false reassurance and still submits an unverifiable citation."
     },
     oneYearConsequences: {
-      a: "{{name}} has a reliable citation-verification habit that protects academic integrity.",
-      b: "{{name}} risks an academic integrity review if the fabricated citation is discovered.",
-      c: "{{name}} continues to trust unverified AI citations in future assignments."
+      a: "Naomi Williams has a reliable citation-verification habit that protects academic integrity.",
+      b: "Naomi Williams risks an academic integrity review if the fabricated citation is discovered.",
+      c: "Naomi Williams continues to trust unverified AI citations in future assignments."
     },
     longTermConsequences: {
-      a: "Independent verification of every AI-suggested citation becomes second nature and protects {{name}}'s academic record.",
+      a: "Independent verification of every AI-suggested citation becomes second nature and protects Naomi Williams's academic record.",
       b: "A pattern of unverified fabricated citations can escalate from a warning to a serious academic integrity consequence.",
-      c: "Continued reliance on self-verification from the same tool leaves {{name}} exposed to repeated hallucinated citations."
+      c: "Continued reliance on self-verification from the same tool leaves Naomi Williams exposed to repeated hallucinated citations."
     },
     recoveryPath:
-      "If a fabricated citation has already been submitted, the honest and effective fix is to notify the instructor promptly, correct the citation with a verified source, and explain the verification step that was missed — most instructors respond far better to early correction than to silence.",
+      "If Naomi Williams has already submitted a fabricated citation, the honest and effective fix is to notify the instructor promptly, replace it with a verified source, and explain the verification step that was missed. Most instructors respond far better to early correction than to silence.",
     conceptExplanation: {
       what: "A hallucination is AI output that sounds plausible but is unsupported, inaccurate, or entirely invented — including fake citations, quotations, and URLs.",
       why: "Because the system is optimized to continue realistic-looking patterns, it can generate a convincing citation format without any real source behind it.",
@@ -272,9 +277,9 @@ export const QUESTS_PART1 = [
       verifyNote: "Always locate a cited source directly in a database or publisher site — never rely on a chatbot's self-confirmation."
     },
     realWorldExample:
-      "A composite student's AI-generated citation included a journal title, volume, and DOI that all appeared legitimate, but the DOI led nowhere and the article did not exist in any searchable database — the fabrication was only caught because the student checked before submitting.",
+      "Naomi Williams's AI-generated citation included a journal title, volume, and DOI that all appeared legitimate, but the DOI led nowhere and the article did not exist in any searchable database. Naomi caught the fabrication by checking before submitting.",
     knowledgeChecks: [
-      { id: "kc1", question: "What should you do with an AI-generated citation before using it?",
+      { id: "kc1", question: "What should Naomi Williams do with an AI-generated citation before using it?",
         type: "multiple_choice",
         options: ["Locate the real source and verify every detail", "Assume it is real because it looks academic", "Ask the same chatbot to promise it is correct", "Use it only if it has a DOI"],
         correctAnswer: "Locate the real source and verify every detail",
@@ -289,6 +294,7 @@ export const QUESTS_PART1 = [
 
   {
     id: "q04",
+    primaryStudent: LESSON_CHARACTERS.q04,
     tier: 1,
     title: "Keep Human Judgment in the Loop",
     subtitle: "Decide what AI may suggest and what a person must approve",
@@ -300,21 +306,21 @@ export const QUESTS_PART1 = [
       "Recognize automatic, unreviewed AI decisions as a risk in high-impact settings"
     ],
     openingNarrative:
-      "{{name}} reads about an AI screening tool that labels a scholarship application 'weak' with no human reviewing the explanation or checking whether the criteria were applied fairly.",
+      "Samuel Lee, a Social Work major at Angelo State, reads about an AI screening tool that labels a scholarship application 'weak' without human review of the explanation or criteria.",
     personalizationSlots: ["q04.context"],
     approvedStoryFragments: ["q04.context"],
     scenario: {
-      prompt: "Which of the following decisions most clearly requires meaningful human review before being finalized?",
+      prompt: "Samuel Lee is comparing three AI-assisted decisions. Which one most clearly requires meaningful human review before being finalized?",
       type: "sort_safe_unsafe"
     },
     choices: [
       { id: "a", text: "Rejecting a scholarship applicant based solely on an automated score",
         whyChosen: "This decision has a high, life-affecting consequence for the applicant.",
-        possibleBenefit: "Requiring human review catches unfair or mistaken automated judgments.",
+        possibleBenefit: "Samuel Lee uses human review to catch unfair or mistaken automated judgments.",
         possibleCost: "Human review takes more staff time than fully automated decisions.",
         possibleRisk: "Skipping human review risks an unfair, unexplained, unappealable outcome for a real person.",
         immediateEffect: { aiLiteracy: 5, integrity: 3 },
-        futureEffect: "Recognizing high-impact decisions consistently protects both {{name}} and others from unreviewed AI harm.",
+        futureEffect: "Recognizing high-impact decisions consistently protects both Samuel Lee and others from unreviewed AI harm.",
         whatCouldChangeThisOutcome: "Nothing reduces the need for human review here — the stakes are too high to automate fully.",
         sourceIds: ["nist-ai-rmf", "unesco-ai-education"] },
       { id: "b", text: "Suggesting three study-topic ideas for a low-stakes assignment",
@@ -337,22 +343,22 @@ export const QUESTS_PART1 = [
         sourceIds: ["nist-ai-rmf"] }
     ],
     immediateConsequences: {
-      a: "{{name}} flags this as a case needing mandatory human review before any decision is finalized.",
-      b: "{{name}} recognizes this as safe to accept with light review.",
-      c: "{{name}} recognizes this as needing no special review process."
+      a: "Samuel Lee flags this as a case needing mandatory human review before any decision is finalized.",
+      b: "Samuel Lee recognizes this as safe to accept with light review.",
+      c: "Samuel Lee recognizes this as needing no special review process."
     },
     oneYearConsequences: {
-      a: "{{name}} has a reliable framework for sorting AI-assisted decisions by real-world impact.",
-      b: "{{name}} continues to use AI efficiently for low-stakes brainstorming.",
-      c: "{{name}} continues to make cosmetic choices efficiently without overthinking them."
+      a: "Samuel Lee has a reliable framework for sorting AI-assisted decisions by real-world impact.",
+      b: "Samuel Lee continues to use AI efficiently for low-stakes brainstorming.",
+      c: "Samuel Lee continues to make cosmetic choices efficiently without overthinking them."
     },
     longTermConsequences: {
-      a: "Matching oversight to impact is a skill valuable in any future job involving AI-assisted decisions about people.",
+      a: "Samuel Lee carries the skill of matching oversight to impact into any future job involving AI-assisted decisions about people.",
       b: "Comfort with appropriate low-stakes AI use supports efficient everyday work.",
       c: "Recognizing genuinely low-stakes decisions prevents wasted review effort on things that don't need it."
     },
     recoveryPath:
-      "If {{name}} discovers an unreviewed high-impact AI decision already happened — to themselves or someone else — the recovery step is to request a human review or explanation through the appropriate office; most institutions have an appeal or review process for exactly this situation.",
+      "If Samuel Lee discovers an unreviewed high-impact AI decision already happened — to themselves or someone else — the recovery step is to request a human review or explanation through the appropriate office; most institutions have an appeal or review process for exactly this situation.",
     conceptExplanation: {
       what: "Human-in-the-loop design means AI can draft, sort, explain, and recommend, but a person reviews and approves decisions with real consequences.",
       why: "AI systems can be biased, mistaken, or applied unfairly, and the stronger the consequence, the more that error matters.",
@@ -365,7 +371,7 @@ export const QUESTS_PART1 = [
       verifyNote: "This is a general risk-management principle; specific review requirements vary by institution and are documented in local policy."
     },
     realWorldExample:
-      "A composite university pilot found that an automated scholarship-screening tool had systematically down-scored a category of applicants due to a data pattern nobody had reviewed — the issue was only caught because a staff member insisted on spot-checking rejected applications by hand.",
+      "Samuel Lee reviews a university pilot in which an automated scholarship-screening tool systematically down-scored a category of applicants because of a data pattern nobody had reviewed; a staff member's manual spot-check of rejected applications exposed the issue.",
     knowledgeChecks: [
       { id: "kc1", question: "Which decision most clearly requires meaningful human review?",
         type: "multiple_choice",
@@ -382,6 +388,7 @@ export const QUESTS_PART1 = [
 
   {
     id: "q05",
+    primaryStudent: LESSON_CHARACTERS.q05,
     tier: 1,
     title: "Build a Strong Prompt",
     subtitle: "Use role, task, context, constraints, and output format",
@@ -393,17 +400,17 @@ export const QUESTS_PART1 = [
       "Recognize source limits as a prompting constraint that supports verification"
     ],
     openingNarrative:
-      "{{name}} types \"help me with biology\" into a chatbot and gets a generic wall of text that doesn't match the actual assignment at all.",
+      "Fatima Khan, a Civil Engineering major at Angelo State, types 'help me with engineering' into a chatbot and gets a generic wall of text that does not match the assignment.",
     personalizationSlots: ["q05.context"],
     approvedStoryFragments: ["q05.context"],
     scenario: {
-      prompt: "Which prompt gives the clearest learning direction for a study session on cell respiration?",
+      prompt: "Fatima Khan is preparing a study session on cell respiration. Which prompt gives the clearest learning direction?",
       type: "improve_a_prompt"
     },
     choices: [
       { id: "a", text: "\"Using only the notes below, quiz me with five questions on cell respiration and explain any missed answers.\"",
         whyChosen: "Includes source limits, a clear task, and a defined output format.",
-        possibleBenefit: "Produces a focused, checkable study session grounded in the learner's actual material.",
+        possibleBenefit: "Fatima Khan gets a focused, checkable study session grounded in the actual class material.",
         possibleCost: "Takes a little longer to write than a one-line prompt.",
         possibleRisk: "Low — even a strong prompt still requires the learner to verify the quiz content.",
         immediateEffect: { aiLiteracy: 5, professionalConfidence: 2 },
@@ -430,22 +437,22 @@ export const QUESTS_PART1 = [
         sourceIds: ["unesco-ai-education"] }
     ],
     immediateConsequences: {
-      a: "{{name}} gets a focused, source-limited quiz that matches the actual class notes.",
-      b: "{{name}} gets a generic response that doesn't match the assignment.",
-      c: "{{name}} gets an overwhelming amount of unfocused information."
+      a: "Fatima Khan gets a focused, source-limited quiz that matches the actual class notes.",
+      b: "Fatima Khan gets a generic response that doesn't match the assignment.",
+      c: "Fatima Khan gets an overwhelming amount of unfocused information."
     },
     oneYearConsequences: {
-      a: "{{name}} has a reusable prompting pattern for future study sessions and assignments.",
-      b: "{{name}} continues to get inconsistent results from vague prompts.",
-      c: "{{name}} spends extra time filtering irrelevant AI output."
+      a: "Fatima Khan has a reusable prompting pattern for future study sessions and assignments.",
+      b: "Fatima Khan continues to get inconsistent results from vague prompts.",
+      c: "Fatima Khan spends extra time filtering irrelevant AI output."
     },
     longTermConsequences: {
-      a: "A reliable prompting pattern is a transferable skill useful in coursework, internships, and future jobs.",
+      a: "Fatima Khan carries a reliable prompting pattern into coursework, internships, and future jobs.",
       b: "Continued vague prompting limits how useful AI tools become as a study aid.",
       c: "Continued overly broad prompting wastes time that a more specific prompt would have saved."
     },
     recoveryPath:
-      "Any vague prompt can be rewritten mid-conversation — {{name}} can simply add role, task, context, constraints, and format to an existing chat and get a much more useful response immediately.",
+      "Any vague prompt can be rewritten mid-conversation — Fatima Khan can simply add role, task, context, constraints, and format to an existing chat and get a much more useful response immediately.",
     conceptExplanation: {
       what: "A prompt is the instruction given to an AI system. A strong prompt states the role, task, context, constraints, and desired output format.",
       why: "Better prompts reduce guessing by giving the system a clear goal, relevant background, source limits, and a target format.",
@@ -458,7 +465,7 @@ export const QUESTS_PART1 = [
       verifyNote: "Even a strong prompt requires the learner to verify important facts, citations, and calculations in the output."
     },
     realWorldExample:
-      "A composite student compared two prompts for the same review session: a one-line request produced a generic overview, while a structured prompt naming the source material, task, and format produced a focused quiz the student could actually use before the exam.",
+      "Fatima Khan compared two prompts for the same review session: a one-line request produced a generic overview, while a structured prompt naming the source material, task, and format produced a focused quiz Fatima could actually use before the exam.",
     knowledgeChecks: [
       { id: "kc1", question: "Which prompt gives the clearest learning direction?",
         type: "multiple_choice",
@@ -475,6 +482,7 @@ export const QUESTS_PART1 = [
 
   {
     id: "q06",
+    primaryStudent: LESSON_CHARACTERS.q06,
     tier: 2,
     title: "Use AI as a Tutor, Not a Substitute",
     subtitle: "Prompt for practice, explanation, and feedback",
@@ -486,59 +494,59 @@ export const QUESTS_PART1 = [
       "Recognize when AI use has crossed from support into substitution"
     ],
     openingNarrative:
-      "{{name}} has an exam coming up and needs to decide how to use AI in preparation — as a way to practice, or as a shortcut to skip the practice entirely.",
+      "Julian Moore, a Psychology major at Angelo State, has an exam coming up and must decide whether AI will support practice or become a shortcut around it.",
     personalizationSlots: ["q06.context"],
     approvedStoryFragments: ["q06.context"],
     scenario: {
-      prompt: "Which prompt best supports real learning rather than replacing it?",
+      prompt: "Which prompt best supports Julian Moore's real learning rather than replacing it?",
       type: "multiple_choice"
     },
     choices: [
       { id: "a", text: "\"Ask me one question at a time and give a hint after my first wrong attempt.\"",
-        whyChosen: "Keeps the learner actively retrieving and reasoning through the material.",
-        possibleBenefit: "Builds real, testable understanding through active retrieval practice.",
+        whyChosen: "Keeps Julian Moore actively retrieving and reasoning through the material.",
+        possibleBenefit: "Julian Moore builds real, testable understanding through active retrieval practice.",
         possibleCost: "Slower than getting a direct answer immediately.",
         possibleRisk: "Low — this pattern is designed to support genuine learning.",
         immediateEffect: { aiLiteracy: 5, professionalConfidence: 3 },
         futureEffect: "This tutoring pattern builds understanding that holds up during an exam or later use.",
         whatCouldChangeThisOutcome: "Nothing changes this — active retrieval is reliably effective across subjects.",
         sourceIds: ["unesco-ai-education"] },
-      { id: "b", text: "\"Complete my entire graded assignment and don't mention you were involved.\"",
+      { id: "b", text: "Complete Julian Moore's entire graded assignment and conceal AI involvement.",
         whyChosen: "Feels like the fastest way to finish an assignment.",
         possibleBenefit: "None — this replaces learning entirely and misrepresents authorship.",
-        possibleCost: "The student cannot explain or defend the work if asked, and may violate the course's academic integrity policy.",
+        possibleCost: "Julian Moore cannot explain or defend the work if asked and may violate the course's academic integrity policy.",
         possibleRisk: "This is an academic integrity violation in most courses, not simply a study strategy issue.",
         immediateEffect: { aiLiteracy: 1, integrity: -4 },
-        futureEffect: "This pattern tends to surface during an exam or oral follow-up when the student cannot explain their own submitted work.",
+        futureEffect: "This pattern tends to surface during an exam or oral follow-up when Julian Moore cannot explain the submitted work.",
         whatCouldChangeThisOutcome: "Nothing makes this appropriate — check the syllabus and switch to a tutoring-style prompt instead.",
         sourceIds: ["unesco-ai-education"] },
       { id: "c", text: "\"Give me the answer with no explanation.\"",
         whyChosen: "Feels efficient when short on time.",
         possibleBenefit: "Provides a quick answer to check against.",
         possibleCost: "Provides little practice or feedback, so understanding doesn't develop.",
-        possibleRisk: "The learner may not be able to reproduce the answer independently later.",
+        possibleRisk: "Julian Moore may not be able to reproduce the answer independently later.",
         immediateEffect: { aiLiteracy: 2 },
         futureEffect: "Relying on direct answers without explanation tends to leave gaps that appear during a closed-book exam.",
         whatCouldChangeThisOutcome: "Adding a request for explanation and follow-up practice would improve this significantly.",
         sourceIds: ["unesco-ai-education"] }
     ],
     immediateConsequences: {
-      a: "{{name}} works through several practice questions and strengthens real understanding.",
-      b: "{{name}} submits an assignment that isn't {{possessive}} own work.",
-      c: "{{name}} gets quick answers but doesn't retain the reasoning behind them."
+      a: "Julian Moore works through several practice questions and strengthens real understanding.",
+      b: "Julian Moore submits an assignment that isn't Julian's own work.",
+      c: "Julian Moore gets quick answers but doesn't retain the reasoning behind them."
     },
     oneYearConsequences: {
-      a: "{{name}} can reliably explain and apply the material without the tool present.",
-      b: "{{name}} risks an academic integrity finding if the pattern is discovered or the material resurfaces on an exam.",
-      c: "{{name}} has gaps in understanding that surface on later, cumulative material."
+      a: "Julian Moore can reliably explain and apply the material without the tool present.",
+      b: "Julian Moore risks an academic integrity finding if the pattern is discovered or the material resurfaces on an exam.",
+      c: "Julian Moore has gaps in understanding that surface on later, cumulative material."
     },
     longTermConsequences: {
-      a: "Using AI as an active tutor is a durable, transferable study strategy for any future learning goal.",
+      a: "Julian Moore carries active, tutoring-style AI use forward as a durable study strategy for future learning goals.",
       b: "Submitting AI-completed work as one's own can escalate from a warning to serious academic consequences if repeated.",
       c: "Passive answer-collecting without explanation tends to produce shallow, non-transferable knowledge."
     },
     recoveryPath:
-      "If {{name}} already used AI to complete graded work, the recovery path is disclosure to the instructor before the issue is discovered independently, followed by redoing the work using a tutoring-style approach — most academic integrity policies treat honest disclosure far more favorably than concealment.",
+      "If Julian Moore already used AI to complete graded work, the recovery path is disclosure to the instructor before the issue is discovered independently, followed by redoing the work using a tutoring-style approach — most academic integrity policies treat honest disclosure far more favorably than concealment.",
     conceptExplanation: {
       what: "AI can support learning by asking questions, giving hints, explaining mistakes, and adjusting difficulty — or it can replace learning by simply producing the finished product.",
       why: "A tutoring prompt keeps the learner active in the process; a substitution prompt asks the tool to do the thinking while the learner only submits the result.",
@@ -548,14 +556,14 @@ export const QUESTS_PART1 = [
       whoMayBenefit: "Any learner who wants durable understanding rather than a one-time completed assignment.",
       whoMayNotBenefit: "A learner using AI purely to finish work faster gains speed but loses the underlying skill.",
       misunderstandingRisk: "Believing that completing an assignment (with AI doing the work) is the same as learning the material.",
-      verifyNote: "The learning test is simple: can you explain or perform the skill without the tool afterward?"
+      verifyNote: "The learning test is whether Julian Moore can explain or perform the skill without the tool afterward."
     },
     realWorldExample:
-      "A composite student who used AI to complete graded homework could not explain the method during the exam — the assignment was finished, but the learning never happened, and it showed at the worst possible time.",
+      "Julian Moore used AI to complete graded homework but could not explain the method during the exam. The assignment was finished, but the learning never happened, and the gap showed at the worst possible time.",
     knowledgeChecks: [
       { id: "kc1", question: "Which prompt best supports learning?",
         type: "multiple_choice",
-        options: ["\"Ask me one question at a time and give a hint after my first wrong attempt\"", "\"Complete my entire graded assignment and hide your involvement\"", "\"Give me the answer with no explanation\"", "\"Write my essay in my writing style\""],
+        options: ["\"Ask me one question at a time and give a hint after my first wrong attempt\"", "Complete Julian Moore's entire graded assignment and hide AI involvement", "\"Give me the answer with no explanation\"", "\"Write my essay in my writing style\""],
         correctAnswer: "\"Ask me one question at a time and give a hint after my first wrong attempt\"",
         explanation: "This keeps the learner active in the process, which is what builds real, testable understanding." }
     ],
@@ -568,6 +576,7 @@ export const QUESTS_PART1 = [
 
   {
     id: "q07",
+    primaryStudent: LESSON_CHARACTERS.q07,
     tier: 2,
     title: "Use AI for Writing Support Without Losing Authorship",
     subtitle: "Separate brainstorming and feedback from ghostwriting",
@@ -579,27 +588,27 @@ export const QUESTS_PART1 = [
       "Explain why the ability to defend an argument is a test of real authorship"
     ],
     openingNarrative:
-      "{{name}} has a draft due and is deciding exactly where AI's role should stop and {{possessive}} own writing should take over.",
+      "Camila Ortiz, a Computer Science major at Angelo State, has a draft due and must decide where AI support should stop and Camila's own writing should take over.",
     personalizationSlots: ["q07.context"],
     approvedStoryFragments: ["q07.context"],
     scenario: {
-      prompt: "Which use of AI most clearly preserves {{name}}'s authorship of a written assignment?",
+      prompt: "Which use of AI most clearly preserves Camila Ortiz's authorship of a written assignment?",
       type: "multiple_choice"
     },
     choices: [
-      { id: "a", text: "Ask AI for feedback on an outline {{name}} created, then make {{possessive}} own revisions",
-        whyChosen: "Keeps {{name}} as the author and final decision-maker on every sentence.",
-        possibleBenefit: "Produces feedback that strengthens the paper while the reasoning and wording stay {{possessive}} own.",
+      { id: "a", text: "Ask AI for feedback on Camila Ortiz's outline, then let Camila make the revisions",
+        whyChosen: "Keeps Camila Ortiz as the author and final decision-maker on every sentence.",
+        possibleBenefit: "Produces feedback that strengthens the paper while the reasoning and wording stay Camila Ortiz's own.",
         possibleCost: "Takes more effort than letting the tool write the paper directly.",
         possibleRisk: "Low — this is a well-supported, defensible use of AI feedback.",
         immediateEffect: { aiLiteracy: 5, integrity: 4 },
-        futureEffect: "{{name}} can defend and explain every part of the resulting paper.",
+        futureEffect: "Camila Ortiz can defend and explain every part of the resulting paper.",
         whatCouldChangeThisOutcome: "Nothing changes this — outline feedback with personal revision is broadly appropriate.",
         sourceIds: ["unesco-ai-education"] },
       { id: "b", text: "Ask AI to write the final paper and submit it as unaided original work",
         whyChosen: "Saves significant time compared to writing the paper personally.",
         possibleBenefit: "None — this misrepresents authorship and can violate academic integrity policy.",
-        possibleCost: "The student cannot explain or defend the argument if questioned.",
+        possibleCost: "Camila Ortiz cannot explain or defend the argument if questioned.",
         possibleRisk: "This is a serious academic integrity violation in most courses.",
         immediateEffect: { aiLiteracy: 1, integrity: -5 },
         futureEffect: "This pattern tends to surface during an oral follow-up or a later assignment requiring the same skill.",
@@ -616,41 +625,41 @@ export const QUESTS_PART1 = [
         sourceIds: ["unesco-ai-education"] }
     ],
     immediateConsequences: {
-      a: "{{name}} produces a stronger paper that {{subject}} fully understands and can defend.",
-      b: "{{name}} submits work {{subject}} cannot explain if questioned.",
-      c: "{{name}} risks including fabricated evidence in the paper."
+      a: "Camila Ortiz produces a stronger paper that Camila fully understands and can defend.",
+      b: "Camila Ortiz submits work Camila cannot explain if questioned.",
+      c: "Camila Ortiz risks including fabricated evidence in the paper."
     },
     oneYearConsequences: {
-      a: "{{name}} builds a writing process that consistently produces defensible, original work.",
-      b: "{{name}} risks an academic integrity case if the pattern is discovered.",
-      c: "{{name}} risks an academic integrity case if fabricated quotations are traced."
+      a: "Camila Ortiz builds a writing process that consistently produces defensible, original work.",
+      b: "Camila Ortiz risks an academic integrity case if the pattern is discovered.",
+      c: "Camila Ortiz risks an academic integrity case if fabricated quotations are traced."
     },
     longTermConsequences: {
-      a: "A writing process centered on outline feedback and personal revision is a durable, transferable skill for any future writing task.",
+      a: "Camila Ortiz carries a writing process centered on outline feedback and personal revision into future writing tasks.",
       b: "Repeated ghostwriting use can escalate consequences from a warning to suspension in many institutions' policies.",
       c: "Fabricated evidence, if discovered later — even in a past assignment — can affect academic standing significantly."
     },
     recoveryPath:
-      "If AI-generated text or fabricated quotations already made it into a draft, the fix is to remove them before submission, replace any quotations with real, verified sources, and rewrite the affected sections in {{possessive}} own words — catching this before submission avoids the issue entirely.",
+      "If AI-generated text or fabricated quotations already made it into a draft, the fix is to remove them before submission, replace any quotations with real, verified sources, and rewrite the affected sections in Camila Ortiz's own words — catching this before submission avoids the issue entirely.",
     conceptExplanation: {
       what: "AI can help brainstorm topics, organize an outline, identify unclear sentences, and generate revision questions.",
-      why: "These uses support the writing process without replacing the student's own reasoning, evidence, and wording.",
-      how: "It may help by giving structured, specific feedback on a draft the student already wrote.",
+      why: "These uses support Camila Ortiz's writing process without replacing Camila's reasoning, evidence, or wording.",
+      how: "AI feedback may help by commenting on a draft Camila Ortiz already wrote.",
       cost: "Supportive use takes more personal effort than having the tool produce the final product.",
       risks: "The risk begins when the tool produces work presented as personal authorship without permission or disclosure.",
       whoMayBenefit: "Any writer who uses AI feedback to sharpen their own already-drafted ideas.",
-      whoMayNotBenefit: "A student who lets AI produce the final argument and wording loses both the learning and the legitimate authorship claim.",
+      whoMayNotBenefit: "Camila Ortiz loses both learning and a legitimate authorship claim by letting AI produce the final argument and wording.",
       misunderstandingRisk: "Believing that light editing of AI-generated text counts as personal authorship.",
       verifyNote: "Keep drafts and prompts, follow the assignment's specific rule, and make sure the final reasoning and wording reflect personal understanding."
     },
     realWorldExample:
-      "A composite student pasted an AI-generated essay into a submission and changed a few words. When asked to explain the central argument in office hours, the student could not defend it — the tool had created the reasoning, not the student.",
+      "Camila Ortiz pasted an AI-generated essay into a submission and changed a few words. When asked to explain the central argument in office hours, Camila could not defend it because the tool, not Camila, had created the reasoning.",
     knowledgeChecks: [
-      { id: "kc1", question: "Which use most clearly preserves student authorship?",
+      { id: "kc1", question: "Which use most clearly preserves Camila Ortiz's authorship?",
         type: "multiple_choice",
-        options: ["Ask for feedback on an outline you created, then make your own revisions", "Ask AI to write the final paper and claim it was unaided", "Generate fake quotations to strengthen the paper", "Ask AI to write in your personal voice"],
-        correctAnswer: "Ask for feedback on an outline you created, then make your own revisions",
-        explanation: "The student remains the author and final decision-maker over every part of the work." }
+        options: ["Ask for feedback on Camila Ortiz's outline, then let Camila make the revisions", "Ask AI to write the final paper and claim it was unaided", "Generate fake quotations to strengthen the paper", "Ask AI to write in Camila Ortiz's personal voice"],
+        correctAnswer: "Ask for feedback on Camila Ortiz's outline, then let Camila make the revisions",
+        explanation: "Camila Ortiz remains the author and final decision-maker over every part of the work." }
     ],
     sourceIds: ["unesco-ai-education"],
     achievementId: "authorship-keeper",
@@ -661,6 +670,7 @@ export const QUESTS_PART1 = [
 
   {
     id: "q08",
+    primaryStudent: LESSON_CHARACTERS.q08,
     tier: 2,
     title: "Use AI to Strengthen Research Questions",
     subtitle: "Generate terms and questions without replacing source work",
@@ -672,15 +682,15 @@ export const QUESTS_PART1 = [
       "Practice testing AI-suggested questions against real evidence availability"
     ],
     openingNarrative:
-      "{{name}} has a broad topic in mind for a research paper but needs to narrow it into something specific enough to actually research.",
+      "Isaiah Brown, a Biology major at Angelo State, has a broad research topic and needs to narrow it into a question specific enough to investigate.",
     personalizationSlots: ["q08.context"],
     approvedStoryFragments: ["q08.context"],
     scenario: {
-      prompt: "What is a responsible AI role in the early stage of a research project?",
+      prompt: "What is a responsible AI role in the early stage of Isaiah Brown's research project?",
       type: "multiple_choice"
     },
     choices: [
-      { id: "a", text: "Suggest related search terms that {{name}} then tests in real library databases",
+      { id: "a", text: "Suggest related search terms that Isaiah Brown then tests in real library databases",
         whyChosen: "Uses AI for discovery while keeping evidence-gathering grounded in real sources.",
         possibleBenefit: "Speeds up the process of finding useful search vocabulary without skipping real research.",
         possibleCost: "Still requires the actual database search and reading step afterward.",
@@ -689,7 +699,7 @@ export const QUESTS_PART1 = [
         futureEffect: "This split between AI brainstorming and real evidence-gathering becomes a durable research workflow.",
         whatCouldChangeThisOutcome: "Nothing changes this — it's a sound pattern across most research tasks.",
         sourceIds: ["unesco-ai-education", "acrl-info-literacy"] },
-      { id: "b", text: "Ask AI to invent supporting studies that fit {{possessive}} opinion",
+      { id: "b", text: "Ask AI to invent supporting studies that fit Isaiah Brown's opinion",
         whyChosen: "Feels like a shortcut to a stronger-sounding argument.",
         possibleBenefit: "None — invented studies are fabricated evidence.",
         possibleCost: "Presents false research as real, a serious academic integrity issue.",
@@ -700,48 +710,48 @@ export const QUESTS_PART1 = [
         sourceIds: ["unesco-ai-education"] },
       { id: "c", text: "Replace reading the actual sources with an AI-generated unsourced summary",
         whyChosen: "Feels faster than reading full articles.",
-        possibleBenefit: "None — a summary the student never verifies is not evidence.",
-        possibleCost: "The student cannot verify the summary's accuracy or defend specific claims from it.",
+        possibleBenefit: "None; an AI summary Isaiah Brown never verifies is not evidence.",
+        possibleCost: "Isaiah Brown cannot verify the summary's accuracy or defend specific claims from it.",
         possibleRisk: "Risks presenting inaccurate or fabricated claims as if they were verified findings.",
         immediateEffect: { aiLiteracy: 1, sourceJudgment: -2 },
-        futureEffect: "This pattern tends to produce papers with claims the student cannot support if questioned.",
+        futureEffect: "This pattern tends to produce papers with claims Isaiah Brown cannot support if questioned.",
         whatCouldChangeThisOutcome: "Reading the actual sources, even briefly, would close this gap." }
     ],
     immediateConsequences: {
-      a: "{{name}} narrows the topic efficiently and finds real, citable sources.",
-      b: "{{name}} risks including fabricated studies in the paper.",
-      c: "{{name}} risks including inaccurate claims {{subject}} cannot personally verify."
+      a: "Isaiah Brown narrows the topic efficiently and finds real, citable sources.",
+      b: "Isaiah Brown risks including fabricated studies in the paper.",
+      c: "Isaiah Brown risks including inaccurate claims Isaiah cannot personally verify."
     },
     oneYearConsequences: {
-      a: "{{name}} has an efficient, defensible research workflow for future assignments.",
-      b: "{{name}} risks an academic integrity case if fabricated sources are traced.",
-      c: "{{name}} risks being unable to defend specific claims during discussion or grading follow-up."
+      a: "Isaiah Brown has an efficient, defensible research workflow for future assignments.",
+      b: "Isaiah Brown risks an academic integrity case if fabricated sources are traced.",
+      c: "Isaiah Brown risks being unable to defend specific claims during discussion or grading follow-up."
     },
     longTermConsequences: {
-      a: "Using AI for term generation while grounding evidence in real sources is a durable, scalable research skill.",
+      a: "Isaiah Brown uses AI for term generation while grounding evidence in real sources, a durable and scalable research skill.",
       b: "Fabricated evidence, even from an early draft, can resurface as a serious integrity issue later.",
       c: "Building research habits around unverified summaries limits the depth and reliability of future academic work."
     },
     recoveryPath:
-      "If unverified or fabricated claims already made it into a draft, {{name}} can replace them before submission by reading and citing the actual sources — catching this before a professor does preserves both the grade and academic standing.",
+      "If unverified or fabricated claims already made it into a draft, Isaiah Brown can replace them before submission by reading and citing the actual sources — catching this before a professor does preserves both the grade and academic standing.",
     conceptExplanation: {
       what: "AI can help turn a broad interest into narrower research questions and suggest synonyms for database searching.",
       why: "Databases respond to specific keywords, and brainstorming alternative terms increases the chance of finding relevant sources.",
-      how: "It may help by generating a starting list of terms and angles that {{name}} then tests against real, available evidence.",
+      how: "It may help by generating a starting list of terms and angles that Isaiah Brown then tests against real, available evidence.",
       cost: "Still requires the time to actually search databases and read sources — AI brainstorming doesn't skip this step.",
       risks: "Letting a chatbot's summary replace reading actual sources risks unverified or fabricated claims entering the paper.",
       whoMayBenefit: "Any researcher looking for a faster way to generate initial search vocabulary and angles.",
       whoMayNotBenefit: "A researcher who treats AI brainstorming as a finished literature review skips the verification research requires.",
       misunderstandingRisk: "Treating a chatbot's confident summary of 'the research' as equivalent to actually reading the studies.",
-      verifyNote: "Base every claim on sources you have personally read and can explain — not an unsourced AI summary."
+      verifyNote: "Isaiah Brown must base every claim on sources Isaiah personally read and can explain, not an unsourced AI summary."
     },
     realWorldExample:
-      "A composite student asked AI for alternative terms related to first-generation college persistence, tested those terms in the library database, and then read and evaluated the real articles that came back — producing a stronger, fully defensible paper.",
+      "Isaiah Brown asked AI for alternative terms related to first-generation college persistence, tested those terms in the library database, and then read and evaluated the real articles that came back — producing a stronger, fully defensible paper.",
     knowledgeChecks: [
       { id: "kc1", question: "What is a responsible AI role in early research?",
         type: "multiple_choice",
-        options: ["Suggest related search terms that you then test in library databases", "Invent studies that support your opinion", "Replace reading with an unsourced summary", "Write the final citations directly"],
-        correctAnswer: "Suggest related search terms that you then test in library databases",
+        options: ["Suggest related search terms that Isaiah Brown then tests in library databases", "Invent studies that support Isaiah Brown's opinion", "Replace reading with an unsourced summary", "Write the final citations directly"],
+        correctAnswer: "Suggest related search terms that Isaiah Brown then tests in library databases",
         explanation: "AI supports discovery while evidence still comes from real, read sources." }
     ],
     sourceIds: ["unesco-ai-education", "acrl-info-literacy"],
@@ -753,6 +763,7 @@ export const QUESTS_PART1 = [
 
   {
     id: "q09",
+    primaryStudent: LESSON_CHARACTERS.q09,
     tier: 2,
     title: "The Syllabus Is the Rulebook",
     subtitle: "Follow the current instructor and assignment rules",
@@ -764,17 +775,17 @@ export const QUESTS_PART1 = [
       "Identify when to ask an instructor for clarification before using AI"
     ],
     openingNarrative:
-      "{{name}} is enrolled in two courses this term with completely different AI-use rules, and has to keep track of which rule applies to which assignment.",
+      "Grace Nguyen, a Criminal Justice major at Angelo State, is enrolled in two courses with different AI-use rules and must track which rule applies to each assignment.",
     personalizationSlots: ["q09.context"],
     approvedStoryFragments: ["q09.context"],
     scenario: {
-      prompt: "What actually controls AI use on a particular assignment?",
+      prompt: "What actually controls Grace Nguyen's AI use on a particular assignment?",
       type: "multiple_choice"
     },
     choices: [
       { id: "a", text: "The current syllabus, assignment directions, and instructor guidance",
         whyChosen: "These are the actual governing rules for the specific course and assignment.",
-        possibleBenefit: "Following the correct rule avoids academic integrity issues entirely.",
+        possibleBenefit: "Grace Nguyen avoids academic integrity issues by following the correct rule.",
         possibleCost: "Requires checking each course's specific policy rather than assuming one rule fits all.",
         possibleRisk: "Low — this is the correct approach.",
         immediateEffect: { aiLiteracy: 5, integrity: 3 },
@@ -795,26 +806,26 @@ export const QUESTS_PART1 = [
         possibleCost: "The tool cannot know or enforce a specific course's policy.",
         possibleRisk: "Following tool-provided guidance instead of the syllabus risks a policy violation.",
         immediateEffect: { aiLiteracy: 1, integrity: -2 },
-        futureEffect: "This pattern leaves the student exposed to violating rules the tool has no way of knowing.",
+        futureEffect: "This pattern leaves Grace Nguyen exposed to violating rules the tool cannot know.",
         whatCouldChangeThisOutcome: "Reading the actual assignment directions would prevent this." }
     ],
     immediateConsequences: {
-      a: "{{name}} follows the correct rule for this specific assignment.",
-      b: "{{name}} risks applying the wrong course's rule to this assignment.",
-      c: "{{name}} risks following guidance that has no actual authority over the assignment."
+      a: "Grace Nguyen follows the correct rule for this specific assignment.",
+      b: "Grace Nguyen risks applying the wrong course's rule to this assignment.",
+      c: "Grace Nguyen risks following guidance that has no actual authority over the assignment."
     },
     oneYearConsequences: {
-      a: "{{name}} has a reliable habit of checking the specific rule before using AI on any assignment.",
-      b: "{{name}} risks an integrity case from applying a rule that doesn't actually govern the assignment.",
-      c: "{{name}} risks the same, based on following the tool's own unverified claims."
+      a: "Grace Nguyen has a reliable habit of checking the specific rule before using AI on any assignment.",
+      b: "Grace Nguyen risks an integrity case from applying a rule that doesn't actually govern the assignment.",
+      c: "Grace Nguyen risks the same, based on following the tool's own unverified claims."
     },
     longTermConsequences: {
-      a: "Checking the actual governing policy before acting is a transferable professional skill, useful well beyond AI use.",
+      a: "Grace Nguyen carries the habit of checking the governing policy before acting into professional settings well beyond AI use.",
       b: "A pattern of assuming rules transfer across contexts can create repeated integrity risk through college and into a career.",
       c: "Trusting a tool's self-description over an actual authority's written policy is a pattern worth breaking early."
     },
     recoveryPath:
-      "If {{name}} already used AI under the wrong assumption about the rule, the best next step is to ask the instructor directly, disclose what was done, and follow their guidance for how to proceed — most instructors respond constructively to a student who asks rather than hides.",
+      "If Grace Nguyen already used AI under the wrong assumption about the rule, the best next step is to ask the instructor directly, disclose what Grace did, and follow the instructor's guidance; asking is stronger than hiding the mistake.",
     conceptExplanation: {
       what: "AI-use rules can differ by professor, course, and assignment — a tool allowed for brainstorming in one class may be prohibited in another.",
       why: "Instructors design assignments to test specific skills, and AI use can undermine or support that goal very differently depending on the task.",
@@ -822,16 +833,16 @@ export const QUESTS_PART1 = [
       cost: "Checking the specific rule for every assignment takes more effort than assuming one blanket rule.",
       risks: "Assuming a campus-wide conversation or another course's policy creates one universal permission can lead directly to a violation.",
       whoMayBenefit: "Any student juggling multiple courses with different AI-use expectations.",
-      whoMayNotBenefit: "N/A — checking the specific rule protects every student regardless of how they plan to use AI.",
+      whoMayNotBenefit: "Checking the specific rule protects Grace Nguyen regardless of how Grace plans to use AI.",
       misunderstandingRisk: "Believing one professor's or one campus conversation's guidance applies universally to every class.",
       verifyNote: "When the rule is unclear, ask the instructor directly before using the tool on that assignment."
     },
     realWorldExample:
-      "A composite writing professor allowed AI feedback with disclosure, while a composite statistics professor in the same term prohibited generative AI entirely on a take-home exam — the same student had to track and follow both rules correctly.",
+      "Grace Nguyen's writing professor allows AI feedback with disclosure, while Grace's statistics professor prohibits generative AI on a take-home exam; Grace must track and follow both rules correctly.",
     knowledgeChecks: [
       { id: "kc1", question: "What controls AI use on a particular assignment?",
         type: "multiple_choice",
-        options: ["The current syllabus, assignment directions, and instructor guidance", "What a friend's professor allows", "Whatever the AI tool suggests", "The most permissive rule the student has heard about"],
+        options: ["The current syllabus, assignment directions, and instructor guidance", "What a friend's professor allows", "Whatever the AI tool suggests", "The most permissive rule Grace Nguyen has heard about"],
         correctAnswer: "The current syllabus, assignment directions, and instructor guidance",
         explanation: "Rules are contextual to the specific course and assignment, not transferable from elsewhere." }
     ],
@@ -844,6 +855,7 @@ export const QUESTS_PART1 = [
 
   {
     id: "q10",
+    primaryStudent: LESSON_CHARACTERS.q10,
     tier: 2,
     title: "Use the Green, Yellow, and Red Zone Model",
     subtitle: "Sort uses into allowed, ask-first, and prohibited categories",
@@ -855,17 +867,17 @@ export const QUESTS_PART1 = [
       "Recognize clearly prohibited or deceptive uses"
     ],
     openingNarrative:
-      "An assignment says \"independent work\" but doesn't mention AI directly. {{name}} has to decide which zone this situation actually falls into.",
+      "Andre Jackson, a Communication major at Angelo State, reads an assignment requiring 'independent work' without mentioning AI and must decide which permission zone applies.",
     personalizationSlots: ["q10.context"],
     approvedStoryFragments: ["q10.context"],
     scenario: {
-      prompt: "Where does \"use AI to write a prohibited take-home exam response\" belong in the green/yellow/red zone model?",
+      prompt: "Where should Andre Jackson place \"use AI to write a prohibited take-home exam response\" in the green/yellow/red zone model?",
       type: "sort_safe_unsafe"
     },
     choices: [
       { id: "a", text: "Red zone",
         whyChosen: "The use directly violates a stated assignment rule.",
-        possibleBenefit: "Correctly identifying this protects {{name}} from an academic integrity violation.",
+        possibleBenefit: "Correctly identifying this protects Andre Jackson from an academic integrity violation.",
         possibleCost: "None — this is the correct classification.",
         possibleRisk: "None when correctly avoided.",
         immediateEffect: { aiLiteracy: 5, integrity: 3 },
@@ -890,35 +902,35 @@ export const QUESTS_PART1 = [
         whatCouldChangeThisOutcome: "Recognizing an explicit prohibition as red, not yellow, would correct this." }
     ],
     immediateConsequences: {
-      a: "{{name}} correctly avoids using AI on the prohibited exam.",
-      b: "{{name}} risks using AI on an exam that explicitly prohibits it.",
-      c: "{{name}} risks treating a clear prohibition as merely uncertain."
+      a: "Andre Jackson correctly avoids using AI on the prohibited exam.",
+      b: "Andre Jackson risks using AI on an exam that explicitly prohibits it.",
+      c: "Andre Jackson risks treating a clear prohibition as merely uncertain."
     },
     oneYearConsequences: {
-      a: "{{name}} has a reliable framework for sorting AI uses correctly across courses.",
-      b: "{{name}} risks an academic integrity case from misclassifying a clear rule.",
-      c: "{{name}} risks the same, from underestimating how clear the original rule was."
+      a: "Andre Jackson has a reliable framework for sorting AI uses correctly across courses.",
+      b: "Andre Jackson risks an academic integrity case from misclassifying a clear rule.",
+      c: "Andre Jackson risks the same, from underestimating how clear the original rule was."
     },
     longTermConsequences: {
-      a: "The green/yellow/red framework becomes a fast, reliable habit for navigating any new course's AI policy.",
+      a: "Andre Jackson turns the green/yellow/red framework into a fast, reliable habit for navigating any new course's AI policy.",
       b: "Misclassifying red-zone uses as acceptable risks escalating academic consequences if repeated.",
       c: "Treating clear rules as ambiguous can lead to the same violations as ignoring them outright."
     },
     recoveryPath:
-      "If {{name}} is ever unsure which zone a use falls into, asking the instructor directly before proceeding always resolves the ambiguity — and if a mistake already happened, prompt disclosure is the strongest recovery step available.",
+      "If Andre Jackson is ever unsure which zone a use falls into, asking the instructor directly before proceeding always resolves the ambiguity — and if a mistake already happened, prompt disclosure is the strongest recovery step available.",
     conceptExplanation: {
       what: "Green-zone uses are clearly allowed (like practice questions or grammar feedback when permitted). Yellow-zone uses are unclear or substantial enough to ask first. Red-zone uses violate stated rules or misrepresent authorship.",
-      why: "This model gives students a fast way to sort a specific AI use without needing to re-read the entire syllabus every time.",
+      why: "This model gives Andre Jackson a fast way to sort a specific AI use without rereading the entire syllabus every time.",
       how: "It may help by anchoring the classification in the actual assignment rule rather than how convenient or common the use feels.",
       cost: "Requires actually knowing the assignment's specific rule to classify correctly.",
       risks: "Misclassifying a red-zone use as green or yellow can lead directly to an academic integrity violation.",
       whoMayBenefit: "Any student navigating multiple courses with different AI-use expectations.",
-      whoMayNotBenefit: "N/A — the framework helps regardless of how a student plans to use AI.",
+      whoMayNotBenefit: "The framework helps Andre Jackson regardless of how Andre plans to use AI.",
       misunderstandingRisk: "Assuming the zone is determined by how easy the tool makes the task, rather than by the actual rule.",
       verifyNote: "When in doubt between yellow and red, ask the instructor directly before proceeding."
     },
     realWorldExample:
-      "A composite student template categorized 'brainstorming with disclosure' as green, 'drafting a full outline without asking' as yellow, and 'generating a prohibited exam answer' as red — using the actual assignment rule, not convenience, to decide each category.",
+      "Andre Jackson's template categorized 'brainstorming with disclosure' as green, 'drafting a full outline without asking' as yellow, and 'generating a prohibited exam answer' as red — using the actual assignment rule, not convenience, to decide each category.",
     knowledgeChecks: [
       { id: "kc1", question: "Where does 'use AI to write a prohibited exam response' belong?",
         type: "multiple_choice",

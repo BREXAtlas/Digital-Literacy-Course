@@ -11,11 +11,11 @@
 <body>
 <header data-site-header></header>
 <main id="main-content">
+  <p class="disclaimer-banner">Student names and scenarios are illustrative. Majors are current Angelo State academic programs used to provide relevant context.</p>
   <div id="map-view">
     <h1>University Digital Literacy Foundations</h1>
-    <p>A continuous storyline in four acts, from your first semester through a reliable digital workflow. Guides
-      Roscoe and Bella will join you along the way — original interface characters, not official university
-      speech.</p>
+    <p>A continuous storyline in four acts, from a first semester through a reliable digital workflow. Guides
+      Roscoe and Bella appear along the way as original interface characters, not official university speech.</p>
     <p class="section"><strong>All 20 episodes are available.</strong> Choose any episode for review, testing, or
       an assignment. Completion, stars, and achievements are still recorded, but earlier episodes are not prerequisites.</p>
     <div class="btn-row">
@@ -28,7 +28,10 @@
 
   <div id="episode-view" hidden>
     <a class="btn btn-outline" href="foundations.html">&larr; Back to map</a>
-    <p id="episode-progress" class="badge"></p>
+    <div class="lesson-toolbar">
+      <p id="episode-progress" class="badge"></p>
+      <div id="episode-rating"></div>
+    </div>
     <article class="guide-character">
       <div class="guide-character__avatar" aria-hidden="true"></div>
       <div><p id="guide-line">Roscoe: Let's get into it.</p></div>
@@ -52,12 +55,13 @@
     <section id="special-widget" class="section"></section>
 
     <section>
+      <p id="scenario-student" class="badge"></p>
       <h2 id="scenario-prompt"></h2>
       <ul class="choice-list" id="choice-list"></ul>
     </section>
 
     <section class="knowledge-check" id="knowledge-check-section" hidden>
-      <h2>Knowledge check</h2>
+      <h2 id="knowledge-check-heading">Knowledge check</h2>
       <div id="knowledge-check-body"></div>
     </section>
 
@@ -81,6 +85,7 @@
   import { renderSourceDrawer } from "./assets/source-renderer.js";
   import { celebrate } from "./assets/game-engine.js";
   import { renderAccessibleListAlternative } from "./assets/accessibility.js";
+  import { mountLessonRating } from "./assets/lesson-rating.js";
   import { loadState } from "./assets/profile-engine.js";
 
   initPage("foundations.html");
@@ -117,13 +122,18 @@
 
       for (const ep of getEpisodesForAct(act.number)) {
         const nodeState = completed.includes(ep.id) ? "completed" : "available";
+        const row = document.createElement("div");
+        row.className = "story-node-row";
         const node = document.createElement("a");
         node.className = "story-node";
         node.dataset.state = nodeState;
         node.href = `foundations.html?ep=${ep.id}`;
         const stars = state.progress.foundations.stars[ep.id] || 0;
         node.innerHTML = `<span class="story-node__badge">${escapeHtml(ep.id.toUpperCase())} · ${escapeHtml(nodeState)}${stars ? " · " + "★".repeat(stars) : ""}</span><span>${escapeHtml(ep.title)}</span>`;
-        wrap.appendChild(node);
+        const ratingHost = document.createElement("div");
+        row.append(node, ratingHost);
+        mountLessonRating(ratingHost, { lessonId: ep.id, completed: completed.includes(ep.id) });
+        wrap.appendChild(row);
       }
       visual.appendChild(wrap);
     }
@@ -139,7 +149,12 @@
         renderAccessibleListAlternative(listEl, all, {
           getLabel: (ep) => `${ep.id.toUpperCase()}: ${ep.title}`,
           getState: (ep) => completed.includes(ep.id) ? "Completed" : "Available",
-          getHref: (ep) => `foundations.html?ep=${ep.id}`
+          getHref: (ep) => `foundations.html?ep=${ep.id}`,
+          renderAfter: (listItem, ep) => {
+            const ratingHost = document.createElement("div");
+            listItem.appendChild(ratingHost);
+            mountLessonRating(ratingHost, { lessonId: ep.id, completed: completed.includes(ep.id) });
+          }
         });
       }
     });
@@ -148,7 +163,7 @@
   function renderConceptGroups(container, concept, text) {
     const groups = [
       { title: "Understand it", items: [["What", concept.what], ["Why it exists", concept.why]] },
-      { title: "Possible value", items: [["How it may help", concept.how], ["Who may benefit", concept.whoMayBenefit]] },
+      { title: "Possible value", items: [["How it may help", concept.how], ["Who May Benefit", concept.whoMayBenefit]] },
       { title: "Tradeoffs", items: [["What it may cost", concept.cost], ["Risks or limitations", concept.risks], ["Who may not benefit", concept.whoMayNotBenefit]] },
       { title: "Use carefully", items: [["When misunderstood", concept.misunderstandingRisk], ["Verify", concept.verifyNote]] }
     ];
@@ -162,14 +177,6 @@
     }).join("");
   }
 
-  function normalizeExampleLanguage(value) {
-    return String(value || "")
-      .replace(/\bcomposite first-year student\b/gi, "fictional first-year student")
-      .replace(/\bcomposite student\b/gi, "fictional student")
-      .replace(/\bcomposite learner\b/gi, "fictional learner")
-      .replace(/\bcomposite scenario(s)?\b/gi, "fictional example$1");
-  }
-
   async function renderEpisode(id) {
     const episode = getEpisode(id);
     if (!episode) { renderMap(); return; }
@@ -179,6 +186,12 @@
     document.getElementById("episode-progress").textContent = `${episode.id.toUpperCase()} of 20 · Act ${episode.act} · ~${episode.estimatedMinutes} min`;
     document.getElementById("episode-title").textContent = episode.title;
     document.getElementById("episode-subtitle").textContent = episode.subtitle;
+    document.getElementById("scenario-student").textContent = `${episode.primaryStudent.name}'s scenario`;
+    document.getElementById("knowledge-check-heading").textContent = `Knowledge check for ${episode.primaryStudent.name}`;
+    const episodeRatingControl = mountLessonRating(document.getElementById("episode-rating"), {
+      lessonId: episode.id,
+      completed: loadState().progress.foundations.completedNodeIds.includes(episode.id)
+    });
     document.getElementById("guide-line").textContent = episode.act % 2 === 1
       ? "Roscoe: Let's take this one step at a time."
       : "Bella: Let's look at the evidence together.";
@@ -188,7 +201,7 @@
 
     const narrative = await renderEpisodeNarrative(episode, profile, useGenericStory);
     document.getElementById("episode-narrative").textContent = text(narrative);
-    document.getElementById("episode-realworld").textContent = text(normalizeExampleLanguage(episode.realWorldExample));
+    document.getElementById("episode-realworld").textContent = text(episode.realWorldExample);
 
     renderLearningVisual(document.getElementById("episode-visualization"), episode.id);
     renderConceptGroups(document.getElementById("episode-concept"), episode.conceptExplanation || {}, text);
@@ -211,10 +224,10 @@
       li.dataset.choiceCard = choice.id;
       li.innerHTML = `
         <p><strong>${escapeHtml(text(choice.text))}</strong></p>
-        <p><em>Why someone might choose this:</em> ${escapeHtml(text(choice.whyChosen))}</p>
-        <p><em>Possible benefit:</em> ${escapeHtml(text(choice.possibleBenefit))}</p>
-        <p><em>Possible cost:</em> ${escapeHtml(text(choice.possibleCost))}</p>
-        <p><em>Possible risk:</em> ${escapeHtml(text(choice.possibleRisk))}</p>
+        <p><em>Why ${escapeHtml(episode.primaryStudent.name)} might choose this:</em> ${escapeHtml(text(choice.whyChosen))}</p>
+        <p><em>Possible benefit for ${escapeHtml(episode.primaryStudent.name)}:</em> ${escapeHtml(text(choice.possibleBenefit))}</p>
+        <p><em>Possible cost for ${escapeHtml(episode.primaryStudent.name)}:</em> ${escapeHtml(text(choice.possibleCost))}</p>
+        <p><em>Possible risk for ${escapeHtml(episode.primaryStudent.name)}:</em> ${escapeHtml(text(choice.possibleRisk))}</p>
         <button class="btn btn-outline choose-btn" type="button" data-choice-id="${escapeHtml(choice.id)}">Choose this</button>
         <div class="choice-result" data-choice-result="${escapeHtml(choice.id)}" role="status" aria-live="polite" tabindex="-1" hidden></div>
       `;
@@ -247,11 +260,11 @@
       result.hidden = false;
       result.innerHTML = `
         <h3>What this choice changes</h3>
-        <p><strong>Right away:</strong> ${escapeHtml(text(episode.immediateConsequences?.[choiceId] || ""))}</p>
-        <p><strong>One year later:</strong> ${escapeHtml(text(episode.oneYearConsequences?.[choiceId] || ""))}</p>
-        <p><strong>Long term:</strong> ${escapeHtml(text(episode.longTermConsequences?.[choiceId] || ""))}</p>
+        <p><strong>Right away for ${escapeHtml(episode.primaryStudent.name)}:</strong> ${escapeHtml(text(episode.immediateConsequences?.[choiceId] || ""))}</p>
+        <p><strong>One year later for ${escapeHtml(episode.primaryStudent.name)}:</strong> ${escapeHtml(text(episode.oneYearConsequences?.[choiceId] || ""))}</p>
+        <p><strong>Long term for ${escapeHtml(episode.primaryStudent.name)}:</strong> ${escapeHtml(text(episode.longTermConsequences?.[choiceId] || ""))}</p>
         <p><strong>What could change this outcome:</strong> ${escapeHtml(text(choice.whatCouldChangeThisOutcome))}</p>
-        <p><strong>If this didn't go the way you hoped:</strong> ${escapeHtml(text(episode.recoveryPath))}</p>
+        <p><strong>Recovery option for ${escapeHtml(episode.primaryStudent.name)}:</strong> ${escapeHtml(text(episode.recoveryPath))}</p>
       `;
       result.focus({ preventScroll: true });
 
@@ -319,9 +332,10 @@
       if (!selectedChoiceId) return;
       const stars = computeStars(episode, { scenarioComplete, knowledgeCheckPassed });
       completeEpisode(episode, { stars });
+      episodeRatingControl?.setCompleted(true);
       celebrate(document.getElementById("episode-view"), {
         title: episode.achievementId ? "Achievement unlocked!" : "Episode complete!",
-        detail: `You earned ${stars} star${stars === 1 ? "" : "s"} for ${episode.title}.`
+        detail: `${episode.primaryStudent.name} earned ${stars} star${stars === 1 ? "" : "s"} for ${episode.title}.`
       });
       window.setTimeout(() => {
         window.location.href = episode.unlocks ? `foundations.html?ep=${episode.unlocks}` : "journey.html";
@@ -332,18 +346,23 @@
   function renderSpecialWidget(episode, text) {
     const container = document.getElementById("special-widget");
     container.innerHTML = "";
-    if (!episode.compositeVignettes?.length) return;
+    if (!episode.appliedVignettes?.length) return;
 
     const heading = document.createElement("h2");
-    heading.textContent = "Fictional examples";
+    heading.textContent = "Applied examples";
     container.appendChild(heading);
 
-    for (const vignette of episode.compositeVignettes) {
+    for (const vignette of episode.appliedVignettes) {
       const paragraph = document.createElement("p");
+      if (typeof vignette === "string") {
+        paragraph.textContent = text(vignette);
+        container.appendChild(paragraph);
+        continue;
+      }
       const strong = document.createElement("strong");
       strong.textContent = `${text(vignette.label)}: `;
       paragraph.appendChild(strong);
-      paragraph.append(document.createTextNode(text(normalizeExampleLanguage(vignette.description))));
+      paragraph.append(document.createTextNode(text(vignette.description)));
       container.appendChild(paragraph);
     }
   }

@@ -31,11 +31,9 @@ Use this checklist before and during the first library pilot.
 - [ ] Confirm **Edit selections** works.
 - [ ] Confirm **Begin your story** works.
 - [ ] Confirm **Begin with a generic story** works.
-- [ ] Leave the display name blank and begin.
-- [ ] Confirm the course uses natural `you` and `your` language.
+- [ ] Confirm every lesson retains its assigned illustrative student and verified Angelo State major, regardless of profile display name.
 - [ ] Confirm no `{{name}}`, `{{subject}}`, `{{object}}`, or other placeholder appears.
-- [ ] Enter a display name and begin again.
-- [ ] Confirm the saved name appears naturally.
+- [ ] Edit profile choices and confirm lesson facts, assigned students, quiz answers, and consequences do not change.
 
 ## Foundations lessons
 
@@ -47,7 +45,7 @@ Test at minimum Episodes 1, 2, 5, 10, 15, and 20.
 For each tested episode:
 
 - [ ] Opening narrative renders without a placeholder.
-- [ ] Fictional example is clearly labeled and understandable.
+- [ ] Illustrative example uses the episode’s assigned student and remains understandable.
 - [ ] Lesson figure appears.
 - [ ] Figure includes a readable text alternative.
 - [ ] Concept section displays four grouped cards.
@@ -60,6 +58,9 @@ For each tested episode:
 - [ ] Stars and achievements save.
 - [ ] The next episode remains available from both Continue and the map.
 - [ ] Refreshing preserves progress.
+- [ ] Before completion, **Rate usefulness** is muted, disabled, and explained by accessible status text.
+- [ ] After completion, selecting ratings 1 then 5 updates the cumulative brain highlight and visible rating status.
+- [ ] Refreshing preserves the selected rating without changing stars, achievements, or progress.
 
 ## AI Quest
 
@@ -76,6 +77,9 @@ Test at minimum Quests 1, 5, 10, 15, and 20.
 - [ ] Knowledge checks and explanations work.
 - [ ] Continue saves progress.
 - [ ] The next quest remains available from both Continue and the map.
+- [ ] Before completion, **Rate usefulness** is muted, disabled, and explained by accessible status text.
+- [ ] After completion, selecting ratings 1 then 5 updates the cumulative brain highlight and visible rating status.
+- [ ] Refreshing preserves the selected rating without changing stars, achievements, or progress.
 
 ## My Journey and achievements
 
@@ -88,6 +92,8 @@ Test at minimum Quests 1, 5, 10, 15, and 20.
 - [ ] Reset requires confirmation and clears state.
 - [ ] Certificate buttons unlock only when appropriate.
 - [ ] Financial Futures handoff link works.
+- [ ] Usefulness summary reports Foundations rated, AI Quests rated, and the rated-item average only.
+- [ ] Usefulness summary remains private and is not emailed or submitted as analytics.
 
 ## Accessibility
 
@@ -102,6 +108,8 @@ Test at minimum Quests 1, 5, 10, 15, and 20.
 - [ ] Reduced-motion preference removes unnecessary animation.
 - [ ] Dark mode remains readable.
 - [ ] Text zoom at 200% does not hide essential controls.
+- [ ] Rating brains have 44-pixel targets, visible focus, and selected state that does not rely on color alone.
+- [ ] Arrow keys and Home/End change the rating when the control is enabled.
 
 ## Pilot feedback form
 

@@ -1,3 +1,5 @@
+import { LESSON_CHARACTERS } from "./lesson-characters.js";
+
 // Ram Ready Digital Literacy — AI Digital Literacy Quest, Quests 11-20
 // Tier III (q11-q15): Integrity, Media, and Tool Judgment. Tier IV
 // (q16-q20): Code, Automate, and Build Responsibly. Content is prewritten
@@ -6,6 +8,7 @@
 export const QUESTS_PART2 = [
   {
     id: "q11",
+    primaryStudent: LESSON_CHARACTERS.q11,
     tier: 3,
     title: "Disclose or Cite AI Use When Required",
     subtitle: "Describe what tool was used and what it contributed",
@@ -17,17 +20,17 @@ export const QUESTS_PART2 = [
       "Explain why disclosure does not excuse unverified or fabricated content"
     ],
     openingNarrative:
-      "{{name}}'s course requires disclosure whenever AI supports an assignment, and {{name}} has to decide exactly what a useful, honest disclosure statement looks like.",
+      "Lucia Ramirez, a Nursing major at Angelo State, is in a course that requires disclosure whenever AI supports an assignment and must write a useful, honest statement.",
     personalizationSlots: ["q11.context"],
     approvedStoryFragments: ["q11.context"],
     scenario: {
-      prompt: "Which disclosure statement is most informative and honest?",
+      prompt: "Which disclosure statement would be most informative and honest for Lucia Ramirez?",
       type: "review_an_ai_disclosure"
     },
     choices: [
       { id: "a", text: "\"I used ChatGPT to brainstorm search terms and create a study quiz; I located and verified all sources independently.\"",
-        whyChosen: "Specific about the tool, purpose, and the student's own verification work.",
-        possibleBenefit: "Gives the instructor a clear, honest picture of exactly how AI contributed.",
+        whyChosen: "The statement is specific about the tool, purpose, and Lucia Ramirez's verification work.",
+        possibleBenefit: "Lucia Ramirez gives the instructor a clear, honest picture of exactly how AI contributed.",
         possibleCost: "Takes a little more effort to write than a vague sentence.",
         possibleRisk: "None — this is a strong, specific disclosure.",
         immediateEffect: { aiLiteracy: 5, integrity: 4 },
@@ -52,22 +55,22 @@ export const QUESTS_PART2 = [
         whatCouldChangeThisOutcome: "Following the assignment's explicit disclosure requirement would prevent this." }
     ],
     immediateConsequences: {
-      a: "{{name}} submits a clear, specific, policy-compliant disclosure.",
-      b: "{{name}}'s vague disclosure may not satisfy the actual requirement.",
-      c: "{{name}} risks a policy violation by omitting a required disclosure."
+      a: "Lucia Ramirez submits a clear, specific, policy-compliant disclosure.",
+      b: "Lucia Ramirez's vague disclosure may not satisfy the actual requirement.",
+      c: "Lucia Ramirez risks a policy violation by omitting a required disclosure."
     },
     oneYearConsequences: {
-      a: "{{name}} has a reliable habit of writing specific, honest disclosures across courses.",
-      b: "{{name}} risks instructor follow-up questions about vague disclosures.",
-      c: "{{name}} risks an integrity case if omitted disclosures are discovered."
+      a: "Lucia Ramirez has a reliable habit of writing specific, honest disclosures across courses.",
+      b: "Lucia Ramirez risks instructor follow-up questions about vague disclosures.",
+      c: "Lucia Ramirez risks an integrity case if omitted disclosures are discovered."
     },
     longTermConsequences: {
-      a: "Specific, honest disclosure is a transferable professional skill relevant to future AI-assisted work in any field.",
+      a: "Lucia Ramirez carries specific, honest disclosure forward as a professional skill for future AI-assisted work in any field.",
       b: "Chronically vague disclosures can erode instructor trust over a semester.",
       c: "A pattern of skipped disclosures increases cumulative academic integrity risk."
     },
     recoveryPath:
-      "If {{name}} already submitted work without a required disclosure, providing it late with an honest explanation is far better than remaining silent — most instructors respond constructively to a student who corrects the omission proactively.",
+      "If Lucia Ramirez already submitted work without a required disclosure, providing it late with an honest explanation is far better than remaining silent; correcting the omission proactively is the strongest next step.",
     conceptExplanation: {
       what: "Citation and disclosure are not always the same. A citation may document a generated output as a source, while a disclosure explains how AI supported the work.",
       why: "Instructors and institutions need transparency about how a submitted work was produced, both for fairness and for accurate evaluation.",
@@ -80,13 +83,13 @@ export const QUESTS_PART2 = [
       verifyNote: "Follow the required citation style (APA or MLA both publish current AI-citation guidance) and the instructor's specific directions."
     },
     realWorldExample:
-      "A composite student's methods note stated exactly which AI tool generated practice questions, while clarifying that all sources and final writing were completed and independently verified by the student — a model of a specific, defensible disclosure.",
+      "Lucia Ramirez's methods note stated exactly which AI tool generated practice questions, while clarifying that all sources and final writing were completed and independently verified by Lucia — a model of a specific, defensible disclosure.",
     knowledgeChecks: [
       { id: "kc1", question: "Which disclosure is most informative?",
         type: "multiple_choice",
         options: ["\"I used ChatGPT to brainstorm search terms and create a study quiz; I located and verified all sources independently.\"", "\"AI helped.\"", "No disclosure even though the professor requires one", "\"I did not use any AI\" when AI was actually used"],
         correctAnswer: "\"I used ChatGPT to brainstorm search terms and create a study quiz; I located and verified all sources independently.\"",
-        explanation: "It names the tool, the specific role, and the student's own verification work." }
+        explanation: "The statement names the tool, its specific role, and Lucia Ramirez's verification work." }
     ],
     sourceIds: ["apa-cite-ai", "mla-cite-ai"],
     achievementId: "ai-disclosure-writer",
@@ -97,6 +100,7 @@ export const QUESTS_PART2 = [
 
   {
     id: "q12",
+    primaryStudent: LESSON_CHARACTERS.q12,
     tier: 3,
     title: "Protect Original Work and Authorship",
     subtitle: "Understand the line between assistance and misrepresentation",
@@ -108,32 +112,32 @@ export const QUESTS_PART2 = [
       "Practice preserving drafts and prompt history as an authorship record"
     ],
     openingNarrative:
-      "A professor asks {{name}} to explain a submitted argument in office hours — a routine check that reveals a lot about how the work was actually produced.",
+      "Ben Walker, an English major at Angelo State, is asked by a professor to explain a submitted argument in office hours, a routine check that reveals how the work was produced.",
     personalizationSlots: [],
     approvedStoryFragments: [],
     scenario: {
-      prompt: "What best demonstrates responsible authorship when a professor follows up on submitted work?",
+      prompt: "What best demonstrates Ben Walker's responsible authorship when a professor follows up on submitted work?",
       type: "multiple_choice"
     },
     choices: [
-      { id: "a", text: "{{name}} can explain the reasoning, verify the evidence, and describe how tools supported the process",
+      { id: "a", text: "Ben Walker can explain the reasoning, verify the evidence, and describe how tools supported the process",
         whyChosen: "This reflects genuine understanding and appropriate, disclosed tool use.",
-        possibleBenefit: "Demonstrates real ownership of the submitted work under direct questioning.",
+        possibleBenefit: "Ben Walker demonstrates real ownership of the submitted work under direct questioning.",
         possibleCost: "Requires actually understanding the material well enough to explain it.",
         possibleRisk: "Low — this is the goal state for any submission.",
         immediateEffect: { aiLiteracy: 5, integrity: 4 },
-        futureEffect: "This ability to explain submitted work protects {{name}} in any future integrity review.",
-        whatCouldChangeThisOutcome: "Nothing changes this — being able to explain your own work is always the safe position.",
+        futureEffect: "This ability to explain submitted work protects Ben Walker in any future integrity review.",
+        whatCouldChangeThisOutcome: "Nothing changes this; Ben Walker is always in the safest position when Ben can explain the submitted work.",
         sourceIds: ["unesco-ai-education"] },
-      { id: "b", text: "{{name}} cannot explain any part of the submitted work",
+      { id: "b", text: "Ben Walker cannot explain any part of the submitted work",
         whyChosen: "This can happen when AI produced most of the reasoning without genuine review.",
         possibleBenefit: "None — this signals the work doesn't represent real understanding.",
-        possibleCost: "Suggests the submitted work does not reflect {{possessive}} own thinking.",
+        possibleCost: "Suggests the submitted work does not reflect Ben Walker's own thinking.",
         possibleRisk: "This is a strong signal of an authorship or integrity problem to the instructor.",
         immediateEffect: { aiLiteracy: 1, integrity: -4 },
         futureEffect: "This pattern tends to surface again on future oral or exam follow-ups.",
         whatCouldChangeThisOutcome: "Reviewing and personally understanding the work before submission would prevent this." },
-      { id: "c", text: "{{name}} intentionally hides prohibited AI use when asked directly",
+      { id: "c", text: "Ben Walker intentionally hides prohibited AI use when asked directly",
         whyChosen: "It can feel safer in the moment to avoid admitting a rule violation.",
         possibleBenefit: "None — deception compounds the original integrity issue.",
         possibleCost: "Turns a possible policy violation into active deception, which is treated more seriously.",
@@ -143,41 +147,41 @@ export const QUESTS_PART2 = [
         whatCouldChangeThisOutcome: "Honest disclosure, even after the fact, is always a better path than concealment." }
     ],
     immediateConsequences: {
-      a: "{{name}} demonstrates real ownership and passes the follow-up conversation confidently.",
-      b: "{{name}}'s inability to explain the work raises a legitimate integrity concern.",
-      c: "{{name}}'s deception, if uncovered, becomes a more serious issue than the original use."
+      a: "Ben Walker demonstrates real ownership and passes the follow-up conversation confidently.",
+      b: "Ben Walker's inability to explain the work raises a legitimate integrity concern.",
+      c: "Ben Walker's deception, if uncovered, becomes a more serious issue than the original use."
     },
     oneYearConsequences: {
-      a: "{{name}} builds a track record of defensible, explainable work across courses.",
-      b: "{{name}} risks continued integrity concerns if the pattern repeats.",
-      c: "{{name}} risks escalated consequences from a pattern of concealment."
+      a: "Ben Walker builds a track record of defensible, explainable work across courses.",
+      b: "Ben Walker risks continued integrity concerns if the pattern repeats.",
+      c: "Ben Walker risks escalated consequences from a pattern of concealment."
     },
     longTermConsequences: {
-      a: "The ability to explain and defend one's own work is a durable asset in any academic or professional review.",
+      a: "Ben Walker's ability to explain and defend the work is a durable asset in any academic or professional review.",
       b: "A pattern of non-defensible submissions can affect academic standing over time.",
       c: "Concealment discovered even once can seriously damage academic and professional trust."
     },
     recoveryPath:
-      "If {{name}} realizes {{subject}} cannot defend previously submitted work, proactively disclosing this to the instructor and offering to redo or explain the work honestly is always a stronger position than waiting to be caught.",
+      "If Ben Walker realizes that previously submitted work cannot be defended, proactively disclosing the problem to the instructor and offering to redo or explain the work honestly is stronger than waiting to be caught.",
     conceptExplanation: {
-      what: "Authorship means taking responsibility for the ideas, evidence, wording, and final choices represented as your work.",
+      what: "Authorship means Ben Walker takes responsibility for the ideas, evidence, wording, and final choices represented as Ben's work.",
       why: "Academic and professional systems rely on the assumption that submitted work reflects the submitter's actual understanding and effort.",
       how: "It may help to preserve drafts and decision trails so authorship can be demonstrated if questioned.",
       cost: "Genuinely understanding and being able to defend submitted work takes more effort than submitting unreviewed output.",
-      risks: "Copying generated text, hiding tool use, or submitting work you cannot explain can become academic misconduct when it violates course rules.",
+      risks: "Copying generated text, hiding tool use, or submitting work Ben Walker cannot explain may become academic misconduct when it violates course rules.",
       whoMayBenefit: "Any student who wants their academic record to reflect real, defensible work.",
-      whoMayNotBenefit: "N/A — authorship expectations apply regardless of a student's intended AI-use level.",
+      whoMayNotBenefit: "Authorship expectations apply regardless of Ben Walker's intended level of AI use.",
       misunderstandingRisk: "Believing that submitting a polished final product is the same as demonstrating authorship of it.",
-      verifyNote: "Preserve your drafts and prompt history when appropriate so you can show how your thinking developed."
+      verifyNote: "Ben Walker should preserve drafts and prompt history when appropriate so Ben can show how the thinking developed."
     },
     realWorldExample:
-      "A composite professor asked a student to explain a submitted argument in office hours. The student could not explain the terms used in their own paper — the AI tool had created the paper, and the gap became obvious immediately.",
+      "Ben Walker's professor asked Ben to explain a submitted argument in office hours. Ben could not explain the terms used in the paper because the AI tool had created the reasoning, and the gap became obvious immediately.",
     knowledgeChecks: [
       { id: "kc1", question: "What best demonstrates responsible authorship?",
         type: "multiple_choice",
-        options: ["You can explain the reasoning, verify the evidence, and describe how tools supported the process", "You cannot explain any part of the submitted work", "You intentionally hide prohibited AI use", "You submit the same essay to two different classes"],
-        correctAnswer: "You can explain the reasoning, verify the evidence, and describe how tools supported the process",
-        explanation: "Responsibility for submitted work remains with the student, and being able to explain it demonstrates that." }
+        options: ["Ben Walker can explain the reasoning, verify the evidence, and describe how tools supported the process", "Ben Walker cannot explain any part of the submitted work", "Ben Walker intentionally hides prohibited AI use", "Ben Walker submits the same essay to two different classes"],
+        correctAnswer: "Ben Walker can explain the reasoning, verify the evidence, and describe how tools supported the process",
+        explanation: "Responsibility for submitted work remains with Ben Walker, and being able to explain it demonstrates that responsibility." }
     ],
     sourceIds: ["unesco-ai-education"],
     achievementId: "original-work-defender",
@@ -188,6 +192,7 @@ export const QUESTS_PART2 = [
 
   {
     id: "q13",
+    primaryStudent: LESSON_CHARACTERS.q13,
     tier: 3,
     title: "Understand Chatbots and Writing Assistants",
     subtitle: "Match the tool to the task and risk",
@@ -199,17 +204,17 @@ export const QUESTS_PART2 = [
       "Identify when uploading someone else's work without permission is a privacy problem"
     ],
     openingNarrative:
-      "A classmate shares a confidential group-project draft with {{name}}, who is now deciding whether it's appropriate to paste it into a public AI tool for quick feedback.",
+      "Zuri King, a Marketing major at Angelo State, receives a confidential group-project draft from a classmate and must decide whether pasting it into a public AI tool is appropriate.",
     personalizationSlots: ["q13.context"],
     approvedStoryFragments: ["q13.context"],
     scenario: {
-      prompt: "What should happen before uploading a document to a chatbot for feedback?",
+      prompt: "What should Zuri King do before uploading a document to a chatbot for feedback?",
       type: "identify_missing_information"
     },
     choices: [
       { id: "a", text: "Check permission, privacy level, and course rules before uploading anything",
         whyChosen: "Confirms the upload is both permitted and appropriately private.",
-        possibleBenefit: "Protects classmates' privacy and follows course policy simultaneously.",
+        possibleBenefit: "Zuri King protects classmates' privacy while following course policy.",
         possibleCost: "Takes a moment to check before proceeding.",
         possibleRisk: "Low — this is the responsible default.",
         immediateEffect: { aiLiteracy: 5, privacyAwareness: 4 },
@@ -234,22 +239,22 @@ export const QUESTS_PART2 = [
         whatCouldChangeThisOutcome: "A full review of the document's private content, not just the name, would fix this." }
     ],
     immediateConsequences: {
-      a: "{{name}} confirms the upload is appropriate before sharing anything.",
-      b: "{{name}} risks exposing a classmate's private work without consent.",
-      c: "{{name}} partially protects privacy but leaves other details exposed."
+      a: "Zuri King confirms the upload is appropriate before sharing anything.",
+      b: "Zuri King risks exposing a classmate's private work without consent.",
+      c: "Zuri King partially protects privacy but leaves other details exposed."
     },
     oneYearConsequences: {
-      a: "{{name}} has a reliable privacy-check habit before using any AI tool with others' work.",
-      b: "{{name}} risks damaging trust with classmates if a privacy issue surfaces.",
-      c: "{{name}} risks similar issues from incomplete privacy checks in the future."
+      a: "Zuri King has a reliable privacy-check habit before using any AI tool with others' work.",
+      b: "Zuri King risks damaging trust with classmates if a privacy issue surfaces.",
+      c: "Zuri King risks similar issues from incomplete privacy checks in the future."
     },
     longTermConsequences: {
-      a: "Checking privacy and permission before any upload is a transferable professional habit for any future job involving AI tools.",
+      a: "Zuri King carries the habit of checking privacy and permission before any upload into future jobs involving AI tools.",
       b: "A pattern of uploading others' work without permission can damage collaborative trust over time.",
       c: "Partial privacy habits can create a false sense of security that eventually causes a real exposure."
     },
     recoveryPath:
-      "If {{name}} already uploaded someone else's work without asking, the recovery step is to tell them directly, explain what tool was used and what data retention applies, and ask how they'd like to proceed — transparency repairs trust faster than silence.",
+      "If Zuri King already uploaded someone else's work without asking, the recovery step is to tell them directly, explain what tool was used and what data retention applies, and ask how they'd like to proceed — transparency repairs trust faster than silence.",
     conceptExplanation: {
       what: "General chatbots can explain, summarize, brainstorm, and transform text. Writing assistants may focus specifically on grammar, tone, or revision.",
       why: "Different tools store data differently and may have different access to current information, files, or the web.",
@@ -262,7 +267,7 @@ export const QUESTS_PART2 = [
       verifyNote: "Review each tool's stated data retention and privacy practices, which can change over time."
     },
     realWorldExample:
-      "A composite student pasted a classmate's confidential draft into a public AI tool without permission for what seemed like simple feedback — the task itself was low-risk, but the data-handling choice was not.",
+      "Zuri King pasted a classmate's confidential draft into a public AI tool without permission for what seemed like simple feedback — the task itself was low-risk, but the data-handling choice was not.",
     knowledgeChecks: [
       { id: "kc1", question: "What should happen before uploading a document to a chatbot?",
         type: "multiple_choice",
@@ -279,6 +284,7 @@ export const QUESTS_PART2 = [
 
   {
     id: "q14",
+    primaryStudent: LESSON_CHARACTERS.q14,
     tier: 3,
     title: "Recognize Image, Audio, and Video AI Risks",
     subtitle: "Use creative tools without confusing synthetic media for evidence",
@@ -290,17 +296,17 @@ export const QUESTS_PART2 = [
       "Identify impersonation and consent issues in synthetic media use"
     ],
     openingNarrative:
-      "A realistic AI-cloned voice message appears to announce an urgent campus closure. Students start sharing it in group chats before anyone checks whether it's real.",
+      "Daniel Cho, a Social Work major at Angelo State, receives a realistic AI-cloned voice message announcing an urgent campus closure and sees the recording spread before anyone verifies it.",
     personalizationSlots: ["q14.context"],
     approvedStoryFragments: ["q14.context"],
     scenario: {
-      prompt: "How should students verify an alarming AI-like campus announcement before acting on it?",
+      prompt: "How should Daniel Cho verify an alarming AI-like campus announcement before acting on it?",
       type: "multiple_choice"
     },
     choices: [
       { id: "a", text: "Check official university communication channels directly",
         whyChosen: "Verifies the claim through a source with actual authority over the announcement.",
-        possibleBenefit: "Confirms or debunks the claim quickly and reliably.",
+        possibleBenefit: "Daniel Cho confirms or debunks the claim quickly and reliably.",
         possibleCost: "Takes a few minutes compared to immediately sharing the message.",
         possibleRisk: "Low — this is the responsible verification step.",
         immediateEffect: { aiLiteracy: 5, sourceJudgment: 4 },
@@ -318,29 +324,29 @@ export const QUESTS_PART2 = [
       { id: "c", text: "Assume every video or audio message is authentic unless proven otherwise",
         whyChosen: "It can feel easier to default to trust.",
         possibleBenefit: "None — synthetic media can be highly convincing and should not get automatic trust.",
-        possibleCost: "Leaves the student vulnerable to any convincing fabrication.",
+        possibleCost: "Leaves Daniel Cho vulnerable to any convincing fabrication.",
         possibleRisk: "This default makes deception significantly easier to succeed.",
         immediateEffect: { aiLiteracy: 1, sourceJudgment: -2 },
         futureEffect: "This default tends to make each future synthetic-media hoax more effective, not less.",
         whatCouldChangeThisOutcome: "Defaulting to verification, not trust, for alarming or unusual claims would correct this." }
     ],
     immediateConsequences: {
-      a: "{{name}} confirms the claim's status before reacting or sharing.",
-      b: "{{name}} may contribute to spreading a fabricated or misleading claim.",
-      c: "{{name}} remains vulnerable to convincing fabrications by default."
+      a: "Daniel Cho confirms the claim's status before reacting or sharing.",
+      b: "Daniel Cho may contribute to spreading a fabricated or misleading claim.",
+      c: "Daniel Cho remains vulnerable to convincing fabrications by default."
     },
     oneYearConsequences: {
-      a: "{{name}} has a reliable verification habit for alarming digital claims.",
-      b: "{{name}} risks having contributed to real confusion or harm from unverified sharing.",
-      c: "{{name}} risks continued vulnerability to synthetic media deception."
+      a: "Daniel Cho has a reliable verification habit for alarming digital claims.",
+      b: "Daniel Cho risks having contributed to real confusion or harm from unverified sharing.",
+      c: "Daniel Cho risks continued vulnerability to synthetic media deception."
     },
     longTermConsequences: {
-      a: "Verifying through official channels before reacting is a durable defense against increasingly realistic synthetic media.",
+      a: "Daniel Cho uses official-channel verification as a durable defense against increasingly realistic synthetic media.",
       b: "A pattern of sharing before verifying can damage credibility and contribute to real-world harm.",
       c: "Default trust in unverified media becomes riskier as synthetic media technology improves."
     },
     recoveryPath:
-      "If {{name}} already shared something before verifying, the fix is straightforward: check the official source, and if the claim was false, share a correction just as visibly as the original message — most of the harm from misinformation comes from it going uncorrected.",
+      "If Daniel Cho already shared something before verifying, the fix is straightforward: check the official source, and if the claim was false, share a correction just as visibly as the original message — most of the harm from misinformation comes from it going uncorrected.",
     conceptExplanation: {
       what: "AI can create realistic images, cloned voices, and edited video. These tools support real creativity but also make deception easier.",
       why: "As synthetic media becomes more realistic, the gap between 'looks real' and 'is real' becomes more dangerous to rely on.",
@@ -353,9 +359,9 @@ export const QUESTS_PART2 = [
       verifyNote: "When media is used as evidence, verify its origin, context, and whether it has been manipulated through an independent, official source."
     },
     realWorldExample:
-      "A composite campus scenario involved a realistic cloned voice appearing to announce a campus closure. Students who shared it before checking the official university communication channel contributed to unnecessary confusion that took hours to fully correct.",
+      "Daniel Cho encounters a realistic cloned voice announcing a campus closure. Daniel sees classmates share it before checking the official university communication channel, contributing to confusion that takes hours to correct.",
     knowledgeChecks: [
-      { id: "kc1", question: "How should students verify an alarming AI-like campus announcement?",
+      { id: "kc1", question: "How should Daniel Cho verify an alarming AI-like campus announcement?",
         type: "multiple_choice",
         options: ["Check official university communication channels", "Share it first because the voice sounds real", "Assume every video is authentic", "Wait for someone else to check"],
         correctAnswer: "Check official university communication channels",
@@ -370,6 +376,7 @@ export const QUESTS_PART2 = [
 
   {
     id: "q15",
+    primaryStudent: LESSON_CHARACTERS.q15,
     tier: 3,
     title: "Use Coding and Data Assistants Responsibly",
     subtitle: "Review, test, and understand generated code or analysis",
@@ -381,17 +388,17 @@ export const QUESTS_PART2 = [
       "Explain why passing one test does not prove code is safe or correct"
     ],
     openingNarrative:
-      "{{name}} asks a coding assistant to generate a login form for a class project. It runs successfully in a quick demo — but that single successful run doesn't tell the whole story.",
+      "Keira Shah, a Civil Engineering major at Angelo State, asks a coding assistant to generate a login form for a class project; one successful demo does not reveal every security or logic problem.",
     personalizationSlots: ["q15.context"],
     approvedStoryFragments: ["q15.context"],
     scenario: {
-      prompt: "What is the responsible next step after a coding assistant generates a new feature?",
+      prompt: "What is Keira Shah's responsible next step after a coding assistant generates a new feature?",
       type: "review_code"
     },
     choices: [
       { id: "a", text: "Review the code, test it against expected and unexpected cases, and understand it before use",
         whyChosen: "Confirms the code is both correct and secure before it goes into a real project.",
-        possibleBenefit: "Catches insecure patterns, like storing passwords in plain text, before they cause harm.",
+        possibleBenefit: "Keira Shah catches insecure patterns, like storing passwords in plain text, before they cause harm.",
         possibleCost: "Takes real time and some coding knowledge to review properly.",
         possibleRisk: "Low — this is the responsible standard practice.",
         immediateEffect: { aiLiteracy: 5, codeReviewReadiness: 5 },
@@ -416,22 +423,22 @@ export const QUESTS_PART2 = [
         whatCouldChangeThisOutcome: "Using a placeholder or test credential instead of a real one would prevent this." }
     ],
     immediateConsequences: {
-      a: "{{name}} catches a security or logic problem before it becomes a real issue.",
-      b: "{{name}} risks deploying code with an undiscovered security flaw.",
-      c: "{{name}} risks having exposed a real credential unnecessarily."
+      a: "Keira Shah catches a security or logic problem before it becomes a real issue.",
+      b: "Keira Shah risks deploying code with an undiscovered security flaw.",
+      c: "Keira Shah risks having exposed a real credential unnecessarily."
     },
     oneYearConsequences: {
-      a: "{{name}} builds a reliable code-review habit that improves as skills grow.",
-      b: "{{name}} risks a security incident if the flaw is later discovered or exploited.",
-      c: "{{name}} risks unauthorized use of the exposed credential."
+      a: "Keira Shah builds a reliable code-review habit that improves as skills grow.",
+      b: "Keira Shah risks a security incident if the flaw is later discovered or exploited.",
+      c: "Keira Shah risks unauthorized use of the exposed credential."
     },
     longTermConsequences: {
-      a: "Reviewing and testing generated code before use is a foundational professional skill for any coding role.",
+      a: "Keira Shah carries careful review and testing of generated code into any future coding role.",
       b: "Deploying unreviewed generated code repeatedly increases the odds of a serious security incident.",
       c: "A pattern of exposing credentials in prompts creates cumulative security risk across projects."
     },
     recoveryPath:
-      "If {{name}} already deployed unreviewed code or exposed a credential, the fix is immediate: rotate any exposed credentials right away, then review and test the code properly before it's used with any real data.",
+      "If Keira Shah already deployed unreviewed code or exposed a credential, the fix is immediate: rotate any exposed credentials right away, then review and test the code properly before it's used with any real data.",
     conceptExplanation: {
       what: "Coding assistants can suggest functions, explain errors, and generate examples. Data tools can classify, summarize, and visualize information.",
       why: "These tools speed up development, but generated code may be insecure, incorrect, inefficient, or based on assumptions that don't match the actual project.",
@@ -444,7 +451,7 @@ export const QUESTS_PART2 = [
       verifyNote: "Test against both expected and unexpected inputs, and never place real credentials directly into a prompt."
     },
     realWorldExample:
-      "A composite AI-generated login form ran successfully in a class demo but stored passwords in plain text — a serious security flaw that passing one demo run did not reveal or make safe.",
+      "Keira Shah reviews an AI-generated login form that runs successfully in a class demo but stores passwords in plain text, a serious security flaw that one passing demo cannot reveal or make safe.",
     knowledgeChecks: [
       { id: "kc1", question: "What is the responsible next step after AI generates code?",
         type: "multiple_choice",
@@ -461,6 +468,7 @@ export const QUESTS_PART2 = [
 
   {
     id: "q16",
+    primaryStudent: LESSON_CHARACTERS.q16,
     tier: 4,
     title: "Understand AI Agents and Automation",
     subtitle: "See how goals, tools, memory, and permissions change risk",
@@ -472,17 +480,17 @@ export const QUESTS_PART2 = [
       "Practice designing a minimal, safe permission set for a new agent"
     ],
     openingNarrative:
-      "{{name}} reads about an email-sorting agent that also has permission to permanently delete messages — a small classification mistake could now cause real, irreversible loss.",
+      "Xavier Green, a Psychology major at Angelo State, reads about an email-sorting agent that can permanently delete messages, turning one classification mistake into possible irreversible loss.",
     personalizationSlots: ["q16.context"],
     approvedStoryFragments: ["q16.context"],
     scenario: {
-      prompt: "Which permission design is safest for a new, unproven email-sorting agent?",
+      prompt: "Which permission design is safest for Xavier Green's new, unproven email-sorting agent?",
       type: "limit_agent_permissions"
     },
     choices: [
       { id: "a", text: "Read and label test messages only, with human approval required before any deletion",
         whyChosen: "Matches permissions and approval requirements to the agent's unproven, experimental stage.",
-        possibleBenefit: "Limits the damage any single mistake can cause while the agent is still being evaluated.",
+        possibleBenefit: "Xavier Green limits the damage any single mistake can cause while the agent is still being evaluated.",
         possibleCost: "Slower than giving the agent full autonomy from the start.",
         possibleRisk: "Low — this is the responsible default for a new agent.",
         immediateEffect: { aiLiteracy: 5, agentSafety: 5 },
@@ -507,22 +515,22 @@ export const QUESTS_PART2 = [
         whatCouldChangeThisOutcome: "Limiting access to only what the specific task requires would prevent this." }
     ],
     immediateConsequences: {
-      a: "{{name}}'s agent operates safely within a limited, reversible scope.",
-      b: "{{name}}'s agent could cause irreversible data loss from a single mistake.",
-      c: "{{name}}'s agent has far more access than the task requires, multiplying potential damage."
+      a: "Xavier Green's agent operates safely within a limited, reversible scope.",
+      b: "Xavier Green's agent could cause irreversible data loss from a single mistake.",
+      c: "Xavier Green's agent has far more access than the task requires, multiplying potential damage."
     },
     oneYearConsequences: {
-      a: "{{name}} has a reliable framework for scoping any new automation project safely.",
-      b: "{{name}} risks having experienced a costly, irreversible agent mistake.",
-      c: "{{name}} risks a larger-scale incident from unnecessarily broad access."
+      a: "Xavier Green has a reliable framework for scoping any new automation project safely.",
+      b: "Xavier Green risks having experienced a costly, irreversible agent mistake.",
+      c: "Xavier Green risks a larger-scale incident from unnecessarily broad access."
     },
     longTermConsequences: {
-      a: "Starting narrow and expanding only with proven reliability is a foundational practice for any future agent or automation work.",
+      a: "Xavier Green carries the practice of starting narrow and expanding only with proven reliability into future automation work.",
       b: "Overpermissioned automation is a recurring cause of real-world data loss and security incidents.",
       c: "Unscoped access is one of the most common and preventable causes of automation-related harm."
     },
     recoveryPath:
-      "If an agent already has excessive permissions, {{name}} can revoke and rescope them immediately — reducing an agent's access after the fact is always possible and is a normal part of responsible agent design, not a failure.",
+      "If an agent already has excessive permissions, Xavier Green can revoke and rescope them immediately — reducing an agent's access after the fact is always possible and is a normal part of responsible agent design, not a failure.",
     conceptExplanation: {
       what: "An AI agent can plan steps and use tools such as search, email, files, code, or calendars to pursue a goal, rather than just producing a single text response.",
       why: "Tool access makes an agent more capable, but mistakes can now change real systems instead of only producing text a human reviews before acting.",
@@ -535,7 +543,7 @@ export const QUESTS_PART2 = [
       verifyNote: "Agent permission and safety practices are an active area of research; review current guidance (like NIST's AI Risk Management Framework) periodically."
     },
     realWorldExample:
-      "A composite email-sorting agent was initially given full deletion rights across an entire inbox. A single misclassification during testing permanently deleted a folder of coursework-related emails that could not be recovered.",
+      "Xavier Green studies an email-sorting agent that received full deletion rights across an inbox; one testing misclassification permanently deleted a folder of coursework-related emails that could not be recovered.",
     knowledgeChecks: [
       { id: "kc1", question: "Which permission design is safest for a new email-sorting agent?",
         type: "multiple_choice",
@@ -552,6 +560,7 @@ export const QUESTS_PART2 = [
 
   {
     id: "q17",
+    primaryStudent: LESSON_CHARACTERS.q17,
     tier: 4,
     title: "Turn One Prompt Into a Repeatable Workflow",
     subtitle: "Break a task into stages with checks",
@@ -563,17 +572,17 @@ export const QUESTS_PART2 = [
       "Practice designing a workflow for a real academic or creative task"
     ],
     openingNarrative:
-      "{{name}} asks AI to research, cite, write, and format an entire paper in a single prompt — and quickly finds that the errors are nearly impossible to trace back to their source.",
+      "Amara Lewis, a Computer Science major at Angelo State, asks AI to research, cite, write, and format an entire paper in one prompt, making errors nearly impossible to trace.",
     personalizationSlots: ["q17.context"],
     approvedStoryFragments: ["q17.context"],
     scenario: {
-      prompt: "Which workflow design is strongest for a research-based writing assignment?",
+      prompt: "Which workflow design is strongest for Amara Lewis's research-based writing assignment?",
       type: "multiple_choice"
     },
     choices: [
       { id: "a", text: "Read instructions → find real sources → outline → draft → verify → disclose use",
         whyChosen: "Each stage has a clear purpose and a checkpoint to catch errors before moving forward.",
-        possibleBenefit: "Errors get caught early, at the stage where they occurred, instead of buried in a finished product.",
+        possibleBenefit: "Amara Lewis catches errors at the stage where they occur instead of finding them buried in a finished product.",
         possibleCost: "Takes longer than a single prompt that claims to do everything at once.",
         possibleRisk: "Low — this staged approach is the safer, more controllable design.",
         immediateEffect: { aiLiteracy: 5, professionalConfidence: 3 },
@@ -598,22 +607,22 @@ export const QUESTS_PART2 = [
         whatCouldChangeThisOutcome: "Adding a review checkpoint, even a brief one, would catch most of these issues." }
     ],
     immediateConsequences: {
-      a: "{{name}} catches issues at each stage before they compound into a bigger problem.",
-      b: "{{name}} gets a finished-looking product with untraceable errors buried inside.",
-      c: "{{name}} risks submitting work with uncaught errors or instruction mismatches."
+      a: "Amara Lewis catches issues at each stage before they compound into a bigger problem.",
+      b: "Amara Lewis gets a finished-looking product with untraceable errors buried inside.",
+      c: "Amara Lewis risks submitting work with uncaught errors or instruction mismatches."
     },
     oneYearConsequences: {
-      a: "{{name}} has a reusable workflow template for any complex, multi-step assignment.",
-      b: "{{name}} risks repeated grading surprises from untraceable errors.",
-      c: "{{name}} risks a pattern of avoidable mistakes from skipped review."
+      a: "Amara Lewis has a reusable workflow template for any complex, multi-step assignment.",
+      b: "Amara Lewis risks repeated grading surprises from untraceable errors.",
+      c: "Amara Lewis risks a pattern of avoidable mistakes from skipped review."
     },
     longTermConsequences: {
-      a: "Staged, checkpointed workflows are a foundational skill for any complex project, academic or professional.",
+      a: "Amara Lewis carries staged, checkpointed workflows into future complex academic and professional projects.",
       b: "Reliance on single giant prompts tends to produce increasingly unreliable results as task complexity grows.",
       c: "A habit of skipping review compounds risk across every future AI-assisted task."
     },
     recoveryPath:
-      "If {{name}} already used a single giant prompt and submitted the result, the recovery step is to go back and verify each part — sources, argument, formatting — individually, treating the already-generated text as a first draft rather than a final product.",
+      "If Amara Lewis already used a single giant prompt and submitted the result, the recovery step is to go back and verify each part — sources, argument, formatting — individually, treating the already-generated text as a first draft rather than a final product.",
     conceptExplanation: {
       what: "A workflow connects several steps: understand the assignment, gather sources, create an outline, draft, verify, and review.",
       why: "AI can support selected stages, but each stage having a purpose, input rule, and quality check catches errors early and keeps the process controllable.",
@@ -626,7 +635,7 @@ export const QUESTS_PART2 = [
       verifyNote: "Add a verification checkpoint before moving from one stage to the next, not just at the very end."
     },
     realWorldExample:
-      "A composite student asked AI to research, cite, write, and format an entire paper in one prompt. Errors were nearly impossible to trace because there were no checkpoints between the stages — a fabricated source and a formatting mismatch were both buried in the final output.",
+      "Amara Lewis asked AI to research, cite, write, and format an entire paper in one prompt. Errors were nearly impossible to trace because there were no checkpoints between the stages — a fabricated source and a formatting mismatch were both buried in the final output.",
     knowledgeChecks: [
       { id: "kc1", question: "Which workflow is strongest?",
         type: "multiple_choice",
@@ -643,6 +652,7 @@ export const QUESTS_PART2 = [
 
   {
     id: "q18",
+    primaryStudent: LESSON_CHARACTERS.q18,
     tier: 4,
     title: "Vibe Code Without Flying Blind",
     subtitle: "Use natural-language coding while keeping testing and ownership",
@@ -654,17 +664,17 @@ export const QUESTS_PART2 = [
       "Recognize the value of asking the model to explain what changed"
     ],
     openingNarrative:
-      "{{name}}'s prototype worked fine until a new feature was added — and now nobody can tell which AI-generated change broke authentication, because an entire batch of files was replaced at once.",
+      "Lucas Evans, a Biology major at Angelo State, finds that a prototype broke after an AI-generated batch of files replaced working code, leaving no clear record of which change caused the failure.",
     personalizationSlots: ["q18.context"],
     approvedStoryFragments: ["q18.context"],
     scenario: {
-      prompt: "What makes vibe coding safer when using AI to generate or modify code quickly?",
+      prompt: "What makes Lucas Evans's vibe-coding process safer when using AI to generate or modify code quickly?",
       type: "multiple_choice"
     },
     choices: [
       { id: "a", text: "Make small changes, use version control, and require testing and code review",
         whyChosen: "Keeps fast generation paired with the engineering discipline that catches problems early.",
-        possibleBenefit: "Makes it possible to trace exactly which change caused a new bug.",
+        possibleBenefit: "Lucas Evans can trace exactly which change caused a new bug.",
         possibleCost: "Slower than replacing large portions of code at once.",
         possibleRisk: "Low — this is the responsible standard for AI-assisted coding.",
         immediateEffect: { aiLiteracy: 5, codeReviewReadiness: 5 },
@@ -689,22 +699,22 @@ export const QUESTS_PART2 = [
         whatCouldChangeThisOutcome: "Using environment variables or a secrets manager instead would prevent this." }
     ],
     immediateConsequences: {
-      a: "{{name}} can trace and fix issues quickly because changes are small and tracked.",
-      b: "{{name}} struggles to identify which change broke a working feature.",
-      c: "{{name}} risks having exposed credentials directly in the codebase."
+      a: "Lucas Evans can trace and fix issues quickly because changes are small and tracked.",
+      b: "Lucas Evans struggles to identify which change broke a working feature.",
+      c: "Lucas Evans risks having exposed credentials directly in the codebase."
     },
     oneYearConsequences: {
-      a: "{{name}} has a scalable, disciplined approach to fast AI-assisted coding.",
-      b: "{{name}} risks growing technical debt from untraceable, unreviewed changes.",
-      c: "{{name}} risks a credential-related security incident."
+      a: "Lucas Evans has a scalable, disciplined approach to fast AI-assisted coding.",
+      b: "Lucas Evans risks growing technical debt from untraceable, unreviewed changes.",
+      c: "Lucas Evans risks a credential-related security incident."
     },
     longTermConsequences: {
-      a: "Version control, small changes, and testing discipline are foundational professional coding skills that scale with project complexity.",
+      a: "Lucas Evans carries version control, small changes, and testing discipline forward as professional coding skills that scale with project complexity.",
       b: "Large uncontrolled changes tend to make projects progressively harder to maintain and debug.",
       c: "A pattern of exposing secrets in code creates cumulative security risk across every project it touches."
     },
     recoveryPath:
-      "If {{name}}'s prototype broke from an untracked, large AI-generated change, version control history (if it exists) can help isolate the change; if it doesn't exist yet, the recovery step is to start using it immediately going forward, along with rotating any credentials that may have been exposed.",
+      "If Lucas Evans's prototype broke from an untracked, large AI-generated change, version control history (if it exists) can help isolate the change; if it doesn't exist yet, the recovery step is to start using it immediately going forward, along with rotating any credentials that may have been exposed.",
     conceptExplanation: {
       what: "Vibe coding means describing a feature in natural language and letting AI generate or modify code quickly, often without deeply reviewing each change.",
       why: "This can help beginners prototype quickly, but the same speed can hide security problems, broken assumptions, and code nobody fully understands.",
@@ -717,7 +727,7 @@ export const QUESTS_PART2 = [
       verifyNote: "Ask the AI tool to explain exactly what changed with each modification, and verify that explanation against the actual code."
     },
     realWorldExample:
-      "A composite prototype worked fine until a new feature was added. Nobody could identify which AI-generated change broke authentication, because the AI had replaced every file in the project at once with no version control checkpoints in between.",
+      "Lucas Evans's prototype worked fine until a new feature was added. Nobody could identify which AI-generated change broke authentication, because the AI had replaced every file in the project at once with no version control checkpoints in between.",
     knowledgeChecks: [
       { id: "kc1", question: "What makes vibe coding safer?",
         type: "multiple_choice",
@@ -734,6 +744,7 @@ export const QUESTS_PART2 = [
 
   {
     id: "q19",
+    primaryStudent: LESSON_CHARACTERS.q19,
     tier: 4,
     title: "Design an Agent With Boundaries",
     subtitle: "Define goal, tools, memory, permissions, and approval",
@@ -745,27 +756,27 @@ export const QUESTS_PART2 = [
       "Include evaluation for normal tasks, edge cases, and recovery from failure"
     ],
     openingNarrative:
-      "{{name}} is designing a scholarship-search agent for a class project and has to decide exactly what it should — and should not — be allowed to do on its own.",
+      "Layla Cooper, a Criminal Justice major at Angelo State, is designing a scholarship-search agent and must decide exactly what it should and should not do independently.",
     personalizationSlots: ["q19.context"],
     approvedStoryFragments: ["q19.context"],
     scenario: {
-      prompt: "Which action should require human approval in a scholarship-search agent design?",
+      prompt: "Which action should require Layla Cooper's approval in a scholarship-search agent design?",
       type: "choose_human_approval_point"
     },
     choices: [
-      { id: "a", text: "Submitting an application with the student's personal information",
+      { id: "a", text: "Submitting an application with Layla Cooper's personal information",
         whyChosen: "This action is external, consequential, and involves private data being sent to a third party.",
-        possibleBenefit: "Prevents an agent mistake from resulting in an incorrect or unwanted submission using real personal data.",
+        possibleBenefit: "Layla Cooper prevents an agent mistake from causing an incorrect or unwanted submission using real personal data.",
         possibleCost: "Adds a manual approval step that slows down the process slightly.",
         possibleRisk: "Low — requiring approval here is the responsible design choice.",
         immediateEffect: { aiLiteracy: 5, agentSafety: 5 },
         futureEffect: "Requiring approval for external, consequential, privacy-sensitive actions is a durable agent-design principle.",
         whatCouldChangeThisOutcome: "Nothing changes this — external submissions with personal data always warrant human approval.",
         sourceIds: ["nist-ai-rmf", "owasp-llm-top10"] },
-      { id: "b", text: "Drafting a private checklist of scholarship deadlines for the student to review",
+      { id: "b", text: "Drafting a private checklist of scholarship deadlines for Layla Cooper to review",
         whyChosen: "This is a low-impact, internal, easily reversible action.",
         possibleBenefit: "Efficient automation of a low-risk organizational task.",
-        possibleCost: "Minimal — the student still reviews the checklist before acting on it.",
+        possibleCost: "Minimal; Layla Cooper still reviews the checklist before acting.",
         possibleRisk: "Very low, since nothing external happens without further review.",
         immediateEffect: { aiLiteracy: 3, agentSafety: 2 },
         futureEffect: "Correctly identifying low-impact automation helps the agent design stay efficient where it's safe to do so.",
@@ -780,22 +791,22 @@ export const QUESTS_PART2 = [
         whatCouldChangeThisOutcome: "This remains low-risk as long as the data stays public and the action stays reversible." }
     ],
     immediateConsequences: {
-      a: "{{name}}'s agent design requires human sign-off before any real submission happens.",
-      b: "{{name}}'s agent drafts helpful internal material without requiring heavy oversight.",
-      c: "{{name}}'s agent handles a low-risk organizational task efficiently."
+      a: "Layla Cooper's agent design requires human sign-off before any real submission happens.",
+      b: "Layla Cooper's agent drafts helpful internal material without requiring heavy oversight.",
+      c: "Layla Cooper's agent handles a low-risk organizational task efficiently."
     },
     oneYearConsequences: {
-      a: "{{name}} has a reliable framework for placing approval points at the right stage of any agent design.",
-      b: "{{name}} continues to use low-risk automation efficiently.",
-      c: "{{name}} continues to use low-risk automation efficiently."
+      a: "Layla Cooper has a reliable framework for placing approval points at the right stage of any agent design.",
+      b: "Layla Cooper continues to use low-risk automation efficiently.",
+      c: "Layla Cooper continues to use low-risk automation efficiently."
     },
     longTermConsequences: {
-      a: "Matching approval requirements to real-world consequence is a foundational skill for any future agent-design work.",
+      a: "Layla Cooper carries the skill of matching approval requirements to real-world consequence into future agent-design work.",
       b: "Comfort with appropriately scoped, low-risk automation supports efficient everyday use of agent tools.",
       c: "Recognizing genuinely low-risk tasks prevents wasted approval overhead on things that don't need it."
     },
     recoveryPath:
-      "If an agent design already lacks an approval point for an external, consequential action, {{name}} can add it at any stage of development — a missing approval gate is a design fix, not a project failure, and is far easier to add before deployment than after an incident.",
+      "If an agent design already lacks an approval point for an external, consequential action, Layla Cooper can add it at any stage of development — a missing approval gate is a design fix, not a project failure, and is far easier to add before deployment than after an incident.",
     conceptExplanation: {
       what: "Designing an agent with boundaries means starting with one narrow goal, then listing the exact tools and data needed to achieve it.",
       why: "Memory should store only what is necessary, permissions should be limited, and high-impact actions should pause for approval, because tool access turns mistakes into real-world consequences.",
@@ -808,7 +819,7 @@ export const QUESTS_PART2 = [
       verifyNote: "Agent-safety practices are an evolving field; review current frameworks like NIST's AI RMF and OWASP's LLM guidance periodically."
     },
     realWorldExample:
-      "A composite student-designed scholarship agent was scoped to search approved scholarship sites and draft a checklist, but explicitly required the student's manual approval before submitting any application or sharing private records.",
+      "Layla Cooper's student-designed scholarship agent searches approved sites and drafts a checklist but requires Layla's manual approval before submitting an application or sharing private records.",
     knowledgeChecks: [
       { id: "kc1", question: "Which action should require human approval in a scholarship agent?",
         type: "multiple_choice",
@@ -825,8 +836,9 @@ export const QUESTS_PART2 = [
 
   {
     id: "q20",
+    primaryStudent: LESSON_CHARACTERS.q20,
     tier: 4,
-    title: "Final Quest — Use AI Without Losing Your Judgment",
+    title: "Final Quest — Use AI Without Losing Judgment",
     subtitle: "Apply the full AI literacy workflow to a real academic and workplace simulation",
     estimatedMinutes: 22,
     learningObjectives: [
@@ -836,18 +848,18 @@ export const QUESTS_PART2 = [
       "Reflect on how AI use supported, rather than replaced, personal judgment"
     ],
     openingNarrative:
-      "{{name}} faces a single, connected week that pulls together everything learned across this entire quest path: a professor allows AI for brainstorming and feedback but requires disclosure, and the assignment needs five real academic sources and original analysis — while several other AI-related situations arrive at the same time.",
+      "Henry Young, a Communication major at Angelo State, faces a connected week involving permitted AI support, required disclosure, five real academic sources, original analysis, privacy, code, media, and agent decisions.",
     personalizationSlots: ["q20.context"],
     approvedStoryFragments: ["q20.context"],
     scenario: {
       prompt:
-        "In the same week, {{name}} must: narrow a research question with AI's help, verify a citation the AI generated (which turns out to be fabricated), decide whether to upload a private classmate document to a public chatbot, review AI-generated code containing a plain-text password field, judge whether a dramatic campus video clip is authentic, write a required AI-use disclosure, and evaluate a proposed automation agent that requests permission to submit official forms without human approval. Which overall approach handles this week most responsibly?",
+        "In the same week, Henry Young must: narrow a research question with AI's help, verify a citation the AI generated (which turns out to be fabricated), decide whether to upload a private classmate document to a public chatbot, review AI-generated code containing a plain-text password field, judge whether a dramatic campus video clip is authentic, write a required AI-use disclosure, and evaluate a proposed automation agent that requests permission to submit official forms without human approval. Which overall approach handles this week most responsibly?",
       type: "multiple_choice"
     },
     choices: [
       { id: "a", text: "Use allowed AI support to narrow the question, verify every citation independently, decline to upload the private document, fix the code's security issue before use, verify the video through an official channel, write a specific disclosure, and require human approval before the agent submits anything",
         whyChosen: "Applies verification, privacy, security, and human-judgment principles consistently across every part of the week.",
-        possibleBenefit: "Produces defensible academic work, protects a classmate's privacy, avoids a security flaw, avoids spreading unverified media, and keeps a human in control of a consequential agent action.",
+        possibleBenefit: "Henry Young produces defensible academic work, protects a classmate's privacy, avoids a security flaw, avoids spreading unverified media, and keeps a human in control of a consequential agent action.",
         possibleCost: "Takes more time and effort than accepting each AI output at face value.",
         possibleRisk: "Low — this is the responsible, integrated approach the entire quest path has been building toward.",
         immediateEffect: { aiLiteracy: 6, integrity: 5, privacyAwareness: 4, codeReviewReadiness: 4, agentSafety: 4 },
@@ -872,22 +884,22 @@ export const QUESTS_PART2 = [
         whatCouldChangeThisOutcome: "Keeping the human approval requirement, even under time pressure, would prevent this." }
     ],
     immediateConsequences: {
-      a: "{{name}} completes the week with verified evidence, protected privacy, secure code, and a human-approved agent action.",
-      b: "{{name}} risks multiple compounding academic, privacy, and security problems in the same week.",
-      c: "{{name}} risks an agent submitting official information without any human check."
+      a: "Henry Young completes the week with verified evidence, protected privacy, secure code, and a human-approved agent action.",
+      b: "Henry Young risks multiple compounding academic, privacy, and security problems in the same week.",
+      c: "Henry Young risks an agent submitting official information without any human check."
     },
     oneYearConsequences: {
-      a: "{{name}} carries an integrated, reliable approach to AI-assisted work into every future course and job.",
-      b: "{{name}} risks facing multiple serious consequences that could have each been avoided individually.",
-      c: "{{name}} risks having experienced at least one uncaught agent error with real consequences."
+      a: "Henry Young carries an integrated, reliable approach to AI-assisted work into every future course and job.",
+      b: "Henry Young risks facing multiple serious consequences that could have each been avoided individually.",
+      c: "Henry Young risks having experienced at least one uncaught agent error with real consequences."
     },
     longTermConsequences: {
-      a: "This integrated judgment — evidence, privacy, security, and human approval together — is exactly what distinguishes responsible AI use from simply fast AI use, in any future career.",
+      a: "Henry Young carries integrated judgment — evidence, privacy, security, and human approval together — into any future career.",
       b: "A pattern of skipping every safeguard at once tends to produce the most severe possible combination of consequences.",
       c: "Removing human approval from consequential automation is one of the most preventable causes of serious real-world agent-related harm."
     },
     recoveryPath:
-      "No single mistake in this simulation is unrecoverable — a fabricated citation can be replaced, an uploaded document's exposure can be disclosed and addressed, insecure code can be fixed before deployment, and an overpermissioned agent's access can be revoked immediately. The lesson of this final quest is that recovery is always available, but verification before acting is always cheaper than recovery after.",
+      "Henry Young can recover from every mistake in this simulation: replace a fabricated citation, disclose and address a document exposure, fix insecure code before deployment, or revoke an overpermissioned agent's access. Verification before acting is still cheaper than recovery afterward.",
     conceptExplanation: {
       what: "This final quest combines verification, privacy, authorship, disclosure, security, and human-judgment principles into one connected, realistic week.",
       why: "Real AI-assisted work rarely tests one skill at a time — a single week can raise citation, privacy, security, media-authenticity, and permission questions all at once.",
@@ -900,20 +912,20 @@ export const QUESTS_PART2 = [
       verifyNote: "This is a synthesis exercise; the specific facts, tools, and platforms referenced are illustrative and will change over time — the underlying judgment principles are what transfer."
     },
     realWorldExample:
-      "A composite student's final capstone week combined a real syllabus AI policy, a real citation-verification requirement, a real group-project privacy question, and a real automation proposal — demonstrating that responsible AI use is less about any single rule and more about consistently applying judgment across many small decisions.",
-    compositeVignettes: [
-      "The fabricated citation: an AI tool provided a realistic-looking journal citation for the research question that, upon verification, did not exist in any database.",
-      "The private document: a classmate's confidential group-project draft was available to upload to a public chatbot for quick feedback.",
-      "The insecure code: an AI-generated login feature for a class project stored passwords in plain text.",
-      "The authenticity question: a dramatic, realistic video clip about a campus event was circulating before any official confirmation.",
-      "The excessive agent request: a proposed scholarship-automation agent asked for permission to submit official forms without human review."
+      "Henry Young's final capstone week combined a real syllabus AI policy, a real citation-verification requirement, a real group-project privacy question, and a real automation proposal — demonstrating that responsible AI use is less about any single rule and more about consistently applying judgment across many small decisions.",
+    appliedVignettes: [
+      "Henry Young verifies a realistic-looking AI citation and discovers that it does not exist in any database.",
+      "Henry Young declines to upload a classmate's confidential group-project draft to a public chatbot.",
+      "Henry Young finds that an AI-generated login feature stores passwords in plain text.",
+      "Henry Young pauses before sharing a dramatic campus video and looks for official confirmation.",
+      "Henry Young requires human approval before a scholarship-automation agent can submit official forms."
     ],
     scoringDimensions: [
       "Evidence use", "Verification", "Privacy", "Authorship", "Transparency",
       "Security", "Human judgment", "Permission control", "Adaptability"
     ],
     closingReflection:
-      "This quest is not scored by how fast {{name}} moved or by how much AI {{subject}} used — it is scored by whether evidence was verified, privacy was protected, authorship stayed honest, security was checked, and a human stayed in control of consequential decisions. Those habits, not any single tool, are what AI literacy actually means.",
+      "This quest is not scored by how fast Henry Young moved or by how much AI Henry used — it is scored by whether evidence was verified, privacy was protected, authorship stayed honest, security was checked, and a human stayed in control of consequential decisions. Those habits, not any single tool, are what AI literacy actually means.",
     nextCourseHandoff: {
       label: "Continue to Ram Ready Financial Futures",
       url: "https://brexatlas.github.io/Financial-Literacy-Course/"
@@ -921,7 +933,7 @@ export const QUESTS_PART2 = [
     knowledgeChecks: [
       { id: "kc1", question: "How is this final quest scored?",
         type: "multiple_choice",
-        options: ["By evidence use, verification, privacy, authorship, transparency, security, human judgment, permission control, and adaptability", "By how quickly the learner finishes", "By how much AI the learner used", "By whether the learner avoided AI entirely"],
+        options: ["By evidence use, verification, privacy, authorship, transparency, security, human judgment, permission control, and adaptability", "By how quickly Henry Young finishes", "By how much AI Henry Young used", "By whether Henry Young avoided AI entirely"],
         correctAnswer: "By evidence use, verification, privacy, authorship, transparency, security, human judgment, permission control, and adaptability",
         explanation: "Responsible AI use is measured by judgment across multiple dimensions, not by speed or AI usage volume." },
       { id: "kc2", question: "What should happen with the AI-generated citation that cannot be found in any database?",

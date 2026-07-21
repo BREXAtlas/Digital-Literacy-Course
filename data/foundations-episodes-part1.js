@@ -1,3 +1,5 @@
+import { LESSON_CHARACTERS } from "./lesson-characters.js";
+
 // Ram Ready Digital Literacy — University Digital Literacy Foundations
 // Episodes 1-10 (Act I: Start College Digitally Ready / Act II: Communicate and Find Information)
 // All content is prewritten and reviewed, migrated from the original
@@ -9,8 +11,9 @@
 export const EPISODES_PART1 = [
   {
     id: "ep01",
+    primaryStudent: LESSON_CHARACTERS.ep01,
     act: 1,
-    title: "Build Your College File System",
+    title: "Build a College File System",
     subtitle: "A folder structure that survives a busy semester",
     estimatedMinutes: 11,
     learningObjectives: [
@@ -21,12 +24,12 @@ export const EPISODES_PART1 = [
       "Recover a file system that is already disorganized"
     ],
     openingNarrative:
-      "{{name}} just moved into a dorm at Angelo State, and a laptop full of syllabi, forms, and half-started assignments is already piling up faster than {{subject}} expected.",
+      "Maya Chen, a Biology major at Angelo State, has just moved into a dorm, and a laptop full of syllabi, forms, and half-started assignments is already piling up faster than Maya expected.",
     personalizationSlots: ["ep01.opening_detail"],
     approvedStoryFragments: ["ep01.opening_detail"],
     scenario: {
       prompt:
-        "Three files called Essay1, two syllabus PDFs, and a scholarship form are all sitting loose in Downloads. A deadline is twenty minutes away, and {{name}} can't remember which Essay1 is the current draft.",
+        "Three files called Essay1, two syllabus PDFs, and a scholarship form are all sitting loose in Downloads. A deadline is twenty minutes away, and Maya Chen can't remember which Essay1 is the current draft.",
       type: "build_folder_path"
     },
     choices: [
@@ -34,7 +37,7 @@ export const EPISODES_PART1 = [
         id: "a",
         text: "Build a Semester → Course → Assignment folder structure right now",
         whyChosen: "Some learners want to fix the root problem before the next deadline arrives.",
-        possibleBenefit: "Every future file has an obvious home, which saves search time all semester.",
+        possibleBenefit: "Maya Chen gives every future file an obvious home, which saves search time all semester.",
         possibleCost: "Takes twenty to thirty minutes now, during an already busy week.",
         possibleRisk: "None significant — moving files carefully doesn't destroy them.",
         immediateEffect: { fileOrganization: 4, professionalConfidence: 2 },
@@ -68,22 +71,22 @@ export const EPISODES_PART1 = [
       }
     ],
     immediateConsequences: {
-      a: "{{name}} spends the deadline crunch a little differently, but finishes with a folder for every current course.",
-      b: "{{name}} submits the essay on time, but Downloads is now even more crowded.",
-      c: "{{name}} has course folders in place, though everything inside each one is still loose."
+      a: "Maya Chen spends the deadline crunch a little differently, but finishes with a folder for every current course.",
+      b: "Maya Chen submits the essay on time, but Downloads is now even more crowded.",
+      c: "Maya Chen has course folders in place, though everything inside each one is still loose."
     },
     oneYearConsequences: {
-      a: "A year in, {{name}} can find any assignment in seconds and rarely worries about version mix-ups.",
-      b: "A year in, {{name}} has hundreds of loosely named files and a recurring sense of dread before deadlines.",
-      c: "A year in, {{name}} finds courses quickly but still occasionally grabs an outdated draft."
+      a: "A year in, Maya Chen can find any assignment in seconds and rarely worries about version mix-ups.",
+      b: "A year in, Maya Chen has hundreds of loosely named files and a recurring sense of dread before deadlines.",
+      c: "A year in, Maya Chen finds courses quickly but still occasionally grabs an outdated draft."
     },
     longTermConsequences: {
-      a: "A reliable file structure becomes a transferable workplace habit, not just a college one.",
+      a: "Maya Chen carries a reliable file structure forward as a transferable workplace habit, not just a college one.",
       b: "Chronic disorganization tends to compound as file volume grows across semesters.",
       c: "A partial system is better than none, and can be upgraded at any point without starting over."
     },
     recoveryPath:
-      "Even a fully disorganized Downloads folder can be sorted in a single focused hour — sort by date, create the semester/course structure, and move files in batches. No file is unsalvageable just because it's misplaced.",
+      "Maya Chen can sort even a fully disorganized Downloads folder in a single focused hour: sort by date, create the semester/course structure, and move files in batches. No file is unsalvageable just because it's misplaced.",
     conceptExplanation: {
       what: "A file system is a deliberate folder structure — typically Semester → Course → Assignment, with Draft, Feedback, and Final subfolders — instead of one flat pile of files.",
       why: "It exists to reduce the mental effort of remembering where every file lives, replacing memory with a predictable structure.",
@@ -91,12 +94,12 @@ export const EPISODES_PART1 = [
       cost: "Setting it up takes time upfront, and it requires a few extra clicks each time a file is saved.",
       risks: "A structure that's too complicated to maintain gets abandoned; an official document buried in a generic folder can be hard to find when it matters most.",
       whoMayBenefit: "Any student juggling multiple courses, group projects, and deadlines — which is nearly everyone in a first semester.",
-      whoMayNotBenefit: "A student with very few files and a simple workload may need a lighter structure, but the core habit still scales well as workload grows.",
+      whoMayNotBenefit: "Maya Chen may need only a light structure for a small workload, but the core habit scales as Maya's workload grows.",
       misunderstandingRisk: "Believing organization has to be elaborate to be useful — a simple, consistent structure beats a perfect one that's never maintained.",
-      verifyNote: "This is general study-skills guidance, not a specific university IT policy — check your device or campus storage guidance for backup and quota details."
+      verifyNote: "This is general study-skills guidance, not a university IT policy; Maya Chen should check device and campus storage guidance for backup and quota details."
     },
     realWorldExample:
-      "A composite first-year student, Jordan, kept everything in Downloads until a scholarship deadline required the 'right' transcript request form among fourteen similarly named PDFs. Building a simple folder system that same week turned a recurring twenty-minute search into a five-second one for the rest of the year.",
+      "Maya Chen kept everything in Downloads until a scholarship deadline required the 'right' transcript request form among fourteen similarly named PDFs. Building a simple folder system that same week turned a recurring twenty-minute search into a five-second one for the rest of the year.",
     knowledgeChecks: [
       {
         id: "kc1",
@@ -135,6 +138,7 @@ export const EPISODES_PART1 = [
 
   {
     id: "ep02",
+    primaryStudent: LESSON_CHARACTERS.ep02,
     act: 1,
     title: "Name Files Like a College Student",
     subtitle: "A file name is part of professional communication",
@@ -149,10 +153,10 @@ export const EPISODES_PART1 = [
     personalizationSlots: ["ep02.context"],
     approvedStoryFragments: ["ep02.context"],
     openingNarrative:
-      "{{name}}'s new course folders are ready, but the files going into them still have names like IMG_5581.jpg and finalfinal2.pdf.",
+      "Jordan Brooks, a Marketing major at Angelo State, has new course folders ready, but the files going into them still have names like IMG_5581.jpg and finalfinal2.pdf.",
     scenario: {
       prompt:
-        "A professor receives three attachments all named document.pdf from three different students, including {{name}}. One belongs to a different class entirely.",
+        "A professor receives Jordan Brooks's attachment among three files all named document.pdf. One belongs to a different class entirely.",
       type: "build_file_name"
     },
     choices: [
@@ -160,7 +164,7 @@ export const EPISODES_PART1 = [
         id: "a",
         text: "Rename files using Course_Assignment_LastName_Date_Version",
         whyChosen: "Some learners want a name that tells the truth before the file is even opened.",
-        possibleBenefit: "Any reader — professor, teammate, or {{name}} months later — can identify the file instantly.",
+        possibleBenefit: "Any reader — professor, teammate, or Jordan Brooks months later — can identify the file instantly.",
         possibleCost: "Takes a few extra seconds per file compared to accepting the default name.",
         possibleRisk: "None significant.",
         immediateEffect: { fileOrganization: 3, communicationClarity: 3, professionalConfidence: 2 },
@@ -194,22 +198,22 @@ export const EPISODES_PART1 = [
       }
     ],
     immediateConsequences: {
-      a: "The professor and {{name}}'s teammates can identify every file without asking.",
+      a: "The professor and Jordan Brooks's teammates can identify every file without asking.",
       b: "The professor has to open three identically named files to figure out which is which.",
       c: "The file is somewhat identifiable, but multiple 'final' versions could still be confused."
     },
     oneYearConsequences: {
-      a: "{{name}}'s files are consistently easy to find and identify across every course.",
+      a: "Jordan Brooks's files are consistently easy to find and identify across every course.",
       b: "Mix-ups and re-submission requests happen periodically because readers can't tell files apart.",
       c: "Occasional version confusion still happens, though less often than with fully generic names."
     },
     longTermConsequences: {
-      a: "Clear naming becomes a professional habit that transfers directly to internships and jobs, where shared files are constant.",
+      a: "Jordan Brooks carries clear naming into internships and jobs as a professional habit for working with shared files.",
       b: "Poor naming habits can create real friction in group work and job settings where dozens of people share files.",
       c: "A partial naming habit is an improvement, but doesn't fully solve the identification problem it's meant to solve."
     },
     recoveryPath:
-      "Any file can be renamed after the fact — there is no penalty for fixing a bad file name once the pattern is understood, even mid-semester.",
+      "Jordan Brooks can rename any file after the fact; there is no penalty for fixing a bad file name once the pattern is understood, even mid-semester.",
     conceptExplanation: {
       what: "Clear file naming means using a consistent, descriptive pattern — such as Course_Assignment_LastName_Date_Version — instead of a generic or camera-generated name.",
       why: "A file name is often the first (and sometimes only) piece of information a reader has before opening a document, so it functions as a form of communication.",
@@ -222,19 +226,19 @@ export const EPISODES_PART1 = [
       verifyNote: "Naming conventions can vary by course or workplace — check whether an instructor or employer specifies a required format."
     },
     realWorldExample:
-      "A composite student named three different lab reports 'lab.docx' across a semester and, while studying for finals, spent nearly an hour reopening files just to figure out which was which — time a thirty-second renaming habit would have saved entirely.",
+      "Jordan Brooks named three different campaign drafts 'campaign.docx' across a semester and, while studying for finals, spent nearly an hour reopening files just to figure out which was which — time a thirty-second renaming habit would have saved entirely.",
     knowledgeChecks: [
       {
         id: "kc1",
         question: "Which file name is most useful to a professor receiving many submissions?",
         type: "multiple_choice",
         options: [
-          "ENGL1301_Essay1_Ramirez_Sept14_Final.pdf",
+          "MKTG3301_MarketAnalysis_Brooks_Sept14_Final.pdf",
           "finalfinal2.pdf",
           "IMG_5581.jpg",
           "document.pdf"
         ],
-        correctAnswer: "ENGL1301_Essay1_Ramirez_Sept14_Final.pdf",
+        correctAnswer: "MKTG3301_MarketAnalysis_Brooks_Sept14_Final.pdf",
         explanation: "This name makes the course, assignment, student, date, and version all visible without opening the file."
       },
       {
@@ -261,6 +265,7 @@ export const EPISODES_PART1 = [
 
   {
     id: "ep03",
+    primaryStudent: LESSON_CHARACTERS.ep03,
     act: 1,
     title: "Control Drafts, Feedback, and Final Versions",
     subtitle: "Preventing version confusion before it becomes a submission mistake",
@@ -275,10 +280,10 @@ export const EPISODES_PART1 = [
     personalizationSlots: ["ep03.context"],
     approvedStoryFragments: ["ep03.context"],
     openingNarrative:
-      "Taylor, an English major at Angelo State, revised a paper's conclusion last night, but this morning Taylor is not sure which file contains the updated version.",
+      "Priya Patel, a Computer Science major at Angelo State, revised a paper's conclusion last night, but this morning Priya is not sure which file contains the updated version.",
     scenario: {
       prompt:
-        "Taylor revised the conclusion, but the first item in Recent Files is an older draft that a study partner reopened. The upload is due in ten minutes.",
+        "Priya Patel revised the conclusion, but the first item in Recent Files is an older draft that a study partner reopened. The upload is due in ten minutes.",
       type: "identify_missing_information"
     },
     choices: [
@@ -286,7 +291,7 @@ export const EPISODES_PART1 = [
         id: "a",
         text: "Open the file directly from the Final folder and check the first and last page",
         whyChosen: "This confirms the exact file that will actually be submitted, not just a guess based on recency.",
-        possibleBenefit: "Removes the guesswork entirely — Taylor sees exactly what the professor will see.",
+        possibleBenefit: "Removes the guesswork entirely — Priya Patel sees exactly what the professor will see.",
         possibleCost: "Takes an extra thirty seconds before uploading.",
         possibleRisk: "None significant.",
         immediateEffect: { fileOrganization: 3, submissionReliability: 4, resilience: 1 },
@@ -320,22 +325,22 @@ export const EPISODES_PART1 = [
       }
     ],
     immediateConsequences: {
-      a: "Taylor submits the assignment with full confidence that the correct file was uploaded.",
-      b: "Taylor may submit the wrong file without realizing the mistake until the professor's feedback arrives.",
-      c: "Taylor's folder now contains several files that all claim to be 'Final.'"
+      a: "Priya Patel submits the assignment with full confidence that the correct file was uploaded.",
+      b: "Priya Patel may submit the wrong file without realizing the mistake until the professor's feedback arrives.",
+      c: "Priya Patel's folder now contains several files that all claim to be 'Final.'"
     },
     oneYearConsequences: {
-      a: "A year later, Taylor automatically opens and checks the exact file before every submission.",
-      b: "A year later, recurring version mix-ups have led Taylor to send several emails requesting permission to resubmit assignments.",
-      c: "A year later, Taylor's habit of labeling multiple drafts 'Final' continues to create confusion."
+      a: "A year later, Priya Patel automatically opens and checks the exact file before every submission.",
+      b: "A year later, recurring version mix-ups have led Priya Patel to send several emails requesting permission to resubmit assignments.",
+      c: "A year later, Priya Patel's habit of labeling multiple drafts 'Final' continues to create confusion."
     },
     longTermConsequences: {
-      a: "Taylor's reliable version-checking habit protects grades and reduces stress before deadlines.",
-      b: "Taylor's recurring version confusion can affect grades and professional credibility in group and workplace settings.",
-      c: "Taylor eventually has to rebuild the naming system because the labels no longer distinguish one version from another."
+      a: "Priya Patel's reliable version-checking habit protects grades and reduces stress before deadlines.",
+      b: "Priya Patel's recurring version confusion can affect grades and professional credibility in group and workplace settings.",
+      c: "Priya Patel eventually has to rebuild the naming system because the labels no longer distinguish one version from another."
     },
     recoveryPath:
-      "If an old draft is submitted by mistake, emailing the professor immediately — before the deadline if possible, or right after with an honest explanation — and attaching the correct file usually resolves it. Most instructors respond well to a quick, honest correction.",
+      "If Priya Patel submits an old draft by mistake, emailing the professor immediately — before the deadline if possible, or right after with an honest explanation — and attaching the correct file usually resolves it. Most instructors respond well to a quick, honest correction.",
     conceptExplanation: {
       what: "Version control means deliberately tracking which file is the draft, which has feedback, and which is the true final version.",
       why: "It exists because revisions naturally create multiple similar-looking files, and only one of them should ever be submitted.",
@@ -348,7 +353,7 @@ export const EPISODES_PART1 = [
       verifyNote: "This is a general workflow practice, not a specific platform feature — behavior of 'Recent Files' can vary by device and app."
     },
     realWorldExample:
-      "Taylor, an English major at Angelo State, revised an essay's conclusion but uploaded an older file that a study partner had reopened. Because Recent Files displayed that document first, Taylor did not notice the mistake, and the professor received a paper without the final argument.",
+      "Priya Patel revised an essay's conclusion but uploaded an older file that a study partner had reopened. Because Recent Files displayed that document first, Priya did not notice the mistake, and the professor received a paper without the final argument.",
     knowledgeChecks: [
       {
         id: "kc1",
@@ -387,6 +392,7 @@ export const EPISODES_PART1 = [
 
   {
     id: "ep04",
+    primaryStudent: LESSON_CHARACTERS.ep04,
     act: 1,
     title: "Submit, Preview, and Save Proof",
     subtitle: "Clicking Submit is not the end of the workflow",
@@ -401,10 +407,10 @@ export const EPISODES_PART1 = [
     personalizationSlots: ["ep04.context"],
     approvedStoryFragments: ["ep04.context"],
     openingNarrative:
-      "{{name}} taps Submit on an assignment portal with two minutes to spare and closes the laptop, relieved it's finally done.",
+      "Mateo Ruiz, a Nursing major at Angelo State, taps Submit on an assignment portal with two minutes to spare and closes the laptop, relieved the work is finally done.",
     scenario: {
       prompt:
-        "The upload progress wheel is still spinning when {{name}} closes the browser tab. There's no confirmation email, no visible receipt, and no way to tell whether the portal actually finished processing the file.",
+        "The upload progress wheel is still spinning when Mateo Ruiz closes the browser tab. There's no confirmation email, no visible receipt, and no way to tell whether the portal actually finished processing the file.",
       type: "identify_missing_information"
     },
     choices: [
@@ -412,11 +418,11 @@ export const EPISODES_PART1 = [
         id: "a",
         text: "Reopen the portal, confirm the file preview, and screenshot any confirmation shown",
         whyChosen: "Verifying submission is worth the extra minute of certainty.",
-        possibleBenefit: "{{name}} knows for certain whether the assignment was actually received.",
+        possibleBenefit: "Mateo Ruiz knows for certain whether the assignment was actually received.",
         possibleCost: "A couple of extra minutes spent right after finishing the assignment.",
         possibleRisk: "None significant.",
         immediateEffect: { submissionReliability: 4, resilience: 2 },
-        futureEffect: "If something did go wrong, {{name}} has time to fix it and evidence to show what happened.",
+        futureEffect: "If something did go wrong, Mateo Ruiz has time to fix it and evidence to show what happened.",
         whatCouldChangeThisOutcome: "Portals that show a clear timestamped receipt make this step faster every time.",
         sourceIds: ["asu-core-values"]
       },
@@ -446,22 +452,22 @@ export const EPISODES_PART1 = [
       }
     ],
     immediateConsequences: {
-      a: "{{name}} either confirms the submission succeeded, or catches a failed upload with time to fix it.",
-      b: "{{name}} has no idea whether the professor actually received the assignment.",
-      c: "{{name}}'s local copy is gone, whether or not the portal upload actually worked."
+      a: "Mateo Ruiz either confirms the submission succeeded, or catches a failed upload with time to fix it.",
+      b: "Mateo Ruiz has no idea whether the professor actually received the assignment.",
+      c: "Mateo Ruiz's local copy is gone, whether or not the portal upload actually worked."
     },
     oneYearConsequences: {
       a: "Verifying submissions has become an automatic habit that prevents missed-assignment surprises.",
-      b: "At least one assignment was likely missed or delayed without {{name}} ever knowing why.",
+      b: "At least one assignment was likely missed or delayed without Mateo Ruiz ever knowing why.",
       c: "A grading dispute, when it eventually happens, has no local file as backup."
     },
     longTermConsequences: {
-      a: "This verification habit protects grades and reduces late-submission disputes throughout college and future jobs.",
+      a: "Mateo Ruiz carries this verification habit through college and future jobs, protecting grades and reducing submission disputes.",
       b: "Unverified submissions create recurring, avoidable risk to grades.",
       c: "Deleting files immediately after use removes a safety net that costs nothing to keep."
     },
     recoveryPath:
-      "If an upload did fail, most professors respond well to a prompt, honest message with a screenshot of the error and the correct file attached — sent as soon as the problem is discovered, ideally before the deadline passes.",
+      "If Mateo Ruiz discovers that an upload failed, most professors respond well to a prompt, honest message with a screenshot of the error and the correct file attached — ideally sent before the deadline passes.",
     conceptExplanation: {
       what: "Verifying a submission means confirming the exact file was received — through a preview, confirmation message, timestamp, or portal status — rather than assuming a click was enough.",
       why: "Portals can fail silently: accept the wrong file, show a blank preview, or lose connection mid-upload without a clear error.",
@@ -471,10 +477,10 @@ export const EPISODES_PART1 = [
       whoMayBenefit: "Every student submitting through any online portal, especially near a deadline.",
       whoMayNotBenefit: "There's little downside to this habit — it costs a small amount of time regardless of course load or major.",
       misunderstandingRisk: "Believing that clicking Submit and closing the tab is functionally the same as confirming the assignment was received.",
-      verifyNote: "Portal behavior varies by learning management system — check your specific course portal for what confirmation it provides."
+      verifyNote: "Portal behavior varies by learning management system, so Mateo Ruiz should check the course portal for the confirmation it provides."
     },
     realWorldExample:
-      "A composite student, Morgan, closed a browser while an upload's progress wheel was still spinning. The portal never finished recording the assignment, and Morgan only discovered the missing submission when checking grades two weeks later — by then, the late window had passed.",
+      "Mateo Ruiz closed a browser while an upload's progress wheel was still spinning. The portal never finished recording the assignment, and Mateo discovered the missing submission only when checking grades two weeks later. By then, the late window had passed.",
     knowledgeChecks: [
       {
         id: "kc1",
@@ -513,9 +519,10 @@ export const EPISODES_PART1 = [
 
   {
     id: "ep05",
+    primaryStudent: LESSON_CHARACTERS.ep05,
     act: 1,
     title: "Write a Professor-Ready Email",
-    subtitle: "Make it easy for the reader to understand and answer you",
+    subtitle: "Make every message easy for the reader to understand and answer",
     estimatedMinutes: 10,
     learningObjectives: [
       "Write a specific, useful subject line",
@@ -527,10 +534,10 @@ export const EPISODES_PART1 = [
     personalizationSlots: ["ep05.context"],
     approvedStoryFragments: ["ep05.context"],
     openingNarrative:
-      "{{name}} has a real question about an assignment and opens a blank email to a professor {{subject}} has only met twice.",
+      "Aaliyah Johnson, a Communication major at Angelo State, has a question about an assignment and opens a blank email to a professor Aaliyah has met only twice.",
     scenario: {
       prompt:
-        "{{name}} is stuck on a primary-source analysis due Friday and needs to email Dr. Lee, who teaches three sections of the same course.",
+        "Aaliyah Johnson is stuck on a primary-source analysis due Friday and needs to email Dr. Lee, who teaches three sections of the same course.",
       type: "review_email"
     },
     choices: [
@@ -538,7 +545,7 @@ export const EPISODES_PART1 = [
         id: "a",
         text: "Write a subject line and opening that name the course, section, and specific question",
         whyChosen: "A specific email respects the reader's time and gets a faster, more useful answer.",
-        possibleBenefit: "Dr. Lee can identify {{name}}'s class and question immediately, without a follow-up email.",
+        possibleBenefit: "Dr. Lee can identify Aaliyah Johnson's class and question immediately, without a follow-up email.",
         possibleCost: "Takes a couple of extra minutes to write clearly.",
         possibleRisk: "None significant.",
         immediateEffect: { communicationClarity: 4, professionalConfidence: 2 },
@@ -572,25 +579,25 @@ export const EPISODES_PART1 = [
       }
     ],
     immediateConsequences: {
-      a: "Dr. Lee replies with a clear, useful answer the same day.",
+      a: "Dr. Lee gives Aaliyah Johnson a clear, useful answer the same day.",
       b: "Dr. Lee has to reply asking which course and assignment this is about before actually helping.",
       c: "Dr. Lee opens the email expecting an emergency and finds an ordinary question instead."
     },
     oneYearConsequences: {
-      a: "{{name}} has built a reputation as someone who communicates clearly and respectfully with faculty.",
+      a: "Aaliyah Johnson has built a reputation as someone who communicates clearly and respectfully with faculty.",
       b: "Slower, less complete responses become a pattern across the semester.",
-      c: "Faculty may start reading {{name}}'s 'urgent' messages with less urgency over time."
+      c: "Faculty may start reading Aaliyah Johnson's 'urgent' messages with less urgency over time."
     },
     longTermConsequences: {
-      a: "Clear professional email habits transfer directly to internships, advisors, and future employers.",
+      a: "Aaliyah Johnson carries clear professional email habits into internships and communication with advisors and future employers.",
       b: "Vague communication habits can create friction in academic and professional relationships alike.",
       c: "Overused urgency can erode trust, making genuinely urgent messages less effective when they matter most."
     },
     recoveryPath:
-      "A vague or unclear email can always be followed up with a clearer one — most professors appreciate a quick, specific clarification more than a perfect first attempt.",
+      "Aaliyah Johnson can always follow a vague or unclear email with a clearer one; most professors appreciate a quick, specific clarification more than a perfect first attempt.",
     conceptExplanation: {
       what: "A professor-ready email identifies the course and section, gives brief context, states what was already tried, and asks one specific question.",
-      why: "It exists because professors often manage dozens or hundreds of students and can't infer context from a vague message.",
+      why: "It exists because Aaliyah Johnson's professor manages many messages and cannot infer course context from a vague email.",
       how: "It may help by getting a faster, more useful reply and building a professional impression over time.",
       cost: "It takes a few extra minutes of thought compared to a quick, vague message.",
       risks: "An email that's too long or unfocused can bury the actual question just as effectively as one that's too short.",
@@ -600,7 +607,7 @@ export const EPISODES_PART1 = [
       verifyNote: "Expectations for tone and formality can vary by professor and department — when unsure, err toward clear and respectful."
     },
     realWorldExample:
-      "A composite student sent 'Hey, what do I do?' to a professor teaching three sections of the same course; the professor had to reply asking for the course and assignment before any real help could begin, adding a full day to the exchange.",
+      "Aaliyah Johnson sent 'Hey, what do I do?' to a professor teaching three sections of the same course; the professor had to reply asking for the course and assignment before any real help could begin, adding a full day to the exchange.",
     knowledgeChecks: [
       {
         id: "kc1",
@@ -617,7 +624,7 @@ export const EPISODES_PART1 = [
       },
       {
         id: "kc2",
-        question: "Why should an email mention what the student already tried?",
+        question: "Why should Aaliyah Johnson's email mention what Aaliyah already tried?",
         type: "multiple_choice",
         options: [
           "It's a formal requirement for all emails",
@@ -639,8 +646,9 @@ export const EPISODES_PART1 = [
 
   {
     id: "ep06",
+    primaryStudent: LESSON_CHARACTERS.ep06,
     act: 2,
-    title: "Ask for Help Without Hiding Your Effort",
+    title: "Ask for Help While Showing Prior Effort",
     subtitle: "Turn confusion into a focused, answerable request",
     estimatedMinutes: 9,
     learningObjectives: [
@@ -652,10 +660,10 @@ export const EPISODES_PART1 = [
     personalizationSlots: ["ep06.context"],
     approvedStoryFragments: ["ep06.context"],
     openingNarrative:
-      "{{name}} is stuck on a citation format and isn't sure how to ask for help without sounding like {{subject}} hasn't tried anything yet.",
+      "Ethan Nguyen, a Civil Engineering major at Angelo State, is stuck on a citation format and wants to ask for help while making Ethan's prior effort clear.",
     scenario: {
       prompt:
-        "The article {{name}} needs to cite has no listed author. {{subject}} isn't sure how to start the reference entry and wants to ask a tutor or the professor for help.",
+        "The article Ethan Nguyen needs to cite has no listed author. Ethan isn't sure how to start the reference entry and wants to ask a tutor or the professor for help.",
       type: "multiple_choice"
     },
     choices: [
@@ -663,7 +671,7 @@ export const EPISODES_PART1 = [
         id: "a",
         text: "Explain the specific problem: the article has no listed author, and ask how to begin the entry",
         whyChosen: "A focused question gives the helper exactly what they need to respond usefully.",
-        possibleBenefit: "Gets a fast, specific, useful answer.",
+        possibleBenefit: "Ethan Nguyen gets a fast, specific, useful answer.",
         possibleCost: "Requires briefly explaining the situation instead of just asking generally.",
         possibleRisk: "None significant.",
         immediateEffect: { communicationClarity: 3, resilience: 2, wellbeing: 1 },
@@ -688,7 +696,7 @@ export const EPISODES_PART1 = [
         text: "Ask a classmate to just send the finished citation",
         whyChosen: "It solves the immediate problem the fastest.",
         possibleBenefit: "The citation gets finished quickly.",
-        possibleCost: "{{name}} doesn't actually learn the citation pattern for next time.",
+        possibleCost: "Ethan Nguyen doesn't actually learn the citation pattern for next time.",
         possibleRisk: "Copying a citation without understanding it risks getting the format wrong for a different source type later.",
         immediateEffect: { communicationClarity: 0, resilience: -1 },
         futureEffect: "The same confusion is likely to resurface on the next assignment with a different source type.",
@@ -697,22 +705,22 @@ export const EPISODES_PART1 = [
       }
     ],
     immediateConsequences: {
-      a: "{{name}} gets a clear answer that also explains the reasoning, so it'll transfer to future sources.",
+      a: "Ethan Nguyen gets a clear answer that also explains the reasoning, so it'll transfer to future sources.",
       b: "The helper has to ask several follow-up questions before understanding the real problem.",
-      c: "{{name}}'s immediate assignment is finished, but the underlying skill gap remains."
+      c: "Ethan Nguyen's immediate assignment is finished, but the underlying skill gap remains."
     },
     oneYearConsequences: {
-      a: "{{name}} has built real, transferable citation skills and a habit of asking focused questions.",
-      b: "Vague help requests continue to slow down {{name}}'s access to useful support.",
-      c: "{{name}} still struggles with unusual source types that come up in later courses."
+      a: "Ethan Nguyen has built real, transferable citation skills and a habit of asking focused questions.",
+      b: "Vague help requests continue to slow down Ethan Nguyen's access to useful support.",
+      c: "Ethan Nguyen still struggles with unusual source types that come up in later courses."
     },
     longTermConsequences: {
-      a: "Effective help-seeking is a skill that pays off in every future course, job, and collaborative setting.",
+      a: "Ethan Nguyen carries effective help-seeking into every future course, job, and collaborative setting.",
       b: "Persistent vague requests can strain relationships with tutors, advisors, and professors over time.",
       c: "Relying on others to just provide answers limits independent skill-building over a full degree."
     },
     recoveryPath:
-      "A vague help request can always be followed by a more specific one — most tutors, advisors, and professors are glad to help once they understand exactly what's needed.",
+      "Ethan Nguyen can always follow a vague help request with a more specific one; most tutors, advisors, and professors are glad to help once they understand exactly what's needed.",
     conceptExplanation: {
       what: "Focused help-seeking means showing what was already reviewed, naming the exact point of confusion, and asking for clarification rather than a finished answer.",
       why: "It exists because helpers — tutors, professors, advisors — can respond far more effectively with a specific starting point.",
@@ -721,24 +729,24 @@ export const EPISODES_PART1 = [
       risks: "Over-relying on others for finished answers, rather than explanations, can leave real skill gaps.",
       whoMayBenefit: "Any student using tutoring, office hours, advising, or library help — this is nearly every student, in every course.",
       whoMayNotBenefit: "There's no real downside to specific help-seeking, though it takes a bit more reflection than a vague request.",
-      misunderstandingRisk: "Believing that asking a focused question 'proves' you didn't try — in reality, it demonstrates exactly the opposite.",
+      misunderstandingRisk: "Believing that a focused question proves Ethan Nguyen did not try; in reality, the question demonstrates Ethan's prior effort.",
       verifyNote: "Campus support resources like tutoring centers, writing centers, and advising vary by institution — check current offerings and hours."
     },
     realWorldExample:
-      "A composite student, Alex, initially said 'I cannot do citations' to a writing-center tutor, who had to ask several questions before finding the real issue: an article with no named author. When Alex learned to name that specific problem upfront, future help sessions took a fraction of the time.",
+      "Ethan Nguyen initially said 'I cannot do citations' to a writing-center tutor, who had to ask several questions before finding the real issue: an article with no named author. Once Ethan learned to name that specific problem upfront, future help sessions took a fraction of the time.",
     knowledgeChecks: [
       {
         id: "kc1",
         question: "Which request is most likely to get a fast, useful response?",
         type: "multiple_choice",
         options: [
-          "I reviewed the example, but I am unsure how to cite a web article with no named author. Could you clarify the first element?",
+          "Ethan Nguyen reviewed the example but is unsure how to cite a web article with no named author and asks for clarification about the first element.",
           "Send me the answer",
           "I am confused about everything",
           "Can someone just do this for me?"
         ],
-        correctAnswer: "I reviewed the example, but I am unsure how to cite a web article with no named author. Could you clarify the first element?",
-        explanation: "This request is specific and shows effort, giving the helper exactly what they need to respond usefully."
+        correctAnswer: "Ethan Nguyen reviewed the example but is unsure how to cite a web article with no named author and asks for clarification about the first element.",
+        explanation: "Ethan Nguyen's request is specific and shows effort, giving the helper enough context to respond usefully."
       },
       {
         id: "kc2",
@@ -763,9 +771,10 @@ export const EPISODES_PART1 = [
 
   {
     id: "ep07",
+    primaryStudent: LESSON_CHARACTERS.ep07,
     act: 2,
     title: "Turn the Syllabus Into a Working Calendar",
-    subtitle: "A map only helps when you actually use it",
+    subtitle: "A map helps only when Sofia Martinez uses it",
     estimatedMinutes: 11,
     learningObjectives: [
       "Extract deadlines, recurring work, and exam windows from a syllabus",
@@ -776,10 +785,10 @@ export const EPISODES_PART1 = [
     personalizationSlots: ["ep07.context"],
     approvedStoryFragments: ["ep07.context"],
     openingNarrative:
-      "{{name}}'s syllabus says weekly discussion posts close Sunday at 11:59 p.m. — but buried in the same paragraph, replies to classmates are actually due by Friday.",
+      "Sofia Martinez, a Psychology major at Angelo State, notices that a syllabus lists weekly discussion posts as closing Sunday at 11:59 p.m., while replies to classmates are actually due Friday.",
     scenario: {
       prompt:
-        "{{name}} is building a calendar from the syllabus and has to decide how much detail to record for a multi-part weekly discussion requirement.",
+        "Sofia Martinez is building a calendar from the syllabus and has to decide how much detail to record for a multi-part weekly discussion requirement.",
       type: "read_syllabus_excerpt"
     },
     choices: [
@@ -787,7 +796,7 @@ export const EPISODES_PART1 = [
         id: "a",
         text: "Record both the Friday reply deadline and the Sunday closing deadline, with an earlier personal reminder",
         whyChosen: "Multi-part requirements need every part captured, not just the final closing date.",
-        possibleBenefit: "No part of the assignment gets missed, and there's buffer time before each real deadline.",
+        possibleBenefit: "Sofia Martinez captures every part of the assignment and builds buffer time before each real deadline.",
         possibleCost: "Takes a little longer to build the calendar entry initially.",
         possibleRisk: "None significant.",
         immediateEffect: { calendarReadiness: 4, resilience: 1 },
@@ -821,22 +830,22 @@ export const EPISODES_PART1 = [
       }
     ],
     immediateConsequences: {
-      a: "{{name}}'s calendar accurately reflects both parts of the requirement, with buffer time built in.",
-      b: "{{name}}'s calendar looks complete but is missing a real requirement.",
-      c: "{{name}} has no calendar entry at all for this recurring assignment."
+      a: "Sofia Martinez's calendar accurately reflects both parts of the requirement, with buffer time built in.",
+      b: "Sofia Martinez's calendar looks complete but is missing a real requirement.",
+      c: "Sofia Martinez has no calendar entry at all for this recurring assignment."
     },
     oneYearConsequences: {
-      a: "{{name}} rarely misses a deadline because the calendar habit catches hidden requirements automatically.",
-      b: "{{name}} loses credit periodically on multi-part assignments without understanding the pattern.",
-      c: "{{name}} regularly discovers deadlines only when reading the syllabus again under time pressure."
+      a: "Sofia Martinez rarely misses a deadline because the calendar habit catches hidden requirements automatically.",
+      b: "Sofia Martinez loses credit periodically on multi-part assignments without understanding the pattern.",
+      c: "Sofia Martinez regularly discovers deadlines only when reading the syllabus again under time pressure."
     },
     longTermConsequences: {
-      a: "A reliable calendar habit becomes a durable time-management skill that extends well beyond college.",
+      a: "Sofia Martinez carries a reliable calendar habit beyond college as a durable time-management skill.",
       b: "Repeated partial-credit losses on hidden deadlines can add up significantly across a degree.",
       c: "Relying on memory instead of a system creates chronic, avoidable stress around deadlines."
     },
     recoveryPath:
-      "A missed calendar entry can be added at any time — reviewing a syllabus again mid-semester to rebuild a complete calendar is always worth doing, even after missing something once.",
+      "Sofia Martinez can add a missed calendar entry at any time; reviewing a syllabus again mid-semester to rebuild a complete calendar is worthwhile even after one missed requirement.",
     conceptExplanation: {
       what: "Turning a syllabus into a working calendar means extracting every deadline — including hidden multi-part ones — into a personal calendar with early reminders.",
       why: "A syllabus is a reference document, not an active reminder system; it only helps if its contents are moved into a tool that's actually checked regularly.",
@@ -849,7 +858,7 @@ export const EPISODES_PART1 = [
       verifyNote: "Syllabus language and policies can change through instructor announcements — recheck the calendar against updates, not just the original PDF."
     },
     realWorldExample:
-      "A composite student recorded only the Sunday 11:59 p.m. closing time for a weekly discussion, missing the embedded Friday reply requirement — losing participation credit for several weeks before noticing the pattern in the syllabus language.",
+      "Sofia Martinez recorded only the Sunday 11:59 p.m. closing time for a weekly discussion, missing the embedded Friday reply requirement — losing participation credit for several weeks before noticing the pattern in the syllabus language.",
     knowledgeChecks: [
       {
         id: "kc1",
@@ -887,9 +896,10 @@ export const EPISODES_PART1 = [
 
   {
     id: "ep08",
+    primaryStudent: LESSON_CHARACTERS.ep08,
     act: 2,
     title: "Build a Professional Digital Identity",
-    subtitle: "What your account names and shared spaces communicate",
+    subtitle: "What Caleb Wilson's account names and shared spaces communicate",
     estimatedMinutes: 9,
     learningObjectives: [
       "Identify what display names, photos, and usernames communicate",
@@ -900,10 +910,10 @@ export const EPISODES_PART1 = [
     personalizationSlots: ["ep08.context"],
     approvedStoryFragments: ["ep08.context"],
     openingNarrative:
-      "{{name}}'s group project document shows a contributor called 'DragonKing998,' and nobody in the group can figure out who that actually is.",
+      "Caleb Wilson, a Criminal Justice major at Angelo State, opens a group project document showing a contributor called 'DragonKing998,' and nobody in the group can identify that person.",
     scenario: {
       prompt:
-        "{{name}} is setting up display names for a shared academic document, a professional email signature, and a portfolio-style public profile — each with a different audience.",
+        "Caleb Wilson is setting up display names for a shared academic document, a professional email signature, and a portfolio-style public profile — each with a different audience.",
       type: "sort_safe_unsafe"
     },
     choices: [
@@ -911,7 +921,7 @@ export const EPISODES_PART1 = [
         id: "a",
         text: "Use an identifiable real name in academic and professional spaces, keep separate casual accounts private",
         whyChosen: "This keeps professional accountability clear without erasing personal expression elsewhere.",
-        possibleBenefit: "Professors, teammates, and reviewers can always identify {{name}}'s contributions.",
+        possibleBenefit: "Professors, teammates, and reviewers can always identify Caleb Wilson's contributions.",
         possibleCost: "Requires occasionally switching between professional and personal accounts.",
         possibleRisk: "None significant.",
         immediateEffect: { professionalConfidence: 3, communicationClarity: 2, privacyAwareness: 2 },
@@ -924,7 +934,7 @@ export const EPISODES_PART1 = [
         text: "Use the same anonymous gaming handle everywhere, including group academic documents",
         whyChosen: "It feels simpler to use one consistent username everywhere.",
         possibleBenefit: "No need to manage multiple identities.",
-        possibleCost: "Teammates and professors can't connect contributions to the actual student.",
+        possibleCost: "Teammates and professors can't connect contributions to Caleb Wilson.",
         possibleRisk: "Accountability problems in group work, and a less professional impression on official documents.",
         immediateEffect: { professionalConfidence: -2, communicationClarity: -2 },
         futureEffect: "This can create friction in every future group project and professional interaction.",
@@ -945,22 +955,22 @@ export const EPISODES_PART1 = [
       }
     ],
     immediateConsequences: {
-      a: "Group members and professors can always identify {{name}}'s work.",
+      a: "Group members and professors can always identify Caleb Wilson's work.",
       b: "The group has to ask around to figure out who 'DragonKing998' actually is.",
-      c: "Professors and teammates struggle to connect any contribution back to {{name}}."
+      c: "Professors and teammates struggle to connect any contribution back to Caleb Wilson."
     },
     oneYearConsequences: {
-      a: "{{name}} has built a consistent, trustworthy professional presence across courses and group work.",
+      a: "Caleb Wilson has built a consistent, trustworthy professional presence across courses and group work.",
       b: "Repeated identification confusion creates friction in group projects and official communication.",
       c: "Collaboration difficulties persist across every group-based course."
     },
     longTermConsequences: {
-      a: "A clear professional identity, paired with appropriately private personal spaces, supports both privacy and credibility long-term.",
+      a: "Caleb Wilson's clear professional identity, paired with appropriately private personal spaces, supports both privacy and credibility long-term.",
       b: "An unclear digital identity can create real friction with future employers and references.",
       c: "Overcorrecting toward full anonymity in required academic settings creates ongoing practical problems without meaningfully improving privacy."
     },
     recoveryPath:
-      "A display name or username can be changed at any time — there's no penalty for updating an old anonymous handle to something identifiable once the issue is noticed.",
+      "Caleb Wilson can change a display name or username at any time; there is no penalty for updating an old anonymous handle once the issue is noticed.",
     conceptExplanation: {
       what: "A professional digital identity is the combination of display names, photos, and usernames used in academic and professional contexts.",
       why: "It exists because professors, employers, and teammates need to be able to identify who they're working with, while personal spaces can remain more private.",
@@ -973,14 +983,14 @@ export const EPISODES_PART1 = [
       verifyNote: "Specific platform display-name and privacy settings change over time — check current settings on any tool being used for group work."
     },
     realWorldExample:
-      "A composite group project showed edits from 'DragonKing998' with no other identifying information; the professor couldn't verify who completed which portion of the work, complicating individual grading for the entire group.",
+      "Caleb Wilson's group project showed edits from 'DragonKing998' with no other identifying information; the professor couldn't verify who completed which portion of the work, complicating individual grading for the entire group.",
     knowledgeChecks: [
       {
         id: "kc1",
         question: "Which display name works best in a required course document?",
         type: "multiple_choice",
-        options: ["Jordan Ramirez", "DragonKing998", "Anonymous Panda", "No name at all"],
-        correctAnswer: "Jordan Ramirez",
+        options: ["Caleb Wilson", "DragonKing998", "Anonymous Panda", "No name at all"],
+        correctAnswer: "Caleb Wilson",
         explanation: "An identifiable name lets group members and the professor connect contributions to the correct student."
       },
       {
@@ -994,7 +1004,7 @@ export const EPISODES_PART1 = [
           "Personal accounts should be deleted"
         ],
         correctAnswer: "No — separate personal accounts can remain private and casual",
-        explanation: "Professional identity applies to academic and professional spaces specifically, not every account a student owns."
+        explanation: "Professional identity applies to Caleb Wilson's academic and professional spaces, not every account Caleb owns."
       }
     ],
     sourceIds: ["purdue-owl-email"],
@@ -1006,6 +1016,7 @@ export const EPISODES_PART1 = [
 
   {
     id: "ep09",
+    primaryStudent: LESSON_CHARACTERS.ep09,
     act: 2,
     title: "Choose the Right Search Tool",
     subtitle: "Match the search location to the information need",
@@ -1019,10 +1030,10 @@ export const EPISODES_PART1 = [
     personalizationSlots: ["ep09.context"],
     approvedStoryFragments: ["ep09.context"],
     openingNarrative:
-      "{{name}}'s assignment requires peer-reviewed sources, but the first search result that comes to mind is whatever pops up in a general web search.",
+      "Leila Hassan, an English major at Angelo State, needs peer-reviewed sources for an assignment, but a general web search is the first tool that comes to mind.",
     scenario: {
       prompt:
-        "{{name}} needs sources for a paper that specifically requires peer-reviewed, scholarly evidence. Where should the search actually begin?",
+        "Leila Hassan needs sources for a paper that specifically requires peer-reviewed, scholarly evidence. Where should the search actually begin?",
       type: "match_term_to_meaning"
     },
     choices: [
@@ -1030,7 +1041,7 @@ export const EPISODES_PART1 = [
         id: "a",
         text: "Start with the university library databases or a scholarly search tool",
         whyChosen: "These tools are built specifically to surface peer-reviewed academic literature.",
-        possibleBenefit: "Sources found this way are far more likely to meet the assignment's actual requirement.",
+        possibleBenefit: "Leila Hassan is far more likely to find sources that meet the assignment's actual requirement.",
         possibleCost: "Can take slightly longer to learn than a general search box.",
         possibleRisk: "None significant.",
         immediateEffect: { researchConfidence: 3, sourceJudgment: 3 },
@@ -1064,22 +1075,22 @@ export const EPISODES_PART1 = [
       }
     ],
     immediateConsequences: {
-      a: "{{name}} finds sources that actually satisfy the peer-reviewed requirement.",
-      b: "{{name}}'s sources likely don't meet the assignment's actual standard.",
-      c: "{{name}} risks citing a source that may not actually exist."
+      a: "Leila Hassan finds sources that actually satisfy the peer-reviewed requirement.",
+      b: "Leila Hassan's sources likely don't meet the assignment's actual standard.",
+      c: "Leila Hassan risks citing a source that may not actually exist."
     },
     oneYearConsequences: {
-      a: "{{name}} has become comfortable and efficient using scholarly research tools.",
+      a: "Leila Hassan has become comfortable and efficient using scholarly research tools.",
       b: "Research assignments continue to require last-minute scrambling to find qualifying sources.",
       c: "A pattern of using unverified AI-suggested sources could eventually trigger an academic integrity concern."
     },
     longTermConsequences: {
-      a: "Strong research-tool fluency supports every future academic and professional research task.",
+      a: "Leila Hassan carries strong research-tool fluency into every future academic and professional research task.",
       b: "Continued reliance on general search for academic work limits research quality over a full degree.",
       c: "Unverified source use is a serious, avoidable risk to academic standing if it continues unchecked."
     },
     recoveryPath:
-      "A research strategy can be corrected at any point in an assignment — switching from general search or unverified AI output to library databases mid-project is always a reasonable, recoverable step.",
+      "Leila Hassan can correct a research strategy at any point in an assignment; switching from general search or unverified AI output to library databases mid-project is a reasonable, recoverable step.",
     conceptExplanation: {
       what: "Different search tools serve different purposes: general web search for background, Google Scholar and library databases for scholarly literature, and course readings for instructor-assigned expectations.",
       why: "These tools exist because different information needs — casual background versus peer-reviewed evidence — require different search strategies.",
@@ -1092,11 +1103,11 @@ export const EPISODES_PART1 = [
       verifyNote: "Available databases and search tools vary by institution — check current library resources for what's accessible."
     },
     realWorldExample:
-      "A composite student used the first general-web result for a research paper that explicitly required peer-reviewed sources, only discovering the mismatch after losing significant credit — a library database search would have surfaced qualifying sources in the same amount of time.",
+      "Leila Hassan used the first general-web result for a research paper that explicitly required peer-reviewed sources, only discovering the mismatch after losing significant credit — a library database search would have surfaced qualifying sources in the same amount of time.",
     knowledgeChecks: [
       {
         id: "kc1",
-        question: "Where should a student begin when an assignment requires peer-reviewed studies?",
+        question: "Where should Leila Hassan begin when the assignment requires peer-reviewed studies?",
         type: "multiple_choice",
         options: [
           "The university library databases or a scholarly search tool",
@@ -1130,6 +1141,7 @@ export const EPISODES_PART1 = [
 
   {
     id: "ep10",
+    primaryStudent: LESSON_CHARACTERS.ep10,
     act: 2,
     title: "Evaluate Authority, Evidence, and Relevance",
     subtitle: "Judge a source by the question, not only by its appearance",
@@ -1143,10 +1155,10 @@ export const EPISODES_PART1 = [
     personalizationSlots: ["ep10.context"],
     approvedStoryFragments: ["ep10.context"],
     openingNarrative:
-      "{{name}} finds a well-written article by a respected economist about national employment trends — but the assignment is actually about local student food insecurity.",
+      "Noah Garcia, a Social Work major at Angelo State, finds a well-written article by a respected economist about national employment trends, but the assignment is about local student food insecurity.",
     scenario: {
       prompt:
-        "{{name}} has to decide whether this credible but broad source actually answers the specific research question at hand.",
+        "Noah Garcia has to decide whether this credible but broad source actually answers the specific research question at hand.",
       type: "evaluate_source"
     },
     choices: [
@@ -1154,7 +1166,7 @@ export const EPISODES_PART1 = [
         id: "a",
         text: "Ask how directly this source helps answer the specific research question",
         whyChosen: "Relevance is a relationship between the source and the actual task, not just a measure of general credibility.",
-        possibleBenefit: "Leads {{name}} to keep searching for a source that's both credible and directly relevant.",
+        possibleBenefit: "Leads Noah Garcia to keep searching for a source that's both credible and directly relevant.",
         possibleCost: "Requires more search time than settling for the first credible-looking source.",
         possibleRisk: "None significant.",
         immediateEffect: { sourceJudgment: 4, researchConfidence: 2 },
@@ -1188,22 +1200,22 @@ export const EPISODES_PART1 = [
       }
     ],
     immediateConsequences: {
-      a: "{{name}} continues searching and eventually finds a source that fits both criteria.",
-      b: "{{name}}'s paper includes a credible but only loosely connected source.",
-      c: "{{name}} may pass over a stronger source simply because of its appearance."
+      a: "Noah Garcia continues searching and eventually finds a source that fits both criteria.",
+      b: "Noah Garcia's paper includes a credible but only loosely connected source.",
+      c: "Noah Garcia may pass over a stronger source simply because of its appearance."
     },
     oneYearConsequences: {
-      a: "{{name}}'s source evaluation skills are consistently strong across every research-based course.",
+      a: "Noah Garcia's source evaluation skills are consistently strong across every research-based course.",
       b: "Professors periodically note that sources don't fully support the argument being made.",
       c: "Source quality remains inconsistent, tied more to appearance than actual evidence."
     },
     longTermConsequences: {
-      a: "Strong source-evaluation skills support research quality throughout a degree and into any evidence-based career field.",
+      a: "Noah Garcia's strong source-evaluation skills support research quality throughout a degree and into any evidence-based career field.",
       b: "A pattern of credible-but-irrelevant sourcing can weaken academic arguments over time.",
       c: "Judging sources by appearance is an unreliable habit that doesn't improve with more practice unless corrected."
     },
     recoveryPath:
-      "A source list can always be revised before submission — swapping a credible-but-irrelevant source for a more directly relevant one is a normal, expected part of the research process.",
+      "Noah Garcia can revise a source list before submission; swapping a credible-but-irrelevant source for a more directly relevant one is a normal part of the research process.",
     conceptExplanation: {
       what: "Evaluating authority, evidence, and relevance means asking who created a source, what evidence supports it, when it was published, why it exists, and whether it actually answers the specific question at hand.",
       why: "It exists because credibility and relevance are separate questions — a source can be highly credible in general and still be the wrong fit for a specific task.",
@@ -1216,7 +1228,7 @@ export const EPISODES_PART1 = [
       verifyNote: "Source evaluation frameworks like the ACRL Framework for Information Literacy provide a general, discipline-spanning approach — specific fields may have additional norms."
     },
     realWorldExample:
-      "A composite student cited a well-respected economist's article on national employment trends for a paper specifically about local student food insecurity; a reviewer noted the disconnect, and a more targeted, campus-focused source would have better supported the actual argument.",
+      "Noah Garcia cited a well-respected economist's article on national employment trends for a paper specifically about local student food insecurity; a reviewer noted the disconnect, and a more targeted, campus-focused source would have better supported the actual argument.",
     knowledgeChecks: [
       {
         id: "kc1",

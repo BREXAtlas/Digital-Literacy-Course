@@ -16,6 +16,12 @@
 
   <section class="dashboard-grid section" id="dashboard-tiles"></section>
 
+  <section class="section" aria-labelledby="usefulness-heading">
+    <h2 id="usefulness-heading">Usefulness ratings</h2>
+    <p>Private ratings are stored with course progress on this device. They are not analytics and are not emailed or reported.</p>
+    <div class="dashboard-grid" id="rating-summary"></div>
+  </section>
+
   <section class="section">
     <h2>University Digital Literacy Foundations</h2>
     <p id="foundations-status"></p>
@@ -64,7 +70,7 @@
 <footer data-site-footer></footer>
 <script type="module">
   import { initPage, currentProfile } from "./assets/site.js";
-  import { loadState, resetAll, exportProgress, importProgress } from "./assets/profile-engine.js";
+  import { loadState, resetAll, exportProgress, importProgress, getLessonRatingSummary } from "./assets/profile-engine.js";
   import { getStarSummary, getAllAchievements, getEarnedAchievements } from "./assets/game-engine.js";
   import { generateCertificate } from "./assets/certificate.js";
 
@@ -77,6 +83,7 @@
     const questCompleted = state.progress.aiQuest.completedNodeIds.length;
     const earned = getEarnedAchievements().length;
     const total = getAllAchievements().length;
+    const ratingSummary = getLessonRatingSummary();
 
     document.getElementById("dashboard-tiles").innerHTML = `
       <div class="stat-tile"><span class="stat-tile__value">${foundationsCompleted}/20</span>Foundations episodes</div>
@@ -85,6 +92,12 @@
       <div class="stat-tile"><span class="stat-tile__value">${getStarSummary("ai-quest")}</span>AI Quest stars</div>
       <div class="stat-tile"><span class="stat-tile__value">${earned}/${total}</span>Achievements</div>
       <div class="stat-tile"><span class="stat-tile__value">${state.streak.currentStreak}</span>Day streak</div>
+    `;
+
+    document.getElementById("rating-summary").innerHTML = `
+      <div class="stat-tile"><span class="stat-tile__value">${ratingSummary.foundationsRated}/20</span>Foundations rated</div>
+      <div class="stat-tile"><span class="stat-tile__value">${ratingSummary.aiQuestRated}/20</span>AI Quests rated</div>
+      <div class="stat-tile"><span class="stat-tile__value">${ratingSummary.average === null ? "—" : ratingSummary.average.toFixed(1)}/5</span>Average usefulness</div>
     `;
 
     document.getElementById("foundations-status").textContent = foundationsCompleted === 0
@@ -96,6 +109,8 @@
 
     document.getElementById("next-course-section").hidden = !(foundationsCompleted === 20 && questCompleted === 20);
   }
+
+  document.addEventListener("lessonratingchange", render);
 
   document.getElementById("export-btn").addEventListener("click", () => {
     const blob = new Blob([exportProgress()], { type: "application/json" });

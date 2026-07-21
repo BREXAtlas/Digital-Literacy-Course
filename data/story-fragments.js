@@ -3,13 +3,14 @@
 // Bounded personalization: every fragment below is prewritten and reviewed.
 // The personalization engine (assets/personalization-engine.js) selects a
 // fragment for a given narrative "slot" based on the learner's profile tags.
-// An optional local LLM (llm/webllm-provider.js) may smooth the joins between
-// fragments and resolve names/pronouns, but it may never write new fragments,
-// facts, numbers, or consequences. See docs/PERSONALIZATION_MODEL.md.
+// Named lesson narratives keep their reviewed joins and assigned student;
+// optional local-model smoothing is not used for this curriculum copy. See
+// docs/PERSONALIZATION_MODEL.md.
 //
 // Fragment shape:
 //   { slot, matchTags: [tag,...], text }
-// `text` may use tokens: {{name}}, {{subject}}, {{object}}, {{possessive}}
+// `text` names the assigned lesson student directly and contains no learner
+// placeholder tokens.
 // A slot should have a "generic" fragment as the no-preference fallback.
 // Selection order: first tag match in profile order, else "generic".
 //

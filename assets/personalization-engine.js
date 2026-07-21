@@ -113,7 +113,7 @@ export function resolveLearnerText(text, profile = {}, useGenericStory = false) 
     .trim();
 }
 
-export async function personalizeSlot({ slot, baseText, profile, useGenericStory }) {
+export async function personalizeSlot({ slot, baseText, profile, useGenericStory, preserveNamedStudent = false }) {
   if (!slot || useGenericStory) {
     return resolveLearnerText(baseText, profile, useGenericStory);
   }
@@ -122,7 +122,7 @@ export async function personalizeSlot({ slot, baseText, profile, useGenericStory
   const fragment = selectFragment(slot, tags);
   const fragmentText = fragment ? fragment.text : "";
 
-  if (profile.aiPersonalizationEnabled && profile.aiProvider !== "template") {
+  if (!preserveNamedStudent && profile.aiPersonalizationEnabled && profile.aiProvider !== "template") {
     try {
       const personalized = await personalize({
         baseText,

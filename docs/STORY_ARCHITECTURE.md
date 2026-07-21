@@ -36,10 +36,12 @@ status, or academic standing.
 Every episode and quest includes a `recoveryPath` describing how a learner recovers from a setback choice.
 Nothing in the simulation can "game over."
 
-## Continuity, not disconnected chapters
+## Consistent lesson narratives
 
-Foundations episodes reference the same fictional first-year student across all 20 nodes; acts are a
-navigation convenience (`FOUNDATIONS_ACTS` in `data/foundations-story.js`), not a narrative break.
+Each episode and quest uses one illustrative primary student throughout that item's narrative. Names and current
+Angelo State undergraduate majors vary across the 40 items, while every scenario, consequence, recovery path,
+example, knowledge check, visual, and completion message remains consistent inside its item. The standard
+**Who May Benefit** concept field stays general audience guidance. See `docs/LESSON_CHARACTER_MAP.md`.
 
 ## Financial Futures handoff
 

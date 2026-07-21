@@ -48,9 +48,9 @@ const REQUIRED_FILES = [
   "assets/game-engine.js", "assets/calculator-engine.js", "assets/source-renderer.js",
   "assets/accessibility.js", "assets/certificate.js", "assets/auth-sync.js",
   "assets/course-cloud-bridge.js", "assets/supabase-config.example.js",
-  "assets/visualization-engine.js", "assets/feedback.js",
+  "assets/visualization-engine.js", "assets/lesson-rating.js", "assets/feedback.js",
   "data/onboarding-options.js", "data/source-registry.js", "data/foundations-story.js",
-  "data/ai-quests.js", "data/story-fragments.js", "data/achievements.js",
+  "data/ai-quests.js", "data/story-fragments.js", "data/lesson-characters.js", "data/achievements.js",
   "data/calculator-assumptions.js", "data/glossary.js",
   "llm/llm-provider.js", "llm/template-provider.js", "llm/webllm-provider.js",
   "llm/ollama-provider.js", "llm/output-validator.js",
@@ -58,6 +58,7 @@ const REQUIRED_FILES = [
   "docs/CURRICULUM_MAP.md", "docs/STORY_ARCHITECTURE.md", "docs/PERSONALIZATION_MODEL.md",
   "docs/OPEN_SOURCE_AI.md", "docs/SOURCE_POLICY.md", "docs/SOURCE_REVIEW_CHECKLIST.md",
   "docs/INSTRUCTOR_PILOT_GUIDE.md", "docs/ACCESSIBILITY.md", "docs/PRIVACY_MODEL.md",
+  "docs/LESSON_CHARACTER_MAP.md",
   "docs/FINANCIAL_COURSE_HANDOFF.md", "docs/FINANCIAL_SHELL_PARITY.md",
   "docs/PILOT_FEEDBACK_PROTOCOL.md", "docs/PRESENTATION_GUIDE.md", "TESTING-CHECKLIST.md",
   "scripts/validate-site.mjs", ".github/workflows/pages.yml",
@@ -387,8 +388,10 @@ async function checkCurriculumAndGuestRendering() {
   const { AI_QUESTS } = await import(pathToFileURL(path.join(ROOT, "data/ai-quests.js")));
   const { SOURCE_REGISTRY } = await import(pathToFileURL(path.join(ROOT, "data/source-registry.js")));
   const { ACHIEVEMENTS } = await import(pathToFileURL(path.join(ROOT, "data/achievements.js")));
+  const { LESSON_CHARACTERS } = await import(pathToFileURL(path.join(ROOT, "data/lesson-characters.js")));
+  const { STORY_FRAGMENTS } = await import(pathToFileURL(path.join(ROOT, "data/story-fragments.js")));
   const { resolveLearnerText } = await import(pathToFileURL(path.join(ROOT, "assets/personalization-engine.js")));
-  const { LEARNING_VISUAL_IDS } = await import(pathToFileURL(path.join(ROOT, "assets/visualization-engine.js")));
+  const { LEARNING_VISUAL_IDS, LEARNING_VISUALS } = await import(pathToFileURL(path.join(ROOT, "assets/visualization-engine.js")));
   const { isEpisodeUnlocked } = await import(pathToFileURL(path.join(ROOT, "assets/story-engine.js")));
   const { isQuestUnlocked } = await import(pathToFileURL(path.join(ROOT, "assets/quest-engine.js")));
 
@@ -397,6 +400,37 @@ async function checkCurriculumAndGuestRendering() {
 
   if (AI_QUESTS.length !== 20) fail(`Expected 20 AI quests, found ${AI_QUESTS.length}`);
   else pass("All 20 AI quests exist");
+
+  const expectedLessonIds = [
+    ...Array.from({ length: 20 }, (_, index) => `ep${String(index + 1).padStart(2, "0")}`),
+    ...Array.from({ length: 20 }, (_, index) => `q${String(index + 1).padStart(2, "0")}`)
+  ];
+  const characterEntries = Object.entries(LESSON_CHARACTERS);
+  const characterIds = characterEntries.map(([lessonId]) => lessonId);
+  if (JSON.stringify(characterIds) !== JSON.stringify(expectedLessonIds)) {
+    fail("Lesson character map must contain exactly EP01–EP20 and Q01–Q20 in order");
+  }
+  const names = characterEntries.map(([, character]) => character.name);
+  if (new Set(names).size !== 40) fail("All 40 lesson character names must be distinct");
+  const majorCounts = new Map();
+  for (const [lessonId, character] of characterEntries) {
+    if (!character.name || !character.major) fail(`${lessonId}: incomplete character name or major`);
+    if (character.verifiedDate !== "2026-07-21") fail(`${lessonId}: major verification date must be 2026-07-21`);
+    if (!/^https:\/\/www\.angelo\.edu\/academics\/programs\//.test(character.programUrl || "")) {
+      fail(`${lessonId}: major must link to an official Angelo State program page`);
+    }
+    majorCounts.set(character.major, (majorCounts.get(character.major) || 0) + 1);
+  }
+  if (majorCounts.size !== 10 || [...majorCounts.values()].some((count) => count !== 4)) {
+    fail("The character map must use 10 verified majors with four lesson assignments each");
+  }
+  const characterDoc = await read("docs/LESSON_CHARACTER_MAP.md");
+  for (const [lessonId, character] of characterEntries) {
+    if (!characterDoc.includes(lessonId.toUpperCase()) || !characterDoc.includes(character.name) || !characterDoc.includes(character.programUrl)) {
+      fail(`${lessonId}: character or verified program is not documented`);
+    }
+  }
+  pass("Forty distinct lesson characters and ten current Angelo State undergraduate majors are mapped and documented");
 
   const closedEpisodes = FOUNDATIONS_EPISODES.filter((episode) => !isEpisodeUnlocked(episode.id, [])).map((episode) => episode.id);
   const closedQuests = AI_QUESTS.filter((quest) => !isQuestUnlocked(quest.id, [])).map((quest) => quest.id);
@@ -407,6 +441,7 @@ async function checkCurriculumAndGuestRendering() {
 
   const foundationsPage = await read("foundations.html");
   const aiQuestPage = await read("ai-quest.html");
+  const illustrativeNotice = "Student names and scenarios are illustrative. Majors are current Angelo State academic programs used to provide relevant context.";
   for (const [file, content, routeToken] of [
     ["foundations.html", foundationsPage, "foundations.html?ep=${ep.id}"],
     ["ai-quest.html", aiQuestPage, "ai-quest.html?q=${quest.id}"]
@@ -415,6 +450,14 @@ async function checkCurriculumAndGuestRendering() {
     if (!content.includes('"available"')) fail(`${file}: map nodes must expose an available state`);
     if (!content.includes("getHref:")) fail(`${file}: accessible list must link to every curriculum item`);
     if (!content.includes(routeToken)) fail(`${file}: missing stable lesson route pattern`);
+    if (!content.includes(illustrativeNotice)) fail(`${file}: missing illustrative student and verified-major notice`);
+    if (!content.includes('"Who May Benefit"')) fail(`${file}: standard Who May Benefit concept label changed or missing`);
+    for (const token of [
+      "primaryStudent.name}'s scenario", "Possible benefit for ${escapeHtml(",
+      "Possible risk for ${escapeHtml(", "Knowledge check for ${", "recovery option for ${escapeHtml("
+    ]) {
+      if (!content.toLowerCase().includes(token.toLowerCase())) fail(`${file}: named lesson context is missing ${token}`);
+    }
     if (/\?\s*"active"\s*:\s*"locked"|document\.createElement\(unlocked\s*\?/.test(content)) {
       fail(`${file}: retains progress-gated map rendering`);
     }
@@ -433,6 +476,7 @@ async function checkCurriculumAndGuestRendering() {
   ];
   const seen = new Set();
   const guestProfile = { displayName: "", pronouns: { subject: "they", object: "them", possessive: "their" } };
+  const allCharacterNames = Object.values(LESSON_CHARACTERS).map((character) => character.name);
 
   for (const item of allItems) {
     if (seen.has(item.id)) fail(`Duplicate curriculum ID: ${item.id}`);
@@ -446,6 +490,46 @@ async function checkCurriculumAndGuestRendering() {
     if (!item.knowledgeChecks?.length) fail(`${item.id}: missing knowledge checks`);
     if (!item.sourceIds?.length) fail(`${item.id}: missing source IDs`);
     if (!item.recoveryPath) fail(`${item.id}: missing recovery path`);
+
+    const character = LESSON_CHARACTERS[item.id];
+    if (!character) {
+      fail(`${item.id}: missing primary student mapping`);
+    } else {
+      if (item.primaryStudent?.name !== character.name || item.primaryStudent?.major !== character.major || item.primaryStudent?.programUrl !== character.programUrl) {
+        fail(`${item.id}: curriculum primaryStudent does not match the internal character map`);
+      }
+      const expectedIntroduction = `${character.major} major at Angelo State`;
+      if (!item.openingNarrative.startsWith(`${character.name}, `) || !item.openingNarrative.includes(expectedIntroduction)) {
+        fail(`${item.id}: opening must introduce ${character.name} as a ${character.major} major at Angelo State`);
+      }
+      if (item.conceptExplanation?.whoMayBenefit?.includes(character.name)) {
+        fail(`${item.id}: Who May Benefit must remain general audience guidance, not character-specific copy`);
+      }
+      const consequences = [
+        ...Object.values(item.immediateConsequences || {}),
+        ...Object.values(item.oneYearConsequences || {}),
+        ...Object.values(item.longTermConsequences || {})
+      ];
+      if (!consequences.some((value) => String(value).includes(character.name))) {
+        fail(`${item.id}: consequence copy never identifies the assigned student`);
+      }
+      if (!item.realWorldExample?.includes(character.name)) {
+        fail(`${item.id}: real-world example must use the assigned student`);
+      }
+      const namedSections = [
+        ["scenario", item.scenario?.prompt],
+        ["choice benefit or risk", (item.choices || []).flatMap((choice) => [choice.possibleBenefit, choice.possibleRisk]).join(" ")],
+        ["immediate consequences", Object.values(item.immediateConsequences || {}).join(" ")],
+        ["one-year consequences", Object.values(item.oneYearConsequences || {}).join(" ")],
+        ["long-term consequences", Object.values(item.longTermConsequences || {}).join(" ")],
+        ["recovery path", item.recoveryPath]
+      ];
+      for (const [section, sectionText] of namedSections) {
+        if (!String(sectionText || "").includes(character.name)) {
+          fail(`${item.id}: ${section} does not identify assigned student ${character.name}`);
+        }
+      }
+    }
 
     for (const sourceId of item.sourceIds || []) {
       if (!sourceIds.has(sourceId)) fail(`${item.id}: unknown source ID ${sourceId}`);
@@ -477,6 +561,35 @@ async function checkCurriculumAndGuestRendering() {
     }
 
     for (const [fieldPath, sourceText] of collectStrings(item, item.id)) {
+      if (/\{\{(?:name|subject|object|possessive|reflexive)\}\}/i.test(sourceText)) {
+        fail(`${fieldPath}: learner placeholder remains in curriculum copy`);
+      }
+      if (/\bcomposite\b|\bfictional\s+(?:student|learner|scenario)\b/i.test(sourceText)) {
+        fail(`${fieldPath}: composite or fictional learner label remains in curriculum copy`);
+      }
+      if (/\b(?:Taylor|Morgan|Alex|Jordan Ramirez)\b/.test(sourceText)) {
+        fail(`${fieldPath}: legacy example name remains in assigned-student curriculum copy`);
+      }
+      if (!fieldPath.endsWith("conceptExplanation.whoMayBenefit") && /\byou(?:r|rs|rself)?\b/i.test(sourceText)) {
+        fail(`${fieldPath}: second-person learner reference remains in the named lesson copy`);
+      }
+      if (character) {
+        for (const otherName of allCharacterNames) {
+          if (otherName !== character.name && sourceText.includes(otherName)) {
+            fail(`${fieldPath}: uses ${otherName} instead of assigned student ${character.name}`);
+          }
+        }
+        const characterReferences = [character.name, character.name.split(/\s+/)[0]];
+        for (const reference of characterReferences) {
+          const escapedName = reference.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+          if (new RegExp(`\\b${escapedName}\\s+(?:are|were|have)\\b`, "i").test(sourceText)) {
+            fail(`${fieldPath}: singular-name grammar error: ${sourceText.slice(0, 120)}`);
+          }
+          if (new RegExp(`\\b${escapedName}'s\\s+(?:is|are|were|have)\\b`, "i").test(sourceText)) {
+            fail(`${fieldPath}: possessive grammar error: ${sourceText.slice(0, 120)}`);
+          }
+        }
+      }
       const rendered = resolveLearnerText(sourceText, guestProfile, true);
       if (/\{\{[^}]+\}\}|\}\}/.test(rendered)) {
         fail(`${fieldPath}: unresolved guest placeholder after rendering`);
@@ -485,9 +598,164 @@ async function checkCurriculumAndGuestRendering() {
         fail(`${fieldPath}: incorrect second-person grammar after rendering: ${rendered.slice(0, 120)}`);
       }
     }
+
+    const fragments = STORY_FRAGMENTS.filter((fragment) => fragment.slot.startsWith(`${item.id}.`));
+    if (!fragments.length) fail(`${item.id}: missing assigned-student personalization fragment`);
+    for (const fragment of fragments) {
+      if (!fragment.text.includes(character.name)) fail(`${fragment.slot}: fragment does not use assigned student ${character.name}`);
+      if (/\{\{|\bcomposite\b|\bfictional\s+(?:student|learner)\b|\byou(?:r|rs|rself)?\b/i.test(fragment.text)) {
+        fail(`${fragment.slot}: fragment contains a placeholder or generic learner label`);
+      }
+      for (const otherName of allCharacterNames) {
+        if (otherName !== character.name && fragment.text.includes(otherName)) {
+          fail(`${fragment.slot}: fragment uses ${otherName} instead of ${character.name}`);
+        }
+      }
+    }
   }
 
-  pass("Curriculum structure, consequences, knowledge checks, sources, achievements, visuals, and guest rendering checked");
+  const visualizationEngine = await read("assets/visualization-engine.js");
+  if (!visualizationEngine.includes("getLessonCharacter") || !visualizationEngine.includes("student.name}'s lesson figure")) {
+    fail("Lesson visuals must identify the assigned student through the verified character map");
+  }
+
+  pass("Curriculum structure, assigned students, verified majors, fragments, consequences, knowledge checks, visuals, and guest rendering checked");
+}
+
+async function checkLessonRatings() {
+  const profileEngine = await read("assets/profile-engine.js");
+  const ratingModule = await read("assets/lesson-rating.js");
+  const styles = await read("assets/styles.css");
+  const foundations = await read("foundations.html");
+  const aiQuest = await read("ai-quest.html");
+  const journey = await read("journey.html");
+  const cloudBridge = await read("assets/course-cloud-bridge.js");
+  const migration = await read("supabase/migrations/create_digital_literacy_profiles_and_progress.sql");
+  const testingPage = await read("testing-checklist.html");
+
+  for (const token of [
+    "lessonRatings: {}", "getLessonRating", "getLessonRatings", "setLessonRating",
+    "getLessonRatingSummary", "isValidLessonId", "isValidLessonRating"
+  ]) {
+    if (!profileEngine.includes(token)) fail(`Profile state is missing usefulness-rating support: ${token}`);
+  }
+  if ((profileEngine.match(/const STORAGE_KEY\s*=/g) || []).length !== 1) {
+    fail("Usefulness ratings must use the existing single namespaced course storage key");
+  }
+
+  const ratingImports = [...ratingModule.matchAll(/from\s+"([^"]+)"/g)].map((match) => match[1]);
+  if (JSON.stringify(ratingImports.sort()) !== JSON.stringify(["./accessibility.js", "./profile-engine.js"])) {
+    fail(`Usefulness rating control has unexpected dependencies: ${ratingImports.join(", ")}`);
+  }
+  if (/localStorage|sessionStorage|fetch\s*\(|sendBeacon|mailto:|XMLHttpRequest/i.test(ratingModule)) {
+    fail("Usefulness rating control must not create separate storage, analytics, email, or network behavior");
+  }
+  for (const token of [
+    "Rate usefulness", 'role="radiogroup"', 'role", "radio"', "aria-checked", "aria-disabled",
+    "Rate this lesson ${rating} out of 5", "Complete this lesson before rating it.",
+    "No usefulness rating yet.", "Your rating:",
+    "ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "Home", "End",
+    "for (let rating = 1; rating <= 5; rating += 1)", "is-filled", "is-selected"
+  ]) {
+    if (!ratingModule.includes(token)) fail(`Usefulness rating control is missing ${token}`);
+  }
+
+  for (const [file, page, pathKey] of [
+    ["foundations.html", foundations, "progress.foundations.completedNodeIds"],
+    ["ai-quest.html", aiQuest, "progress.aiQuest.completedNodeIds"]
+  ]) {
+    const mounts = (page.match(/mountLessonRating\s*\(/g) || []).length;
+    if (mounts < 3) fail(`${file}: usefulness ratings must appear in the visual map, accessible list, and lesson toolbar`);
+    for (const token of [pathKey, "completed.includes(", "setCompleted(true)"]) {
+      if (!page.includes(token)) fail(`${file}: usefulness rating completion gate is missing ${token}`);
+    }
+  }
+
+  for (const token of [
+    ".story-node-row", "grid-template-columns: minmax(0, 1fr) auto", ".accessible-map-list__item",
+    ".lesson-rating", ".brain-rating-button", "min-width: 44px", "min-height: 44px",
+    ".brain-rating-button.is-filled", ".brain-rating-button.is-selected", ".brain-rating-button:disabled",
+    "prefers-color-scheme: dark", "max-width: 720px"
+  ]) {
+    if (!styles.includes(token)) fail(`Usefulness rating layout or accessible state is missing ${token}`);
+  }
+
+  for (const token of [
+    "Usefulness ratings", "Foundations rated", "AI Quests rated", "Average usefulness",
+    "getLessonRatingSummary", 'ratingSummary.average.toFixed(1)',
+    "They are not analytics and are not emailed or reported."
+  ]) {
+    if (!journey.includes(token)) fail(`My Journey usefulness summary is missing ${token}`);
+  }
+
+  if (/lesson_?ratings?|lessonRatings/i.test(`${cloudBridge}\n${migration}`)) {
+    fail("Usefulness ratings added a custom cloud schema or sync path instead of remaining in the existing local state model");
+  }
+
+  if (!/\.testing-checklist label\s*\{[\s\S]*?display:\s*block/.test(styles)
+      || !/\.testing-checklist input\[type="checkbox"\]\s*\{[\s\S]*?position:\s*absolute/.test(styles)) {
+    fail("Testing checklist text must flow as one block beside an independently positioned checkbox");
+  }
+  for (const obsolete of ["natural “you” and “your” language", "The fictional example"] ) {
+    if (testingPage.includes(obsolete)) fail(`Testing checklist retains obsolete curriculum wording: ${obsolete}`);
+  }
+  for (const token of ["assigned illustrative student", "Rate usefulness", "rating brains have 44-pixel targets"]) {
+    if (!testingPage.includes(token)) fail(`Testing checklist is missing named-student or usefulness-rating coverage: ${token}`);
+  }
+
+  const previousLocalStorage = globalThis.localStorage;
+  const storage = new Map();
+  globalThis.localStorage = {
+    getItem: (key) => storage.has(key) ? storage.get(key) : null,
+    setItem: (key, value) => storage.set(key, String(value)),
+    removeItem: (key) => storage.delete(key)
+  };
+  try {
+    const {
+      loadState, saveState, getLessonRating, getLessonRatings,
+      setLessonRating, getLessonRatingSummary
+    } = await import(pathToFileURL(path.join(ROOT, "assets/profile-engine.js")));
+    const seeded = loadState();
+    seeded.profile.displayName = "Rating isolation test";
+    seeded.progress.foundations.completedNodeIds = ["ep01"];
+    seeded.progress.foundations.stars = { ep01: 3 };
+    seeded.progress.aiQuest.completedNodeIds = ["q20"];
+    seeded.progress.aiQuest.stars = { q20: 2 };
+    seeded.achievements = ["first-steps"];
+    saveState(seeded);
+
+    const before = loadState();
+    setLessonRating("ep01", 1);
+    setLessonRating("q20", 5);
+    setLessonRating("ep01", 5);
+    const after = loadState();
+    if (getLessonRating("ep01") !== 5 || getLessonRating("q20") !== 5) {
+      fail("Usefulness ratings do not persist or cannot be changed later");
+    }
+    if (JSON.stringify(getLessonRatings()) !== JSON.stringify({ ep01: 5, q20: 5 })) {
+      fail("Usefulness rating state contains unexpected values");
+    }
+    const summary = getLessonRatingSummary();
+    if (summary.foundationsRated !== 1 || summary.aiQuestRated !== 1 || summary.average !== 5) {
+      fail(`Usefulness summary is incorrect: ${JSON.stringify(summary)}`);
+    }
+    for (const [lessonId, rating] of [["ep00", 3], ["ep01", 0], ["q20", 6], ["q01", 2.5]]) {
+      let rejected = false;
+      try { setLessonRating(lessonId, rating); } catch { rejected = true; }
+      if (!rejected) fail(`Invalid usefulness rating was accepted: ${lessonId}=${rating}`);
+    }
+    for (const key of ["profile", "progress", "achievements", "toolAssumptions", "streak", "account"]) {
+      if (JSON.stringify(after[key]) !== JSON.stringify(before[key])) {
+        fail(`Setting a usefulness rating changed unrelated course state: ${key}`);
+      }
+    }
+    if (storage.size !== 1) fail(`Usefulness rating runtime created ${storage.size} storage keys instead of one`);
+  } finally {
+    if (previousLocalStorage === undefined) delete globalThis.localStorage;
+    else globalThis.localStorage = previousLocalStorage;
+  }
+
+  pass("Five-brain usefulness ratings, completion gating, persistence, state isolation, Journey summary, accessibility, and checklist layout checked");
 }
 
 async function checkPerCardResultsAndConcepts() {
@@ -561,6 +829,7 @@ await checkFeedbackForm();
 await checkNoUnsafeInputFields();
 await checkNoSecretsOrForbiddenProjects();
 await checkCurriculumAndGuestRendering();
+await checkLessonRatings();
 await checkPerCardResultsAndConcepts();
 await checkFinancialHandoffAndButtonTerms();
 await checkNoOfficialAsuAssets();

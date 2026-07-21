@@ -10,11 +10,17 @@ Selection order: the engine checks the learner's profile tags (values, interests
 priorities, digital goal — in that priority order) against fragments registered for the slot, and falls back
 to the `generic` fragment when no tag matches or the learner chose the fully generic story.
 
-## What personalization can change
+## What lesson personalization can change
 
-- Character presentation, name, pronouns, avatar styling (see `data/onboarding-options.js`)
 - Which prewritten narrative detail/analogy appears at specific "personalization slots"
-- Light transition phrasing (optional, local-model only — see `docs/OPEN_SOURCE_AI.md`)
+
+Each lesson's primary student name and verified Angelo State major are fixed in reviewed curriculum copy. Story
+fragments name that same assigned student directly, contain no learner-name or pronoun placeholders, and are not
+sent through optional local-model smoothing. The mapping is documented in `data/lesson-characters.js` and
+`docs/LESSON_CHARACTER_MAP.md`.
+
+Profile presentation, display name, pronouns, and avatar styling remain available for profile and account UI
+(see `data/onboarding-options.js`), but they do not replace the primary student in lesson narratives.
 
 ## What personalization can never change
 
@@ -25,14 +31,10 @@ to the `generic` fragment when no tag matches or the learner chose the fully gen
 - Learning objectives
 - Inferred disability, income, race, religion, sexual orientation, or academic standing
 
-## Gender parity
+## Presentation parity
 
-The same underlying storyline and data objects are used regardless of the "man" or "woman" presentation choice.
-Presentation only maps to pronouns and avatar styling via `PRONOUNS_BY_PRESENTATION` in
-`assets/profile-engine.js` — intelligence, technical ability, course difficulty, consequences, and achievement
-eligibility never vary by presentation. The presentation list is intentionally extensible (see
-`CHARACTER_PRESENTATIONS` in `data/onboarding-options.js`) so another option could be added without rewriting
-any curriculum data.
+The same curriculum data objects are used regardless of profile presentation. Presentation choices never alter
+lesson facts, primary students, difficulty, consequences, quiz answers, or achievement eligibility.
 
 ## Personalization node map
 

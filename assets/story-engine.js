@@ -67,7 +67,8 @@ export async function renderEpisodeNarrative(episode, profile, useGenericStory) 
     slot: episode.personalizationSlots?.[0] || null,
     baseText: episode.openingNarrative,
     profile,
-    useGenericStory
+    useGenericStory,
+    preserveNamedStudent: true
   });
   return opening;
 }

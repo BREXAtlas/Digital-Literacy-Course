@@ -30,6 +30,7 @@ const DEFAULT_STATE = {
     foundations: { currentNodeId: "ep01", completedNodeIds: [], stars: {}, choices: {} },
     aiQuest: { currentNodeId: "q01", completedNodeIds: [], stars: {}, choices: {} }
   },
+  lessonRatings: {},
   achievements: [],
   toolAssumptions: {},
   streak: { lastActiveDate: null, currentStreak: 0 },
@@ -107,6 +108,53 @@ export function setStars(path, nodeId, starCount) {
   const key = path === "foundations" ? "foundations" : "aiQuest";
   state.progress[key].stars[nodeId] = Math.max(state.progress[key].stars[nodeId] || 0, starCount);
   return saveState(state);
+}
+
+function isValidLessonId(lessonId) {
+  return /^(?:ep|q)(?:0[1-9]|1\d|20)$/.test(String(lessonId || ""));
+}
+
+function isValidLessonRating(rating) {
+  return Number.isInteger(rating) && rating >= 1 && rating <= 5;
+}
+
+export function getLessonRating(lessonId) {
+  if (!isValidLessonId(lessonId)) return null;
+  const rating = loadState().lessonRatings?.[lessonId];
+  return isValidLessonRating(rating) ? rating : null;
+}
+
+export function getLessonRatings() {
+  const ratings = loadState().lessonRatings;
+  if (!ratings || typeof ratings !== "object" || Array.isArray(ratings)) return {};
+  return Object.fromEntries(
+    Object.entries(ratings).filter(([lessonId, rating]) =>
+      isValidLessonId(lessonId) && isValidLessonRating(rating)
+    )
+  );
+}
+
+export function setLessonRating(lessonId, rating) {
+  if (!isValidLessonId(lessonId)) throw new TypeError("Unknown lesson rating target.");
+  if (!isValidLessonRating(rating)) throw new RangeError("Lesson ratings must be whole numbers from 1 through 5.");
+  const state = loadState();
+  const currentRatings = state.lessonRatings && typeof state.lessonRatings === "object" && !Array.isArray(state.lessonRatings)
+    ? state.lessonRatings
+    : {};
+  state.lessonRatings = { ...currentRatings, [lessonId]: rating };
+  return saveState(state);
+}
+
+export function getLessonRatingSummary() {
+  const ratings = getLessonRatings();
+  const foundations = Object.entries(ratings).filter(([lessonId]) => lessonId.startsWith("ep"));
+  const aiQuest = Object.entries(ratings).filter(([lessonId]) => lessonId.startsWith("q"));
+  const values = [...foundations, ...aiQuest].map(([, rating]) => rating);
+  return {
+    foundationsRated: foundations.length,
+    aiQuestRated: aiQuest.length,
+    average: values.length ? values.reduce((sum, rating) => sum + rating, 0) / values.length : null
+  };
 }
 
 export function unlockAchievement(achievementId) {
